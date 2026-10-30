@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Ubuntu系统SSH服务安装配置及Windows客户端连接教程 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="本教程适用于所有主流Ubuntu版本（18.04&#x2F;20.04&#x2F;22.04&#x2F;24.04），完整讲解 Ubuntu服务端SSH部署、参数配置、开机自启、防火墙放行 ，以及 Windows原生终端、第三方工具 远程连接方法，附带常见故障排查，零基础可直接照着操作。 内容概览 第一部分">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ubuntu系统SSH服务安装配置及Windows客户端连接教程">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/ubuntu%E7%B3%BB%E7%BB%9Fssh%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%8F%8Awindows%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="本教程适用于所有主流Ubuntu版本（18.04&#x2F;20.04&#x2F;22.04&#x2F;24.04），完整讲解 Ubuntu服务端SSH部署、参数配置、开机自启、防火墙放行 ，以及 Windows原生终端、第三方工具 远程连接方法，附带常见故障排查，零基础可直接照着操作。 内容概览 第一部分">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:38.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:51.254Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/ubuntu%E7%B3%BB%E7%BB%9Fssh%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%8F%8Awindows%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ubuntu系统SSH服务安装配置及Windows客户端连接教程',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-3.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Ubuntu系统SSH服务安装配置及Windows客户端连接教程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">Linux / 系统</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#Linux / 系统</span><span class="kb-article-tag">#Ubuntu</span><span class="kb-article-tag">#Linux</span></div><div class="kb-article"><p>本教程适用于所有主流Ubuntu版本（18.04&#x2F;20.04&#x2F;22.04&#x2F;24.04），完整讲解<strong>Ubuntu服务端SSH部署、参数配置、开机自启、防火墙放行</strong>，以及<strong>Windows原生终端、第三方工具</strong>远程连接方法，附带常见故障排查，零基础可直接照着操作。</p>
+<h1 id="内容概览"><a href="#内容概览" class="headerlink" title="内容概览"></a>内容概览</h1><ul>
+<li><strong>第一部分 · 服务端配置</strong>：6 步完成 SSH 安装与配置（更新源 → 安装 → 状态验证 → 防火墙放行 → 配置优化 → 查询本机 IP）</li>
+<li><strong>第二部分 · 客户端连接</strong>：Windows 原生终端、Xshell 两种连接方式</li>
+<li><strong>第三部分 · 关键注意事项</strong>：网络互通、账号密码、端口、安全建议</li>
+<li><strong>第四部分 · 故障排查</strong>：4 种常见连接问题及解决方法</li>
+</ul>
+<h2 id="一、Ubuntu服务端配置SSH服务"><a href="#一、Ubuntu服务端配置SSH服务" class="headerlink" title="一、Ubuntu服务端配置SSH服务"></a>一、Ubuntu服务端配置SSH服务</h2><h3 id="1-更新系统软件源（可选推荐）"><a href="#1-更新系统软件源（可选推荐）" class="headerlink" title="1. 更新系统软件源（可选推荐）"></a>1. 更新系统软件源（可选推荐）</h3><p>先更新软件包列表，避免安装报错，打开Ubuntu终端（Ctrl+Alt+T）执行命令：</p>
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade -y
+</code></pre>
+<h3 id="2-安装OpenSSH服务端"><a href="#2-安装OpenSSH服务端" class="headerlink" title="2. 安装OpenSSH服务端"></a>2. 安装OpenSSH服务端</h3><p>Ubuntu默认未预装SSH服务，需手动安装openssh-server组件：</p>
+<pre><code class="language-bash">sudo apt install openssh-server -y
+</code></pre>
+<h3 id="3-查看SSH服务状态"><a href="#3-查看SSH服务状态" class="headerlink" title="3. 查看SSH服务状态"></a>3. 查看SSH服务状态</h3><p>安装完成后服务会自动启动，执行以下命令验证运行状态：</p>
+<pre><code class="language-bash">systemctl status ssh
+</code></pre>
+<p>出现 <strong>active (running)</strong> 即为运行正常。</p>
+<p>常用服务控制命令：</p>
+<pre><code class="language-bash"># 启动SSH服务
+sudo systemctl start ssh
+# 停止SSH服务
+sudo systemctl stop ssh
+# 重启SSH服务（修改配置后必执行）
+sudo systemctl restart ssh
+# 设置开机自启（核心配置，避免重启失效）
+sudo systemctl enable ssh
+</code></pre>
+<h3 id="4-放行Ubuntu防火墙SSH端口"><a href="#4-放行Ubuntu防火墙SSH端口" class="headerlink" title="4. 放行Ubuntu防火墙SSH端口"></a>4. 放行Ubuntu防火墙SSH端口</h3><p>Ubuntu默认防火墙UFW开启后会拦截SSH连接，需手动放行22端口（SSH默认端口）：</p>
+<pre><code class="language-bash"># 放行SSH服务
+sudo ufw allow ssh
+# 或直接放行22端口（效果一致）
+sudo ufw allow 22/tcp
+# 重载防火墙生效
+sudo ufw reload
+# 查看防火墙规则
+sudo ufw status
+</code></pre>
+<h3 id="5-SSH核心配置优化（可选，推荐）"><a href="#5-SSH核心配置优化（可选，推荐）" class="headerlink" title="5. SSH核心配置优化（可选，推荐）"></a>5. SSH核心配置优化（可选，推荐）</h3><p>修改SSH配置文件，提升安全性、解决连接限制问题：</p>
+<pre><code class="language-bash">sudo vim /etc/ssh/sshd_config
+</code></pre>
+<p>打开文件后，修改&#x2F;确保以下参数（去掉行首#注释，无则新增）：</p>
+<pre><code class="language-bash"># 允许密码登录（新手开启，生产环境建议改用密钥登录）
+PasswordAuthentication yes
+# 允许root登录（按需开启，普通用户可关闭）
+PermitRootLogin yes
+# 开启端口转发
+AllowTcpForwarding yes
+# 最大连接数，避免连接超时
+MaxSessions 10
+</code></pre>
+<p>修改完成后，重启SSH服务使配置生效：</p>
+<pre><code class="language-bash">sudo systemctl restart ssh
+</code></pre>
+<h3 id="6-查看Ubuntu本机IP（连接必备）"><a href="#6-查看Ubuntu本机IP（连接必备）" class="headerlink" title="6. 查看Ubuntu本机IP（连接必备）"></a>6. 查看Ubuntu本机IP（连接必备）</h3><p>Windows连接需要Ubuntu的IP地址，执行命令查询：</p>
+<pre><code class="language-bash">ip a
+</code></pre>
+<p>找到网卡（一般为ens33、eth0、wlan0）对应的 <strong>inet 192.168.x.x</strong> 地址，记录该IP，后续连接使用。</p>
+<h2 id="二、Windows客户端连接Ubuntu-SSH"><a href="#二、Windows客户端连接Ubuntu-SSH" class="headerlink" title="二、Windows客户端连接Ubuntu SSH"></a>二、Windows客户端连接Ubuntu SSH</h2><p>提供两种常用连接方式，优先推荐<strong>Windows原生终端（无需装软件）</strong>，新手友好。</p>
+<h3 id="方式一：Windows-CMD-PowerShell-原生连接（Win10-Win11自带）"><a href="#方式一：Windows-CMD-PowerShell-原生连接（Win10-Win11自带）" class="headerlink" title="方式一：Windows CMD&#x2F;PowerShell 原生连接（Win10&#x2F;Win11自带）"></a>方式一：Windows CMD&#x2F;PowerShell 原生连接（Win10&#x2F;Win11自带）</h3><p>Win10 1809版本及以上、Win11默认内置SSH客户端，无需额外安装。</p>
+<ol>
+<li>按下 <strong>Win+R</strong>，输入 <code>cmd</code> 或 <code>powershell</code> 打开终端；</li>
+<li>输入连接命令，格式：<code>ssh 用户名@UbuntuIP</code></li>
+</ol>
+<p>示例（Ubuntu用户为ubuntu，IP为192.168.1.100）：</p>
+<pre><code class="language-bash">ssh ubuntu@192.168.1.100
+</code></pre>
+<p>首次连接提示<code>Are you sure you want to continue connecting (yes/no)?</code>，输入 <strong>yes</strong> 回车；</p>
+<p>输入Ubuntu登录密码（输入时无显示，直接输完回车即可），连接成功。</p>
+<h3 id="方式二：Xshell客户端连接（第三方工具，适合长期使用）"><a href="#方式二：Xshell客户端连接（第三方工具，适合长期使用）" class="headerlink" title="方式二：Xshell客户端连接（第三方工具，适合长期使用）"></a>方式二：Xshell客户端连接（第三方工具，适合长期使用）</h3><p>Xshell支持会话保存、字体优化、文件传输，是运维常用工具。</p>
+<ol>
+<li><p>下载安装Xshell（免费家庭版即可）；</p>
+</li>
+<li><p>打开软件，点击「文件」-「新建」，新建会话；</p>
+</li>
+<li><p>会话属性配置：</p>
+<ul>
+<li>协议：SSH</li>
+<li>主机：填写Ubuntu的IP地址</li>
+<li>端口号：22（默认无需修改）</li>
+</ul>
+</li>
+<li><p>点击「连接」，输入Ubuntu用户名和密码，即可登录；</p>
+</li>
+<li><p>可保存会话，下次打开直接双击连接，无需重复输入信息。</p>
+</li>
+</ol>
+<h2 id="三、关键注意事项"><a href="#三、关键注意事项" class="headerlink" title="三、关键注意事项"></a>三、关键注意事项</h2><callout emoji="💡">
+- **网络互通**：Windows和Ubuntu必须在**同一局域网**（同一WiFi/同一交换机），否则无法连接；云服务器需放行安全组22端口。
+- **账号密码**：登录时使用Ubuntu的普通用户名/root账号及对应密码，不是Windows账号密码。
+- **端口问题**：默认SSH端口22，若手动修改配置文件端口，连接时需指定端口：`ssh -p 端口 用户名@IP`。
+- **安全建议**：测试环境可开启密码登录，生产环境建议关闭密码登录，使用密钥登录提升安全性。
+</callout>
+
+<h2 id="四、常见故障排查"><a href="#四、常见故障排查" class="headerlink" title="四、常见故障排查"></a>四、常见故障排查</h2><h3 id="1-提示：Connection-refused（连接被拒绝）"><a href="#1-提示：Connection-refused（连接被拒绝）" class="headerlink" title="1. 提示：Connection refused（连接被拒绝）"></a>1. 提示：Connection refused（连接被拒绝）</h3><p>原因：Ubuntu SSH服务未启动、未安装、端口错误。</p>
+<p>解决：重新执行 <code>systemctl status ssh</code> 检查服务状态，重启SSH服务，确认端口为22。</p>
+<h3 id="2-提示：No-route-to-host（无法连接主机）"><a href="#2-提示：No-route-to-host（无法连接主机）" class="headerlink" title="2. 提示：No route to host（无法连接主机）"></a>2. 提示：No route to host（无法连接主机）</h3><p>原因：网络不通、防火墙未放行端口、IP地址错误。</p>
+<p>解决：确认双方同一局域网，检查Ubuntu防火墙规则，重新核对IP地址。</p>
+<h3 id="3-输入密码正确但登录失败"><a href="#3-输入密码正确但登录失败" class="headerlink" title="3. 输入密码正确但登录失败"></a>3. 输入密码正确但登录失败</h3><p>原因：配置文件关闭了密码登录、禁止当前用户登录。</p>
+<p>解决：修改sshd_config文件，开启 <code>PasswordAuthentication yes</code>，重启SSH服务。</p>
+<h3 id="4-Win10旧版本无SSH命令"><a href="#4-Win10旧版本无SSH命令" class="headerlink" title="4. Win10旧版本无SSH命令"></a>4. Win10旧版本无SSH命令</h3><p>解决：设置-应用-可选功能-添加功能，搜索「OpenSSH客户端」安装即可。</p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Docker构建OpenClaw指南 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="本文档介绍如何使用Docker来构建和部署OpenClaw。 前提条件 已安装Docker 已安装Docker Compose（可选） 基本的Linux命令行知识 快速开始 1. 克隆OpenClaw仓库 2.查看Dockfile文件 3. 构建Docker镜像 4. 运行Ope">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Docker构建OpenClaw指南">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/docker%E6%9E%84%E5%BB%BAopenclaw%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="本文档介绍如何使用Docker来构建和部署OpenClaw。 前提条件 已安装Docker 已安装Docker Compose（可选） 基本的Linux命令行知识 快速开始 1. 克隆OpenClaw仓库 2.查看Dockfile文件 3. 构建Docker镜像 4. 运行Ope">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:13.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:39.024Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/docker%E6%9E%84%E5%BB%BAopenclaw%E6%8C%87%E5%8D%97/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Docker构建OpenClaw指南',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Docker构建OpenClaw指南</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">Docker / 容器</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#Docker / 容器</span><span class="kb-article-tag">#Docker</span><span class="kb-article-tag">#OpenClaw</span></div><div class="kb-article"><p>本文档介绍如何使用Docker来构建和部署OpenClaw。</p>
+<h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li>已安装Docker</li>
+<li>已安装Docker Compose（可选）</li>
+<li>基本的Linux命令行知识</li>
+</ul>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="1-克隆OpenClaw仓库"><a href="#1-克隆OpenClaw仓库" class="headerlink" title="1. 克隆OpenClaw仓库"></a>1. 克隆OpenClaw仓库</h3><pre><code class="language-Bash">git clone https://github.com/openclaw/openclaw.git
+cd openclaw
+</code></pre>
+<h3 id="2-查看Dockfile文件"><a href="#2-查看Dockfile文件" class="headerlink" title="2.查看Dockfile文件"></a>2.查看Dockfile文件</h3><pre><code class="language-Bash">FROM  node:22-bookworm@sha256:cd7bcd2e7a1e6f72052feb023c7f6b722205d3fcab7bbcbd2d1bfdab10b1e935
+
+# 安装 Bun (构建脚本所需)
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH=&quot;/root/.bun/bin:${PATH}&quot;
+
+# 启用 corepack (用于管理包管理器)
+RUN corepack enable
+
+# 设置工作目录
+WORKDIR /app
+# 修改工作目录所有权为 node 用户
+RUN chown node:node /app
+
+# 构建参数：自定义需要安装的 APT 软件包
+ARG OPENCLAW_DOCKER_APT_PACKAGES=&quot;&quot;
+# 如果指定了自定义软件包，则更新并安装
+RUN if [ -n &quot;$OPENCLAW_DOCKER_APT_PACKAGES&quot; ]; then \
+      apt-get update &amp;&amp; \
+      DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends $OPENCLAW_DOCKER_APT_PACKAGES &amp;&amp; \
+      apt-get clean &amp;&amp; \
+      rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*; \
+    fi
+
+# 复制包管理相关文件，并设置正确的文件所有者
+COPY --chown=node:node package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY --chown=node:node ui/package.json ./ui/package.json
+COPY --chown=node:node patches ./patches
+COPY --chown=node:node scripts ./scripts
+
+# 切换到 node 非特权用户
+USER node
+# 降低低内存主机上依赖安装时的内存溢出(OOM)风险
+# 小型虚拟机上的 Docker 构建可能会因内存不足而被&quot;杀死&quot;(退出码 137)
+RUN NODE_OPTIONS=--max-old-space-size=2048 pnpm install --frozen-lockfile
+
+# 可选：安装 Chromium 和 Xvfb 用于浏览器自动化
+# 构建时启用：docker build --build-arg OPENCLAW_INSTALL_BROWSER=1 ...
+# 会增加约300MB镜像体积，但避免了每次容器启动时60-90秒的 Playwright 安装过程
+# 必须在 pnpm install 之后执行，确保 node_modules 中存在 playwright-core
+USER root
+ARG OPENCLAW_INSTALL_BROWSER=&quot;&quot;
+RUN if [ -n &quot;$OPENCLAW_INSTALL_BROWSER&quot; ]; then \
+      apt-get update &amp;&amp; \
+      DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends xvfb &amp;&amp; \
+      mkdir -p /home/node/.cache/ms-playwright &amp;&amp; \
+      PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright \
+      node /app/node_modules/playwright-core/cli.js install --with-deps chromium &amp;&amp; \
+      chown -R node:node /home/node/.cache/ms-playwright &amp;&amp; \
+      apt-get clean &amp;&amp; \
+      rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*; \
+    fi
+
+# 切换回 node 用户
+USER node
+# 复制项目所有源代码
+COPY --chown=node:node . .
+# 执行项目构建
+RUN pnpm build
+# 强制使用 pnpm 构建 UI (Bun 在 ARM/群晖架构上可能失败)
+ENV OPENCLAW_PREFER_PNPM=1
+# 构建 UI 界面
+RUN pnpm ui:build
+
+# 设置生产环境
+ENV NODE_ENV=production
+
+# 安全加固：以非 root 用户运行
+# node:22-bookworm 镜像内置了 &#39;node&#39; 用户 (uid 1000)
+# 这通过防止 root 权限的容器逃逸来减少攻击面
+USER node
+
+# 使用默认配置启动网关服务器
+# 默认绑定到回环地址(127.0.0.1)以提高安全性
+#
+# 对于需要外部健康检查的容器平台：
+#   1. 设置 OPENCLAW_GATEWAY_TOKEN 或 OPENCLAW_GATEWAY_PASSWORD 环境变量
+#   2. 覆盖 CMD 命令: [&quot;node&quot;,&quot;openclaw.mjs&quot;,&quot;gateway&quot;,&quot;--allow-unconfigured&quot;,&quot;--bind&quot;,&quot;lan&quot;]
+CMD [&quot;node&quot;, &quot;openclaw.mjs&quot;, &quot;gateway&quot;, &quot;--allow-unconfigured&quot;]
+</code></pre>
+<h3 id="3-构建Docker镜像"><a href="#3-构建Docker镜像" class="headerlink" title="3. 构建Docker镜像"></a>3. 构建Docker镜像</h3><pre><code class="language-Bash">docker build -t openclaw:latest .
+</code></pre>
+<h3 id="4-运行OpenClaw容器"><a href="#4-运行OpenClaw容器" class="headerlink" title="4. 运行OpenClaw容器"></a>4. 运行OpenClaw容器</h3><pre><code class="language-Bash">docker run -d \
+  --name openclaw \
+  -p 18789:18789 \
+  -v $(pwd):/app/workspace \
+  openclaw:latest
+</code></pre>
+<h2 id="Docker-Compose配置"><a href="#Docker-Compose配置" class="headerlink" title="Docker Compose配置"></a>Docker Compose配置</h2><p>创建<code>docker-compose.yml</code>文件：</p>
+<pre><code class="language-YAML">version: &#39;3.8&#39;
+
+services:
+  openclaw:
+    build: .
+    ports:
+      - &quot;18789:18789&quot;
+    volumes:
+      - ./workspace:/app/workspace
+      - ./data:/app/data
+    environment:
+      - OPENCLAW_PORT=18789
+      - OPENCLAW_MODEL=default
+    restart: unless-stopped
+</code></pre>
+<h3 id="构建服务并启动："><a href="#构建服务并启动：" class="headerlink" title="构建服务并启动："></a>构建服务并启动：</h3><pre><code class="language-Bash">docker-compose up -d --build
+</code></pre>
+<h3 id="openclaw配置文件说明："><a href="#openclaw配置文件说明：" class="headerlink" title="openclaw配置文件说明："></a>openclaw配置文件说明：</h3><pre><code class="language-Bash">{
+  // 元信息：配置最后修改的版本和时间
+  &quot;meta&quot;: {
+    &quot;lastTouchedVersion&quot;: &quot;2026.2.23&quot;,       // 配置最后编辑时使用的 OpenClaw 版本
+    &quot;lastTouchedAt&quot;: &quot;2026-02-25T02:47:28.233Z&quot;  // 配置最后修改时间（UTC）
+  },
+  // 自定义环境变量（当前为空）
+  &quot;env&quot;: {},
+  // 向导/诊断工具运行记录
+  &quot;wizard&quot;: {
+    &quot;lastRunAt&quot;: &quot;2026-02-25T02:31:36.400Z&quot;,  // 最后一次运行向导时间
+    &quot;lastRunVersion&quot;: &quot;2026.2.23&quot;,           // 运行时版本
+    &quot;lastRunCommand&quot;: &quot;doctor&quot;,              // 最后执行命令：doctor（系统检查）
+    &quot;lastRunMode&quot;: &quot;local&quot;                   // 运行模式：本地模式
+  },
+  // AI 模型配置（核心：对接本地大模型服务）
+  &quot;models&quot;: {
+    &quot;mode&quot;: &quot;merge&quot;,                         // 模型合并模式：合并内置+自定义
+    &quot;providers&quot;: {                           // 模型服务商
+      &quot;cliproxy&quot;: {                          // 本地模型代理服务
+        &quot;baseUrl&quot;: &quot;http://127.0.0.1:8317/v1&quot;,// 本地模型接口地址
+        &quot;apiKey&quot;: &quot;sk-ogm692xFoU9NYBzV9&quot;,     // 接口密钥
+        &quot;api&quot;: &quot;openai-completions&quot;,          // 接口协议：兼容 OpenAI
+        &quot;models&quot;: [                           // 可用模型列表
+          {
+            &quot;id&quot;: &quot;LongCat-Flash-Chat&quot;,       // 模型ID
+            &quot;name&quot;: &quot;LongCat-Flash-Chat&quot;,     // 模型名称
+            &quot;reasoning&quot;: false,               // 是否为思考模型
+            &quot;input&quot;: [&quot;text&quot;],                // 仅支持文本输入
+            &quot;cost&quot;: {                         // 计费（0=免费）
+              &quot;input&quot;: 0,
+              &quot;output&quot;: 0,
+              &quot;cacheRead&quot;: 0,
+              &quot;cacheWrite&quot;: 0
+            },
+            &quot;contextWindow&quot;: 200000,          // 上下文窗口 20万 token
+            &quot;maxTokens&quot;: 8192                 // 最大输出 8192 token
+          },
+          {
+            &quot;id&quot;: &quot;LongCat-Flash-Lite&quot;,       // 轻量模型
+            &quot;name&quot;: &quot;LongCat-Flash-Lite&quot;,
+            &quot;reasoning&quot;: false,
+            &quot;input&quot;: [&quot;text&quot;],
+            &quot;cost&quot;: {
+              &quot;input&quot;: 0,
+              &quot;output&quot;: 0,
+              &quot;cacheRead&quot;: 0,
+              &quot;cacheWrite&quot;: 0
+            },
+            &quot;contextWindow&quot;: 200000,
+            &quot;maxTokens&quot;: 8192
+          },
+          {
+            &quot;id&quot;: &quot;LongCat-Flash-Thinking-2601&quot;, // 思考模型
+            &quot;name&quot;: &quot;LongCat-Flash-Thinking-2601&quot;,
+            &quot;reasoning&quot;: false,
+            &quot;input&quot;: [&quot;text&quot;],
+            &quot;cost&quot;: {
+              &quot;input&quot;: 0,
+              &quot;output&quot;: 0,
+              &quot;cacheRead&quot;: 0,
+              &quot;cacheWrite&quot;: 0
+            },
+            &quot;contextWindow&quot;: 200000,
+            &quot;maxTokens&quot;: 8192
+          }
+        ]
+      }
+    }
+  },
+  // AI 智能体（Agent）配置
+  &quot;agents&quot;: {
+    &quot;defaults&quot;: {                             // 全局默认配置
+      &quot;model&quot;: {
+        &quot;primary&quot;: &quot;cliproxy/LongCat-Flash-Chat&quot;,       // 主模型
+        &quot;fallbacks&quot;: [                                    // 备用模型
+          &quot;cliproxy/LongCat-Flash-Thinking-2601&quot;,
+          &quot;cliproxy/LongCat-Flash-Lite&quot;
+        ]
+      },
+      &quot;compaction&quot;: {
+        &quot;mode&quot;: &quot;default&quot;                     // 对话压缩默认模式
+      },
+      &quot;thinkingDefault&quot;: &quot;medium&quot;,            // 默认思考深度：中等
+      &quot;maxConcurrent&quot;: 4                      // 最大并发请求数
+    },
+    &quot;list&quot;: [                                 // 智能体列表
+      {
+        &quot;id&quot;: &quot;main&quot;,                         // 主智能体
+        &quot;default&quot;: true,                      // 设为默认
+        &quot;workspace&quot;: &quot;~/.openclaw/workspace&quot;, // 工作目录
+        &quot;identity&quot;: {                         // 人设信息
+          &quot;name&quot;: &quot;Clawd&quot;,                    // 名字
+          &quot;theme&quot;: &quot;helpful assistant with a claw-some personality&quot;, // 性格设定
+          &quot;emoji&quot;: &quot;🦞&quot;                       // 表情
+        }
+      }
+    ]
+  },
+  // 系统命令执行权限
+  &quot;commands&quot;: {
+    &quot;native&quot;: &quot;auto&quot;,                         // 原生命令：自动判断
+    &quot;nativeSkills&quot;: &quot;auto&quot;,                   // 系统技能：自动
+    &quot;restart&quot;: true,                          // 允许重启
+    &quot;ownerDisplay&quot;: &quot;raw&quot;                     // 显示原始用户信息
+  },
+  // 第三方渠道：飞书机器人
+  &quot;channels&quot;: {
+    &quot;feishu&quot;: {
+      &quot;enabled&quot;: true,                        // 启用飞书
+      &quot;appId&quot;: &quot;xxxxxxxxxxxxxxxxxxxx&quot;,        // 飞书应用 ID
+      &quot;appSecret&quot;: &quot;xxxxxxxxxxxxxxx&quot;, // 飞书密钥
+      &quot;domain&quot;: &quot;feishu&quot;,                     // 国内版飞书
+      &quot;groupPolicy&quot;: &quot;disabled&quot;               // 禁止群聊响应
+    }
+  },
+  // OpenClaw 网关服务（API 入口）
+  &quot;gateway&quot;: {
+    &quot;port&quot;: 18789,                            // 网关端口
+    &quot;mode&quot;: &quot;local&quot;,                          // 仅本地可访问
+    &quot;auth&quot;: {
+      &quot;mode&quot;: &quot;token&quot;,                        // 认证方式：Token
+      &quot;token&quot;: &quot;28dd8f69871c5db2376c2daa5d82288d0f41a2b860ddd53c&quot; // 访问令牌
+    }
+  },
+  // 插件管理
+  &quot;plugins&quot;: {
+    &quot;allow&quot;: [&quot;feishu&quot;],                      // 只允许加载飞书插件
+    &quot;entries&quot;: {
+      &quot;feishu&quot;: {
+        &quot;enabled&quot;: true                       // 启用飞书插件
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="配置命令"><a href="#配置命令" class="headerlink" title="配置命令"></a>配置命令</h3><pre><code class="language-Bash">docker ps -a |grep -i openclaw #查看openclaw是否正在运行
+docker logs -f openclaw        #查看openclaw容器日志
+docker logs exec -it openclaw node opecnclaw.mjs gateway status # 查看网关状态
+docker logs exec -it openclaw node opecnclaw.mjs dashborad --install-daemon  # 配置openclaw 
+</code></pre>
+<h3 id="端口冲突"><a href="#端口冲突" class="headerlink" title="端口冲突"></a>端口冲突</h3><p>如果18789端口被占用，可以修改端口映射：</p>
+<pre><code class="language-Bash">docker run -p 8080:18789 openclaw:latest
+</code></pre>
+<h3 id="权限问题"><a href="#权限问题" class="headerlink" title="权限问题"></a>权限问题</h3><p>确保工作目录有正确的读写权限：</p>
+<pre><code class="language-Bash">chmod -R 755 /path/to/workspace
+</code></pre>
+<h2 id="故障排除"><a href="#故障排除" class="headerlink" title="故障排除"></a>故障排除</h2><ol>
+<li>查看容器日志：</li>
+</ol>
+<pre><code class="language-Bash">docker logs openclaw
+</code></pre>
+<ol>
+<li>进入容器调试：</li>
+</ol>
+<pre><code class="language-Bash">docker exec -it openclaw bash
+</code></pre>
+<ol>
+<li>检查容器状态：</li>
+</ol>
+<pre><code class="language-Bash">docker ps -a
+</code></pre>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.openclaw.ai/">OpenClaw官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/">Docker官方文档</a></li>
+</ul>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

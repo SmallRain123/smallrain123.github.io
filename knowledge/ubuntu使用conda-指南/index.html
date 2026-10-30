@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Ubuntu使用Conda 指南 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="一、Miniconda 与 Anaconda 的区别 在安装之前，你可以根据下表快速了解两者的主要区别，以便选择更适合你的版本： 简要来说： 如果你不确定选哪个，或者希望节省磁盘空间和带宽，通常Miniconda是更好的选择，因为它允许你按需安装包。 二、✨ 安装步骤 这里以安装">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ubuntu使用Conda 指南">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/ubuntu%E4%BD%BF%E7%94%A8conda-%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="一、Miniconda 与 Anaconda 的区别 在安装之前，你可以根据下表快速了解两者的主要区别，以便选择更适合你的版本： 简要来说： 如果你不确定选哪个，或者希望节省磁盘空间和带宽，通常Miniconda是更好的选择，因为它允许你按需安装包。 二、✨ 安装步骤 这里以安装">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:15.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:39.976Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/ubuntu%E4%BD%BF%E7%94%A8conda-%E6%8C%87%E5%8D%97/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ubuntu使用Conda 指南',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-1.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Ubuntu使用Conda 指南</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">开发环境</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#开发环境</span><span class="kb-article-tag">#Ubuntu</span></div><div class="kb-article"><h1 id="一、Miniconda-与-Anaconda-的区别"><a href="#一、Miniconda-与-Anaconda-的区别" class="headerlink" title="一、Miniconda 与 Anaconda 的区别"></a>一、Miniconda 与 Anaconda 的区别</h1><p>在安装之前，你可以根据下表快速了解两者的主要区别，以便选择更适合你的版本：</p>
+<p><sheet sheet-id="73xPxc" token="ZhMMs4GL9hMMmotIGxncduISnlh"></sheet></p>
+<p>简要来说： 如果你不确定选哪个，或者希望节省磁盘空间和带宽，通常Miniconda是更好的选择，因为它允许你按需安装包。</p>
+<h2 id="二、✨-安装步骤"><a href="#二、✨-安装步骤" class="headerlink" title="二、✨ 安装步骤"></a>二、✨ 安装步骤</h2><p>这里以安装Miniconda为例（更通用和轻量），如果你想安装完整的Anaconda，只需替换下载链接和安装脚本名称即可<a target="_blank" rel="noopener" href="https://ewbang.com/community/article/details/1000065821.html">2</a><a target="_blank" rel="noopener" href="http://www.ppmy.cn/news/1612433.html">8</a>。</p>
+<h3 id="步骤-1-更新系统包列表"><a href="#步骤-1-更新系统包列表" class="headerlink" title="步骤 1: 更新系统包列表"></a>步骤 1: 更新系统包列表</h3><p>首先打开终端（Terminal），确保你的系统软件包列表是最新的：</p>
+<pre><code class="language-Bash">sudo apt update &amp;&amp; sudo apt upgrade -y
+</code></pre>
+<p>同时，建议安装一些基础依赖：</p>
+<pre><code class="language-Bash">sudo apt install wget curl -y
+</code></pre>
+<h3 id="步骤-2-下载-Miniconda-安装脚本"><a href="#步骤-2-下载-Miniconda-安装脚本" class="headerlink" title="步骤 2: 下载 Miniconda 安装脚本"></a>步骤 2: 下载 Miniconda 安装脚本</h3><p>使用 <code>wget</code> 或 <code>curl</code> 下载最新的 Miniconda 安装脚本（Linux x86_64 版本）：</p>
+<pre><code class="language-Bash">wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+</code></pre>
+<p>或者</p>
+<pre><code class="language-Bash">curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+</code></pre>
+<h3 id="步骤-3-运行安装脚本"><a href="#步骤-3-运行安装脚本" class="headerlink" title="步骤 3: 运行安装脚本"></a>步骤 3: 运行安装脚本</h3><ol>
+<li>首先给下载的脚本添加执行权限：</li>
+</ol>
+<pre><code class="language-Bash">chmod +x Miniconda3-latest-Linux-x86_64.sh
+</code></pre>
+<ol>
+<li>运行安装脚本并根据提示操作：</li>
+</ol>
+<pre><code class="language-Bash">./Miniconda3-latest-Linux-x86_64.sh
+</code></pre>
+<p>  <strong>安装过程中你会看到：</strong></p>
+<ul>
+<li>按 <code>Enter</code> 键阅读许可协议。</li>
+<li>输入 <code>yes</code> 同意许可条款。</li>
+<li>确认安装路径（默认是 <code>~/miniconda3</code>），一般直接按 <code>Enter</code> 使用默认路径即可。</li>
+<li>重要： 询问是否初始化 Conda 时，输入 <code>yes</code>。这会将 Conda 添加到你的 shell 配置文件中（通常是 <code>~/.bashrc</code>），这是避免后续出现 <code>conda: command not found</code> 错误的关键<a target="_blank" rel="noopener" href="https://ewbang.com/community/article/details/1000065821.html">2</a><a target="_blank" rel="noopener" href="https://avoid.overfit.cn/post/99eb077dcce34d3db7ffb1eb514a6382">5</a><a target="_blank" rel="noopener" href="http://www.ppmy.cn/news/1612433.html">8</a>。</li>
+</ul>
+<h3 id="步骤-4-激活安装"><a href="#步骤-4-激活安装" class="headerlink" title="步骤 4: 激活安装"></a>步骤 4: 激活安装</h3><p>安装完成后，初始化命令会自动添加到你的 <code>~/.bashrc</code> 文件中。你需要让当前终端重新加载这个配置文件才能立即生效：</p>
+<pre><code class="language-Bash">source ~/.bashrc
+</code></pre>
+<p>如果你使用的是 Zsh shell，则需要运行：</p>
+<pre><code class="language-Bash">source ~/.zshrc
+</code></pre>
+<p>或者直接新开一个终端窗口也可以。</p>
+<h3 id="步骤-5-验证安装"><a href="#步骤-5-验证安装" class="headerlink" title="步骤 5: 验证安装"></a>步骤 5: 验证安装</h3><p>激活后，你的命令行提示符前应该会出现一个 <code>(base)</code> 前缀，这表示你当前处于 Conda 的 base 环境中。<br>通过以下命令验证 Conda 是否安装成功并查看其版本：</p>
+<pre><code class="language-Bash">conda --version
+</code></pre>
+<p>如果成功安装，则会输出类似 <code>conda 24.7.2</code> 的版本号<a target="_blank" rel="noopener" href="https://ewbang.com/community/article/details/1000065821.html">2</a>。</p>
+<h2 id="三、⚙️-安装后配置与使用"><a href="#三、⚙️-安装后配置与使用" class="headerlink" title="三、⚙️ 安装后配置与使用"></a>三、⚙️ 安装后配置与使用</h2><h3 id="基本-Conda-命令"><a href="#基本-Conda-命令" class="headerlink" title="基本 Conda 命令"></a>基本 Conda 命令</h3><p>安装成功后，你可以使用以下常用命令<a target="_blank" rel="noopener" href="http://www.coreui.cn/news/438350.html">3</a>：</p>
+<p><sheet sheet-id="5Q0mLR" token="ZhMMs4GL9hMMmotIGxncduISnlh"></sheet></p>
+<h3 id="配置国内镜像源（加速下载）"><a href="#配置国内镜像源（加速下载）" class="headerlink" title="配置国内镜像源（加速下载）"></a>配置国内镜像源（加速下载）</h3><p>如果你在国内，可以通过配置清华源等国内镜像来大幅提升包的下载速度<a target="_blank" rel="noopener" href="http://www.coreui.cn/news/438350.html">3</a><a target="_blank" rel="noopener" href="http://www.ppmy.cn/news/1612433.html">8</a>：</p>
+<pre><code class="language-Bash">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+conda config --set show_channel_urls yes
+</code></pre>
+<h3 id="禁用自动激活-base-环境（可选）"><a href="#禁用自动激活-base-环境（可选）" class="headerlink" title="禁用自动激活 base 环境（可选）"></a>禁用自动激活 base 环境（可选）</h3><p>每次打开终端都自动进入 <code>(base)</code> 环境可能并不必要。你可以选择禁用它<a target="_blank" rel="noopener" href="https://ewbang.com/community/article/details/1000284736.html">4</a>：</p>
+<pre><code class="language-Bash">conda config --set auto_activate_base false
+</code></pre>
+<p>之后需要手动激活 base 环境时，只需执行：</p>
+<pre><code class="language-Bash">conda activate base
+</code></pre>
+<h2 id="四、❌-常见问题及解决方法"><a href="#四、❌-常见问题及解决方法" class="headerlink" title="四、❌ 常见问题及解决方法"></a>四、❌ 常见问题及解决方法</h2><ul>
+<li><p><strong>问题：安装后输入 <code>conda --version</code> 提示 <code>conda: command not found</code></strong></p>
+<ul>
+<li><p>**原因：**最可能的是安装时没有同意初始化（<code>init</code>），或者没有重新加载 shell 配置。</p>
+</li>
+<li><p>**解决：**1、首先重新加载 <code>~/.bashrc</code>：<code>source ~/.bashrc</code>。2、如果还不行，可以手动初始化。请先确保你已经退出了 Conda 环境（如果提示符前有 <code>(base)</code>，先执行 <code>conda deactivate</code>），然后运行：3、之后再次执行 <code>source ~/.bashrc</code><a target="_blank" rel="noopener" href="https://avoid.overfit.cn/post/99eb077dcce34d3db7ffb1eb514a6382">5</a><a target="_blank" rel="noopener" href="http://www.ppmy.cn/news/1612433.html">8</a>。</p>
+<pre><code class="language-Bash"># 请将 /path/to/your/ 替换为你的实际安装路径，通常是 ~/miniconda3 或 ~/anaconda3
+source /path/to/your/miniconda3/bin/activate
+conda init
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>问题：如何彻底卸载 Conda？最后记得编辑 <code>~/.bashrc</code>（或 <code>~/.zshrc</code>）文件，删除所有与 Conda 初始化相关的代码块（通常是以 <code># &gt;&gt;&gt; conda initialize &gt;&gt;&gt;</code> 开头和结尾的部分）。</p>
+<ul>
+<li>删除整个安装目录和配置文件即可</li>
+</ul>
+<pre><code class="language-Bash">rm -rf ~/miniconda3 # 如果你安装的是 Miniconda
+rm -rf ~/anaconda3 # 如果你安装的是 Anaconda
+rm -rf ~/.condarc ~/.conda ~/.continuum # 删除相关配置和缓存目录
+</code></pre>
+</li>
+</ul>
+<h2 id="五、💎-总结"><a href="#五、💎-总结" class="headerlink" title="五、💎 总结"></a>五、💎 总结</h2><p>在 Ubuntu 上安装 Conda 的流程可以概括为：更新系统 → 下载安装脚本 → 运行脚本并同意初始化 → 激活配置 → 验证安装。关键点是确保在安装过程中选择 <code>yes</code> 来进行初始化，这样就可以直接在命令行中使用 <code>conda</code> 命令了。</p>
+<p>安装成功后，你就可以使用 Conda 来创建隔离的 Python 环境（例如为不同项目配置不同版本的 Python 和库），方便地安装、管理和卸载软件包，从而避免项目之间的依赖冲突，大大提高开发效率。</p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

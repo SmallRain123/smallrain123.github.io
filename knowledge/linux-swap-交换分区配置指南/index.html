@@ -1,0 +1,386 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Linux Swap 交换分区配置指南 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="Swap（交换分区）是磁盘上的一块区域，当物理内存（RAM）耗尽时，操作系统会将部分不活跃的内存页移动到 Swap 空间，从而释放物理内存供当前运行的进程使用。Swap 不是内存的替代品，而是作为内存不足时的安全缓冲。 现代 Linux 系统内存通常较大，Swap 仍建议配置，主">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Linux Swap 交换分区配置指南">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/linux-swap-%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="Swap（交换分区）是磁盘上的一块区域，当物理内存（RAM）耗尽时，操作系统会将部分不活跃的内存页移动到 Swap 空间，从而释放物理内存供当前运行的进程使用。Swap 不是内存的替代品，而是作为内存不足时的安全缓冲。 现代 Linux 系统内存通常较大，Swap 仍建议配置，主">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:40.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:52.119Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/linux-swap-%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux Swap 交换分区配置指南',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Linux Swap 交换分区配置指南</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">Linux / 系统</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#Linux / 系统</span><span class="kb-article-tag">#Linux</span></div><div class="kb-article"><p>Swap（交换分区）是磁盘上的一块区域，当物理内存（RAM）耗尽时，操作系统会将部分不活跃的内存页移动到 Swap 空间，从而释放物理内存供当前运行的进程使用。Swap 不是内存的替代品，而是作为内存不足时的安全缓冲。</p>
+<callout emoji="💡">
+现代 Linux 系统内存通常较大，Swap 仍建议配置，主要用于：内存峰值突发时的缓冲、休眠功能（hibernation）支持、以及 OOM 发生前的最后防线。
+</callout>
+
+<h1 id="查看当前-Swap-状态"><a href="#查看当前-Swap-状态" class="headerlink" title="查看当前 Swap 状态"></a>查看当前 Swap 状态</h1><p>在开始配置前，先检查系统是否已有 Swap 空间：</p>
+<pre><code class="language-bash"># 查看所有 Swap 设备及其大小
+swapon --show
+
+# 或使用 free 命令查看内存与 Swap 总量
+free -h
+
+# 查看详细的 Swap 使用情况
+cat /proc/swaps
+</code></pre>
+<p>如果输出为空或全为 0，表示系统当前未配置 Swap。</p>
+<h1 id="方式一：创建-Swap-文件（推荐）"><a href="#方式一：创建-Swap-文件（推荐）" class="headerlink" title="方式一：创建 Swap 文件（推荐）"></a>方式一：创建 Swap 文件（推荐）</h1><p>Swap 文件是最灵活的方式，无需重新分区，可随时调整大小，适用于云服务器、VPS 和大多数现代 Linux 发行版。</p>
+<h2 id="1-创建-Swap-文件"><a href="#1-创建-Swap-文件" class="headerlink" title="1. 创建 Swap 文件"></a>1. 创建 Swap 文件</h2><p>以下示例创建一个 2GB 的 Swap 文件，可根据需要调整大小：</p>
+<pre><code class="language-bash"># 创建 /swapfile 文件，大小为 2G
+dd if=/dev/zero of=/swapfile bs=1G count=2
+
+# 或使用 fallocate（更快，支持的文件系统上推荐）
+fallocate -l 2G /swapfile
+</code></pre>
+<callout emoji="💡">
+注意：某些文件系统（如 XFS 的某些版本）不支持 fallocate 创建 Swap 文件，此时应使用 dd 命令。如果 mkswap 报错，请改用 dd 方式重新创建。
+</callout>
+
+<h2 id="2-设置正确的权限"><a href="#2-设置正确的权限" class="headerlink" title="2. 设置正确的权限"></a>2. 设置正确的权限</h2><p>Swap 文件必须只有 root 可读写，否则系统会拒绝启用：</p>
+<pre><code class="language-bash">chmod 600 /swapfile
+</code></pre>
+<h2 id="3-格式化为-Swap-区域"><a href="#3-格式化为-Swap-区域" class="headerlink" title="3. 格式化为 Swap 区域"></a>3. 格式化为 Swap 区域</h2><pre><code class="language-bash">mkswap /swapfile
+</code></pre>
+<h2 id="4-启用-Swap-文件"><a href="#4-启用-Swap-文件" class="headerlink" title="4. 启用 Swap 文件"></a>4. 启用 Swap 文件</h2><pre><code class="language-bash">swapon /swapfile
+
+# 验证是否生效
+swapon --show
+</code></pre>
+<h2 id="5-配置开机自动挂载"><a href="#5-配置开机自动挂载" class="headerlink" title="5. 配置开机自动挂载"></a>5. 配置开机自动挂载</h2><p>将 Swap 文件写入 &#x2F;etc&#x2F;fstab，确保重启后自动启用：</p>
+<pre><code class="language-bash"># 追加到 /etc/fstab 末尾
+echo &#39;/swapfile none swap defaults 0 0&#39; &gt;&gt; /etc/fstab
+
+# 验证 fstab 配置是否正确（不实际挂载）
+mount -a
+</code></pre>
+<h1 id="方式二：创建-Swap-分区"><a href="#方式二：创建-Swap-分区" class="headerlink" title="方式二：创建 Swap 分区"></a>方式二：创建 Swap 分区</h1><p>如果有未使用的磁盘分区，可以直接将其设置为 Swap 分区。这种方式性能略优于 Swap 文件，但灵活性较差。</p>
+<h2 id="1-查看磁盘分区"><a href="#1-查看磁盘分区" class="headerlink" title="1. 查看磁盘分区"></a>1. 查看磁盘分区</h2><pre><code class="language-bash"># 列出所有块设备
+lsblk
+
+# 或使用 fdisk 查看
+fdisk -l
+</code></pre>
+<h2 id="2-创建分区（如需要）"><a href="#2-创建分区（如需要）" class="headerlink" title="2. 创建分区（如需要）"></a>2. 创建分区（如需要）</h2><p>使用 fdisk 或 parted 在磁盘上新建一个分区作为 Swap：</p>
+<pre><code class="language-bash"># 进入磁盘（以 /dev/sdb 为例）
+fdisk /dev/sdb
+
+# 在 fdisk 交互界面中：
+# n        — 新建分区
+# p        — 主分区
+# 回车     — 使用默认扇区起始位置
+# 回车     — 使用默认扇区结束位置（或指定 +2G 表示 2GB）
+# t        — 修改分区类型
+# 82       — 设置为 Linux swap 类型
+# w        — 保存并退出
+</code></pre>
+<h2 id="3-格式化为-Swap"><a href="#3-格式化为-Swap" class="headerlink" title="3. 格式化为 Swap"></a>3. 格式化为 Swap</h2><pre><code class="language-bash"># 假设分区为 /dev/sdb1
+mkswap /dev/sdb1
+</code></pre>
+<h2 id="4-启用并设置开机挂载"><a href="#4-启用并设置开机挂载" class="headerlink" title="4. 启用并设置开机挂载"></a>4. 启用并设置开机挂载</h2><pre><code class="language-bash"># 启用
+swapon /dev/sdb1
+
+# 写入 fstab 实现开机自动挂载
+echo &#39;/dev/sdb1 none swap defaults 0 0&#39; &gt;&gt; /etc/fstab
+</code></pre>
+<h1 id="Swap-大小建议"><a href="#Swap-大小建议" class="headerlink" title="Swap 大小建议"></a>Swap 大小建议</h1><p>Swap 大小并非越大越好，需根据物理内存大小和使用场景决定：</p>
+<table>
+<thead>
+<tr>
+<th>物理内存大小</th>
+<th>无休眠需求时 Swap 大小</th>
+<th>需要休眠（Hibernate）时 Swap 大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2GB 及以下</td>
+<td>等于内存大小</td>
+<td>2 倍内存大小</td>
+</tr>
+<tr>
+<td>2GB ~ 8GB</td>
+<td>等于内存大小</td>
+<td>等于内存大小</td>
+</tr>
+<tr>
+<td>8GB ~ 64GB</td>
+<td>4GB ~ 8GB</td>
+<td>内存大小的 1.5 倍</td>
+</tr>
+<tr>
+<td>64GB 以上</td>
+<td>4GB ~ 8GB（固定）</td>
+<td>根据需要调整</td>
+</tr>
+</tbody></table>
+<callout emoji="📝">
+服务器场景：通常配置 2GB \~ 8GB Swap 即可，主要用于 OOM 缓冲。数据库服务器建议适当增大。桌面笔记本如需休眠功能，Swap 至少等于物理内存大小。
+</callout>
+
+<h1 id="Swappiness-参数调优"><a href="#Swappiness-参数调优" class="headerlink" title="Swappiness 参数调优"></a>Swappiness 参数调优</h1><p>vm.swappiness 参数控制系统使用 Swap 的积极程度，值范围 0 ~ 100，默认值通常为 60。值越小，系统越倾向于使用物理内存，越少使用 Swap。</p>
+<h2 id="查看当前-swappiness-值"><a href="#查看当前-swappiness-值" class="headerlink" title="查看当前 swappiness 值"></a>查看当前 swappiness 值</h2><pre><code class="language-bash">cat /proc/sys/vm/swappiness
+</code></pre>
+<h2 id="临时修改（立即生效，重启失效）"><a href="#临时修改（立即生效，重启失效）" class="headerlink" title="临时修改（立即生效，重启失效）"></a>临时修改（立即生效，重启失效）</h2><pre><code class="language-bash"># 服务器推荐设为 10（减少 Swap 使用）
+sysctl vm.swappiness=10
+
+# 桌面系统可设为 1（尽量不用 Swap）
+sysctl vm.swappiness=1
+</code></pre>
+<h2 id="永久修改"><a href="#永久修改" class="headerlink" title="永久修改"></a>永久修改</h2><pre><code class="language-bash"># 写入 sysctl 配置文件
+echo &#39;vm.swappiness = 10&#39; &gt;&gt; /etc/sysctl.conf
+
+# 使配置生效
+sysctl -p
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐 swappiness 值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>生产服务器（数据库、应用）</td>
+<td>1 ~ 10</td>
+<td>尽量使用物理内存，避免 Swap 影响性能</td>
+</tr>
+<tr>
+<td>桌面&#x2F;笔记本</td>
+<td>10 ~ 60</td>
+<td>根据内存大小调整，内存大可设低一些</td>
+</tr>
+<tr>
+<td>内存紧张的旧机器</td>
+<td>60（默认）</td>
+<td>保留默认值，让系统更积极地使用 Swap</td>
+</tr>
+</tbody></table>
+<h1 id="禁用与删除-Swap"><a href="#禁用与删除-Swap" class="headerlink" title="禁用与删除 Swap"></a>禁用与删除 Swap</h1><h2 id="临时禁用-Swap"><a href="#临时禁用-Swap" class="headerlink" title="临时禁用 Swap"></a>临时禁用 Swap</h2><pre><code class="language-bash">swapoff -a
+
+# 或关闭指定 Swap
+swapoff /swapfile
+</code></pre>
+<h2 id="永久删除-Swap-文件"><a href="#永久删除-Swap-文件" class="headerlink" title="永久删除 Swap 文件"></a>永久删除 Swap 文件</h2><pre><code class="language-bash"># 1. 关闭 Swap
+swapoff /swapfile
+
+# 2. 从 /etc/fstab 中删除对应行
+sed -i &#39;/\/swapfile/d&#39; /etc/fstab
+
+# 3. 删除 Swap 文件
+rm /swapfile
+</code></pre>
+<h2 id="删除-Swap-分区"><a href="#删除-Swap-分区" class="headerlink" title="删除 Swap 分区"></a>删除 Swap 分区</h2><pre><code class="language-bash"># 1. 关闭 Swap
+swapoff /dev/sdb1
+
+# 2. 从 /etc/fstab 中删除对应行
+sed -i &#39;/\/dev\/sdb1/d&#39; /etc/fstab
+
+# 3. 如需重新使用该分区，用 fdisk 删除并重建分区
+fdisk /dev/sdb
+</code></pre>
+<h1 id="验证与排查"><a href="#验证与排查" class="headerlink" title="验证与排查"></a>验证与排查</h1><h2 id="验证-Swap-是否正常工作"><a href="#验证-Swap-是否正常工作" class="headerlink" title="验证 Swap 是否正常工作"></a>验证 Swap 是否正常工作</h2><pre><code class="language-bash"># 查看 Swap 设备列表
+swapon --show
+
+# 查看内存和 Swap 总体使用情况
+free -h
+
+# 查看 Swap 的详细使用统计
+vmstat 1 5
+</code></pre>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>问题1：swapon 提示 “Permission denied”</strong></p>
+<p>原因：Swap 文件权限不正确。解决：执行 <code>chmod 600 /swapfile</code> 确保只有 root 可读写。</p>
+<p><strong>问题2：mkswap 提示 “is more than half of memory”</strong></p>
+<p>原因：Swap 文件过大。解决：Swap 大小无需超过物理内存太多，按前文建议调整即可。</p>
+<p><strong>问题3：重启后 Swap 未自动启用</strong></p>
+<p>原因：&#x2F;etc&#x2F;fstab 配置有误。解决：执行 <code>mount -a</code> 检查报错，确认 fstab 中 Swap 行格式正确。</p>
+<p><strong>问题4：系统卡顿，Swap 使用很高</strong></p>
+<p>原因：物理内存不足，系统频繁在内存和 Swap 之间交换数据（thrashing）。解决：增加物理内存，或调整 swappiness 参数，优化应用内存占用。</p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

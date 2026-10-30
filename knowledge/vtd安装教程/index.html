@@ -1,0 +1,499 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>VTD安装教程 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="注意 ：VTD (Virtual Test Drive) 是德国 VIRES 公司（现隶属于 Hexagon）开发的商业仿真软件，主要用于自动驾驶和 ADAS 系统的开发测试。 您需要拥有合法的软件授权（License）和安装包才能完成安装 。本教程基于通用的 Linux 安装流">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VTD安装教程">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/vtd%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="注意 ：VTD (Virtual Test Drive) 是德国 VIRES 公司（现隶属于 Hexagon）开发的商业仿真软件，主要用于自动驾驶和 ADAS 系统的开发测试。 您需要拥有合法的软件授权（License）和安装包才能完成安装 。本教程基于通用的 Linux 安装流">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:36.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:50.446Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/vtd%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'VTD安装教程',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-1.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">VTD安装教程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">AI / 工具</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#AI / 工具</span><span class="kb-article-tag">#VTD</span></div><div class="kb-article"><blockquote>
+<p><strong>注意</strong>：VTD (Virtual Test Drive) 是德国 VIRES 公司（现隶属于 Hexagon）开发的商业仿真软件，主要用于自动驾驶和 ADAS 系统的开发测试。<strong>您需要拥有合法的软件授权（License）和安装包才能完成安装</strong>。本教程基于通用的 Linux 安装流程和公开资料整理，具体步骤可能因 VTD 版本不同而有所差异。</p>
+</blockquote>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><p>[简介](#简介)</p>
+</li>
+<li><p>[系统要求](#系统要求)</p>
+</li>
+<li><p>[安装前准备](#安装前准备)</p>
+<ul>
+<li>3.1 更新系统</li>
+<li>3.2 安装 NVIDIA 显卡驱动</li>
+<li>3.3 安装依赖包</li>
+</ul>
+</li>
+<li><p>[VTD 安装步骤](#vtd-安装步骤)</p>
+</li>
+<li><p>[环境变量配置](#环境变量配置)</p>
+</li>
+<li><p>[启动与基本使用](#启动与基本使用)</p>
+</li>
+<li><p>[常见问题与解决](#常见问题与解决)</p>
+</li>
+<li><p>[参考资源](#参考资源)</p>
+</li>
+</ol>
+<hr>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>VTD (Virtual Test Drive) 是一款高保真度的自动驾驶场景仿真软件，支持：</p>
+<ul>
+<li>道路网络建模 (OpenDRIVE)</li>
+<li>交通场景生成 (OpenSCENARIO)</li>
+<li>传感器仿真（摄像头、雷达、激光雷达等）</li>
+<li>实时高精度渲染</li>
+<li>支持 SIL&#x2F;HIL&#x2F;VIL 等多种测试模式</li>
+</ul>
+<p>VTD 原生运行于 <strong>Linux</strong> 平台，推荐使用 <strong>Ubuntu LTS</strong> 版本。</p>
+<hr>
+<h2 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h2><h3 id="硬件要求（推荐）"><a href="#硬件要求（推荐）" class="headerlink" title="硬件要求（推荐）"></a>硬件要求（推荐）</h3><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>最低要求</th>
+<th>推荐配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CPU</td>
+<td>4 核</td>
+<td>8 核以上 (Intel i7&#x2F;i9 或 AMD Ryzen 7&#x2F;9)</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>16 GB</td>
+<td>32 GB 或更高</td>
+</tr>
+<tr>
+<td>显卡</td>
+<td>NVIDIA GTX 1060 &#x2F; Quadro P2000</td>
+<td>NVIDIA RTX 3080 &#x2F; Quadro RTX 5000 或更高</td>
+</tr>
+<tr>
+<td>存储</td>
+<td>50 GB 可用空间</td>
+<td>100 GB SSD 或更高</td>
+</tr>
+<tr>
+<td>显示器</td>
+<td>1920x1080</td>
+<td>多屏支持（分布式仿真）</td>
+</tr>
+</tbody></table>
+<h3 id="软件要求"><a href="#软件要求" class="headerlink" title="软件要求"></a>软件要求</h3><ul>
+<li><strong>操作系统</strong>: Ubuntu 20.04 LTS 或 22.04 LTS（推荐 20.04，兼容性更好）</li>
+<li><strong>显卡驱动</strong>: NVIDIA 专有驱动 (版本 470+ 或根据 VTD 版本要求)</li>
+<li><strong>OpenGL</strong>: 4.5 或更高</li>
+<li><strong>网络</strong>: 千兆以太网（用于分布式仿真）</li>
+</ul>
+<hr>
+<h2 id="安装前准备"><a href="#安装前准备" class="headerlink" title="安装前准备"></a>安装前准备</h2><h3 id="3-1-更新系统"><a href="#3-1-更新系统" class="headerlink" title="3.1 更新系统"></a>3.1 更新系统</h3><pre><code class="language-Bash">sudo apt update
+sudo apt upgrade -y
+sudo reboot
+</code></pre>
+<h3 id="3-2-安装-NVIDIA-显卡驱动"><a href="#3-2-安装-NVIDIA-显卡驱动" class="headerlink" title="3.2 安装 NVIDIA 显卡驱动"></a>3.2 安装 NVIDIA 显卡驱动</h3><p>VTD 高度依赖 GPU 进行实时渲染，必须安装正确的 NVIDIA 专有驱动。</p>
+<h3 id="方法一：使用-ubuntu-drivers（推荐）"><a href="#方法一：使用-ubuntu-drivers（推荐）" class="headerlink" title="方法一：使用 ubuntu-drivers（推荐）"></a>方法一：使用 ubuntu-drivers（推荐）</h3><pre><code class="language-Bash"># 查看推荐的驱动版本
+ubuntu-drivers devices
+
+# 自动安装推荐驱动
+sudo ubuntu-drivers autoinstall
+
+# 或者手动指定版本（例如 nvidia-driver-525）
+sudo apt install -y nvidia-driver-525
+</code></pre>
+<h3 id="方法二：使用官方-run-文件安装"><a href="#方法二：使用官方-run-文件安装" class="headerlink" title="方法二：使用官方.run 文件安装"></a>方法二：使用官方.run 文件安装</h3><ol>
+<li><p>从 <a target="_blank" rel="noopener" href="https://www.nvidia.com/Download/index.aspx">NVIDIA 官网</a> 下载对应驱动的 <code>.run</code> 文件</p>
+</li>
+<li><p>禁用 Nouveau 开源驱动：</p>
+<pre><code class="language-Bash">sudo bash -c &quot;echo blacklist nouveau &gt; /etc/modprobe.d/blacklist-nouveau.conf&quot;
+sudo bash -c &quot;echo options nouveau modeset=0 &gt;&gt; /etc/modprobe.d/blacklist-nouveau.conf&quot;
+sudo update-initramfs -u
+sudo reboot
+</code></pre>
+</li>
+<li><p>进入文本模式（Ctrl+Alt+F3），登录并停止显示管理器：</p>
+<pre><code class="language-Bash">sudo systemctl stop gdm3  # 或 lightdm/sddm
+</code></pre>
+</li>
+<li><p>安装驱动：</p>
+<pre><code class="language-Bash">chmod +x NVIDIA-Linux-x86_64-xxx.xx.run
+sudo ./NVIDIA-Linux-x86_64-xxx.xx.run --no-opengl-files
+</code></pre>
+</li>
+<li><p>重启系统：</p>
+<pre><code class="language-Bash">sudo reboot
+</code></pre>
+</li>
+</ol>
+<h3 id="验证驱动安装"><a href="#验证驱动安装" class="headerlink" title="验证驱动安装"></a>验证驱动安装</h3><pre><code class="language-Bash">nvidia-smi
+glxinfo | grep &quot;OpenGL version&quot;
+</code></pre>
+<p>确保能看到显卡信息和 OpenGL 版本 ≥ 4.5。</p>
+<h3 id="3-3-安装依赖包"><a href="#3-3-安装依赖包" class="headerlink" title="3.3 安装依赖包"></a>3.3 安装依赖包</h3><p>VTD 需要一些基础库支持：</p>
+<pre><code class="language-Bash">sudo apt install -y \
+    build-essential \
+    cmake \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    freeglut3-dev \
+    libxinerama1 \
+    libxi6 \
+    libxcursor1 \
+    libxrandr2 \
+    libxss1 \
+    libxtst6 \
+    nfs-common \
+    ssh \
+    net-tools \
+    tcpdump \
+    wireshark \
+    vim \
+    git
+</code></pre>
+<hr>
+<h2 id="VTD-安装步骤"><a href="#VTD-安装步骤" class="headerlink" title="VTD 安装步骤"></a>VTD 安装步骤</h2><blockquote>
+<p><strong>前提</strong>：您已从 VIRES&#x2F;Hexagon 官方获取 VTD 安装包（通常为 <code>.tar.gz</code> 或 <code>.iso</code> 格式）和 License 文件。</p>
+</blockquote>
+<h3 id="步骤-1：解压安装包"><a href="#步骤-1：解压安装包" class="headerlink" title="步骤 1：解压安装包"></a>步骤 1：解压安装包</h3><p>假设安装包位于 <code>/home/user/Downloads/VTD_202X_Linux.tar.gz</code>：</p>
+<pre><code class="language-Bash">cd /home/user/Downloads
+tar -xzvf VTD_202X_Linux.tar.gz
+cd VTD_202X_Linux
+</code></pre>
+<h3 id="步骤-2：运行安装脚本"><a href="#步骤-2：运行安装脚本" class="headerlink" title="步骤 2：运行安装脚本"></a>步骤 2：运行安装脚本</h3><p>VTD 通常提供交互式安装脚本：</p>
+<pre><code class="language-Bash">sudo ./install.sh
+</code></pre>
+<p>或使用图形化安装器（如果提供）：</p>
+<pre><code class="language-Bash">./setup.sh
+</code></pre>
+<p>按照提示完成以下操作：</p>
+<ol>
+<li>接受许可协议</li>
+<li>选择安装路径（默认 <code>/opt/VTD</code> 或 <code>/usr/local/VTD</code>）</li>
+<li>选择要安装的组件（Road Designer, Simulation Server, Viewer 等）</li>
+<li>输入 License 服务器地址或本地 License 文件路径</li>
+</ol>
+<h3 id="步骤-3：复制-License-文件"><a href="#步骤-3：复制-License-文件" class="headerlink" title="步骤 3：复制 License 文件"></a>步骤 3：复制 License 文件</h3><p>将您的 License 文件（通常是 <code>license.dat</code> 或 <code>vtd.lic</code>）复制到指定目录：</p>
+<pre><code class="language-Bash">sudo cp /path/to/your/license.dat /opt/VTD/license/
+</code></pre>
+<p>或在安装过程中指定路径。</p>
+<hr>
+<h2 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h2><p>VTD 依赖多个环境变量来定位资源和库文件。</p>
+<h3 id="临时设置（当前终端会话）"><a href="#临时设置（当前终端会话）" class="headerlink" title="临时设置（当前终端会话）"></a>临时设置（当前终端会话）</h3><pre><code class="language-Bash">export VTD_ROOT=/opt/VTD
+export VTD_VERSION=202X
+export LD_LIBRARY_PATH=$VTD_ROOT/lib:$LD_LIBRARY_PATH
+export PATH=$VTD_ROOT/bin:$PATH
+export VTD_LICENSE_FILE=/opt/VTD/license/license.dat
+</code></pre>
+<h3 id="永久设置（推荐）"><a href="#永久设置（推荐）" class="headerlink" title="永久设置（推荐）"></a>永久设置（推荐）</h3><p>编辑 <code>~/.bashrc</code> 或 <code>~/.profile</code>：</p>
+<pre><code class="language-Bash">nano ~/.bashrc
+</code></pre>
+<p>在文件末尾添加：</p>
+<pre><code class="language-Bash"># VTD Environment Variables
+export VTD_ROOT=/opt/VTD
+export VTD_VERSION=202X
+export LD_LIBRARY_PATH=$VTD_ROOT/lib:$LD_LIBRARY_PATH
+export PATH=$VTD_ROOT/bin:$PATH
+export VTD_LICENSE_FILE=$VTD_ROOT/license/license.dat
+</code></pre>
+<p>使配置生效：</p>
+<pre><code class="language-Bash">source ~/.bashrc
+</code></pre>
+<h3 id="验证环境变量"><a href="#验证环境变量" class="headerlink" title="验证环境变量"></a>验证环境变量</h3><pre><code class="language-Bash">echo $VTD_ROOT
+echo $VTD_LICENSE_FILE
+ls $VTD_ROOT/bin
+</code></pre>
+<hr>
+<h2 id="启动与基本使用"><a href="#启动与基本使用" class="headerlink" title="启动与基本使用"></a>启动与基本使用</h2><h3 id="启动-VTD-组件"><a href="#启动-VTD-组件" class="headerlink" title="启动 VTD 组件"></a>启动 VTD 组件</h3><p>VTD 包含多个可执行组件，常用命令如下：</p>
+<h3 id="1-启动-Road-Designer-ROD-道路编辑器"><a href="#1-启动-Road-Designer-ROD-道路编辑器" class="headerlink" title="1. 启动 Road Designer (ROD) - 道路编辑器"></a>1. 启动 Road Designer (ROD) - 道路编辑器</h3><pre><code class="language-Bash">$VTD_ROOT/bin/RoadDesigner
+# 或直接
+RoadDesigner
+</code></pre>
+<h3 id="2-启动-Simulation-Server"><a href="#2-启动-Simulation-Server" class="headerlink" title="2. 启动 Simulation Server"></a>2. 启动 Simulation Server</h3><pre><code class="language-Bash">$VTD_ROOT/bin/SimulationServer
+</code></pre>
+<h3 id="3-启动-Viewer-视景渲染器"><a href="#3-启动-Viewer-视景渲染器" class="headerlink" title="3. 启动 Viewer (视景渲染器)"></a>3. 启动 Viewer (视景渲染器)</h3><pre><code class="language-Bash">$VTD_ROOT/bin/Viewer
+</code></pre>
+<h3 id="4-使用快捷启动脚本（如果提供）"><a href="#4-使用快捷启动脚本（如果提供）" class="headerlink" title="4. 使用快捷启动脚本（如果提供）"></a>4. 使用快捷启动脚本（如果提供）</h3><p>某些版本提供一键启动脚本：</p>
+<pre><code class="language-Bash">$VTD_ROOT/bin/start_vtd.sh
+</code></pre>
+<h3 id="加载示例场景"><a href="#加载示例场景" class="headerlink" title="加载示例场景"></a>加载示例场景</h3><ol>
+<li>打开 Road Designer</li>
+<li>加载示例道路文件（通常位于 <code>$VTD_ROOT/data/roads/</code>）</li>
+<li>保存并导出为 OpenDRIVE (.xodr) 格式</li>
+<li>在 Simulation Server 中加载场景配置文件 (.cfg)</li>
+<li>启动仿真</li>
+</ol>
+<h3 id="基本操作流程"><a href="#基本操作流程" class="headerlink" title="基本操作流程"></a>基本操作流程</h3><pre><code class="language-Plain">1. 使用 Road Designer 创建/编辑道路网络
+2. 使用 Scenario Editor 配置交通场景 (OpenSCENARIO)
+3. 配置传感器模型（摄像头、雷达等）
+4. 启动 Simulation Server
+5. 启动 Viewer 查看实时渲染
+6. 连接被测算法（通过 API 或 UDP/TCP）
+7. 运行仿真并记录数据
+</code></pre>
+<hr>
+<h2 id="常见问题与解决"><a href="#常见问题与解决" class="headerlink" title="常见问题与解决"></a>常见问题与解决</h2><h3 id="问题-1-启动时提示-“License-not-found”-或-“License-checkout-failed”"><a href="#问题-1-启动时提示-“License-not-found”-或-“License-checkout-failed”" class="headerlink" title="问题 1: 启动时提示 “License not found” 或 “License checkout failed”"></a>问题 1: 启动时提示 “License not found” 或 “License checkout failed”</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li><p>检查 <code>VTD_LICENSE_FILE</code> 环境变量是否正确指向 License 文件</p>
+</li>
+<li><p>确认 License 文件未过期且与当前 VTD 版本匹配</p>
+</li>
+<li><p>如果使用网络 License，确保 License 服务器可达：</p>
+<pre><code class="language-Bash">ping &lt;license_server_ip&gt;
+telnet &lt;license_server_ip&gt; &lt;port&gt;
+</code></pre>
+</li>
+</ul>
+<h3 id="问题-2-Viewer-启动后黑屏或崩溃"><a href="#问题-2-Viewer-启动后黑屏或崩溃" class="headerlink" title="问题 2: Viewer 启动后黑屏或崩溃"></a>问题 2: Viewer 启动后黑屏或崩溃</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li>确认 NVIDIA 驱动已正确安装：<code>nvidia-smi</code></li>
+<li>检查 OpenGL 版本：<code>glxinfo | grep &quot;OpenGL version&quot;</code></li>
+<li>尝试降低渲染设置（在 Viewer 配置文件中）</li>
+<li>确保没有其他程序占用 GPU 资源</li>
+</ul>
+<h3 id="问题-3-无法找到共享库-libXXX-so"><a href="#问题-3-无法找到共享库-libXXX-so" class="headerlink" title="问题 3: 无法找到共享库 (libXXX.so)"></a>问题 3: 无法找到共享库 (libXXX.so)</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li>确认 <code>LD_LIBRARY_PATH</code> 包含 VTD 的 lib 目录</li>
+<li>运行 <code>ldd $VTD_ROOT/bin/Viewer</code> 检查缺失的库</li>
+<li>安装缺失的系统依赖包</li>
+</ul>
+<h3 id="问题-4-分布式仿真无法连接"><a href="#问题-4-分布式仿真无法连接" class="headerlink" title="问题 4: 分布式仿真无法连接"></a>问题 4: 分布式仿真无法连接</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li><p>配置 NFS 共享目录（用于共享场景文件）</p>
+</li>
+<li><p>配置 SSH 免密登录</p>
+</li>
+<li><p>检查防火墙设置：</p>
+<pre><code class="language-Bash">sudo ufw allow from &lt;client_ip&gt; to any port 22
+sudo ufw allow from &lt;client_ip&gt; to any port &lt;vtd_port&gt;
+</code></pre>
+</li>
+<li><p>确保所有机器时间同步（使用 NTP）</p>
+</li>
+</ul>
+<h3 id="问题-5-Ubuntu-升级后-VTD-无法启动"><a href="#问题-5-Ubuntu-升级后-VTD-无法启动" class="headerlink" title="问题 5: Ubuntu 升级后 VTD 无法启动"></a>问题 5: Ubuntu 升级后 VTD 无法启动</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li>内核升级可能导致 NVIDIA 驱动失效，重新安装驱动</li>
+<li>检查 VTD 与新 Ubuntu 版本的兼容性（可能需要升级 VTD）</li>
+<li>回退到之前工作的内核版本（通过 GRUB）</li>
+</ul>
+<hr>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><strong>官方文档</strong>: VTD 安装包中的 <code>doc/</code> 目录包含详细用户手册</li>
+<li><strong>VIRES&#x2F;Hexagon 官网</strong>: <a target="_blank" rel="noopener" href="https://www.hexagon.com/products/virtual-test-drive-vtd">https://www.hexagon.com/products/virtual-test-drive-vtd</a></li>
+<li><strong>OpenDRIVE&#x2F;OpenSCENARIO 标准</strong>: <a target="_blank" rel="noopener" href="https://www.asam.net/standards/detail/opendrive/">https://www.asam.net/standards/detail/opendrive/</a></li>
+<li><strong>社区论坛</strong>: CSDN、知乎等平台有中文用户分享经验</li>
+<li><strong>示例项目</strong>: GitHub&#x2F;GitCode 上有开源的 VTD 测试场景资源</li>
+</ul>
+<hr>
+<h2 id="附录：快速检查清单"><a href="#附录：快速检查清单" class="headerlink" title="附录：快速检查清单"></a>附录：快速检查清单</h2><pre><code class="language-Bash"># 1. 系统信息
+uname -a
+lsb_release -a
+
+# 2. 显卡驱动
+nvidia-smi
+glxinfo | grep &quot;OpenGL&quot;
+
+# 3. 环境变量
+echo $VTD_ROOT
+echo $VTD_LICENSE_FILE
+
+# 4. VTD 文件结构
+ls -la $VTD_ROOT/bin
+ls -la $VTD_ROOT/license
+
+# 5. 测试启动
+$VTD_ROOT/bin/Viewer --version
+</code></pre>
+<hr>
+<blockquote>
+<p><strong>免责声明</strong>: 本教程仅供参考，具体安装步骤请以 VTD 官方文档为准。未经授权使用商业软件可能违反许可协议。</p>
+</blockquote>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

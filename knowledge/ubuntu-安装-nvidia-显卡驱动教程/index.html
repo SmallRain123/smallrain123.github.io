@@ -1,0 +1,375 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Ubuntu 安装 NVIDIA 显卡驱动教程 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="本文适用于 Ubuntu 18.04&#x2F;20.04&#x2F;22.04 等主流版本，提供 三种安装方式 （官方仓库自动安装、PPA 源安装、手动下载安装），优先推荐新手使用「官方仓库自动安装」，操作最简单且稳定性高。 二、准备工作 2.1 检查系统信息与显卡型号 查看 Ubuntu 系统版">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ubuntu 安装 NVIDIA 显卡驱动教程">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/ubuntu-%E5%AE%89%E8%A3%85-nvidia-%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="本文适用于 Ubuntu 18.04&#x2F;20.04&#x2F;22.04 等主流版本，提供 三种安装方式 （官方仓库自动安装、PPA 源安装、手动下载安装），优先推荐新手使用「官方仓库自动安装」，操作最简单且稳定性高。 二、准备工作 2.1 检查系统信息与显卡型号 查看 Ubuntu 系统版">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:33.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:49.050Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/ubuntu-%E5%AE%89%E8%A3%85-nvidia-%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ubuntu 安装 NVIDIA 显卡驱动教程',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-1.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Ubuntu 安装 NVIDIA 显卡驱动教程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">GPU / 驱动</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#GPU / 驱动</span><span class="kb-article-tag">#Ubuntu</span><span class="kb-article-tag">#NVIDIA</span></div><div class="kb-article"><p>本文适用于 Ubuntu 18.04&#x2F;20.04&#x2F;22.04 等主流版本，提供 <strong>三种安装方式</strong>（官方仓库自动安装、PPA 源安装、手动下载安装），优先推荐新手使用「官方仓库自动安装」，操作最简单且稳定性高。</p>
+<h2 id="二、准备工作"><a href="#二、准备工作" class="headerlink" title="二、准备工作"></a>二、准备工作</h2><h3 id="2-1-检查系统信息与显卡型号"><a href="#2-1-检查系统信息与显卡型号" class="headerlink" title="2.1 检查系统信息与显卡型号"></a>2.1 检查系统信息与显卡型号</h3><ul>
+<li>查看 Ubuntu 系统版本：</li>
+</ul>
+<pre><code class="language-Plain">lsb_release -a
+</code></pre>
+<ul>
+<li>查看显卡型号（确认 NVIDIA 显卡型号，用于匹配驱动版本）：</li>
+</ul>
+<pre><code class="language-Plain">lspci | grep -i nvidia
+</code></pre>
+<ul>
+<li>或更直观的方式（需先安装工具）：</li>
+</ul>
+<pre><code class="language-Plain">sudo apt install hwinfo -y
+hwinfo --gfxcard | grep Model
+</code></pre>
+<ul>
+<li>检查当前驱动状态（可选）：</li>
+</ul>
+<pre><code class="language-Plain">nvidia-smi  # 未安装驱动时会提示命令不存在
+</code></pre>
+<h3 id="2-2-禁用-nouveau-开源驱动（关键步骤）"><a href="#2-2-禁用-nouveau-开源驱动（关键步骤）" class="headerlink" title="2.2 禁用 nouveau 开源驱动（关键步骤）"></a>2.2 禁用 nouveau 开源驱动（关键步骤）</h3><p>Ubuntu 默认的 nouveau 开源驱动会与 NVIDIA 闭源驱动冲突，必须先禁用：</p>
+<ul>
+<li>编辑黑名单文件：</li>
+</ul>
+<pre><code class="language-Plain">sudo vim /etc/modprobe.d/blacklist-nouveau.conf
+</code></pre>
+<ul>
+<li>在文件中添加以下内容：</li>
+</ul>
+<pre><code class="language-Plain">blacklist nouveau
+blacklist lbm-nouveau
+options nouveau modeset=0
+alias nouveau off
+alias lbm-nouveau off
+</code></pre>
+<ul>
+<li>更新 initramfs 并重启系统：</li>
+</ul>
+<pre><code class="language-Plain">sudo update-initramfs -u 
+sudo reboot
+</code></pre>
+<ul>
+<li>验证 nouveau 是否禁用（无输出则表示禁用成功）：</li>
+</ul>
+<pre><code class="language-Plain">lsmod | grep nouveau
+</code></pre>
+<h2 id="三、安装方式（任选其一）"><a href="#三、安装方式（任选其一）" class="headerlink" title="三、安装方式（任选其一）"></a>三、安装方式（任选其一）</h2><h3 id="方式-1：官方仓库自动安装（推荐新手）"><a href="#方式-1：官方仓库自动安装（推荐新手）" class="headerlink" title="方式 1：官方仓库自动安装（推荐新手）"></a>方式 1：官方仓库自动安装（推荐新手）</h3><p>此方式由 Ubuntu 官方维护，适配性最好，操作最简单：</p>
+<ul>
+<li>更新系统软件包：</li>
+</ul>
+<pre><code class="language-Plain">sudo apt update &amp;&amp; sudo apt upgrade -y
+</code></pre>
+<ul>
+<li>安装显卡驱动检测工具：</li>
+</ul>
+<pre><code class="language-Plain">sudo apt install ubuntu-drivers-common -y
+</code></pre>
+<ul>
+<li>查看推荐安装的驱动版本：</li>
+</ul>
+<pre><code class="language-Plain">ubuntu-drivers devices
+</code></pre>
+<ul>
+<li>输出示例中 <code>recommended</code> 标注的即为推荐版本（如 <code>nvidia-driver-535</code>）。</li>
+<li>自动安装推荐的驱动：</li>
+</ul>
+<pre><code class="language-Plain">sudo ubuntu-drivers autoinstall
+</code></pre>
+<ul>
+<li>安装完成后重启系统：</li>
+</ul>
+<pre><code class="language-Plain">sudo reboot
+</code></pre>
+<h3 id="方式-2：PPA-源安装（获取最新驱动）"><a href="#方式-2：PPA-源安装（获取最新驱动）" class="headerlink" title="方式 2：PPA 源安装（获取最新驱动）"></a>方式 2：PPA 源安装（获取最新驱动）</h3><p>若需要最新版本的驱动，可通过 NVIDIA 官方 PPA 源安装：</p>
+<ul>
+<li>添加 NVIDIA PPA 源：</li>
+</ul>
+<pre><code class="language-Plain">sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+</code></pre>
+<ul>
+<li>查看可安装的驱动版本：</li>
+</ul>
+<pre><code class="language-Plain">apt list | grep nvidia-driver
+</code></pre>
+<ul>
+<li>安装指定版本驱动（以 535 为例）：</li>
+</ul>
+<pre><code class="language-Plain">sudo apt install nvidia-driver-535 -y
+</code></pre>
+<ul>
+<li>重启系统：</li>
+</ul>
+<pre><code class="language-Plain">sudo reboot
+</code></pre>
+<h3 id="方式-3：手动下载安装（适合特殊需求）"><a href="#方式-3：手动下载安装（适合特殊需求）" class="headerlink" title="方式 3：手动下载安装（适合特殊需求）"></a>方式 3：手动下载安装（适合特殊需求）</h3><p>若上述方式无法满足需求（如特定版本驱动），可手动下载安装包：</p>
+<ul>
+<li><p>前往 NVIDIA 官网下载对应驱动：官网地址：<a target="_blank" rel="noopener" href="https://www.nvidia.com/Download/index.aspx">https://www.nvidia.com/Download/index.aspx</a></p>
+<ul>
+<li>选择显卡型号、操作系统（Linux 64-bit）、语言，点击「Search」下载 <code>.run</code> 格式安装包。</li>
+</ul>
+</li>
+<li><p>安装依赖环境：</p>
+</li>
+</ul>
+<pre><code class="language-Plain">sudo apt install gcc make linux-headers-$(uname -r) -y
+</code></pre>
+<ul>
+<li>关闭图形界面（避免安装冲突）：</li>
+</ul>
+<pre><code class="language-Plain">sudo systemctl stop gdm3  # Ubuntu 20.04/22.04 用 gdm3；18.04 用 lightdm# 切换到 tty 终端（按 Ctrl+Alt+F3），登录账号
+</code></pre>
+<ul>
+<li>赋予安装包执行权限并安装：</li>
+</ul>
+<pre><code class="language-Plain">chmod +x NVIDIA-Linux-x86_64-535.129.03.run  # 替换为你的安装包名称sudo ./NVIDIA-Linux-x86_64-535.129.03.run
+</code></pre>
+<ul>
+<li>安装过程中按提示操作（默认选项即可），安装完成后重启：</li>
+</ul>
+<pre><code class="language-Plain">sudo reboot
+</code></pre>
+<h2 id="四、验证安装是否成功"><a href="#四、验证安装是否成功" class="headerlink" title="四、验证安装是否成功"></a>四、验证安装是否成功</h2><p>重启后执行以下命令，若输出显卡信息和驱动版本，则安装成功：</p>
+<pre><code class="language-Plain">nvidia-smi
+</code></pre>
+<p>输出示例：</p>
+<p>plaintext</p>
+<pre><code class="language-Plain">+---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.129.03             Driver Version: 535.129.03   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA GeForce RTX 3060        Off | 00000000:01:00.0  On |                  N/A |
+| 30%   38C    P8              10W / 170W|    347MiB / 12288MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+</code></pre>
+<h2 id="五、常见问题解决"><a href="#五、常见问题解决" class="headerlink" title="五、常见问题解决"></a>五、常见问题解决</h2><h3 id="问题-1：安装后登录界面循环（无法进入系统）"><a href="#问题-1：安装后登录界面循环（无法进入系统）" class="headerlink" title="问题 1：安装后登录界面循环（无法进入系统）"></a>问题 1：安装后登录界面循环（无法进入系统）</h3><p>原因：驱动版本不兼容或安装过程中依赖缺失。解决方法：</p>
+<ul>
+<li>切换到 tty 终端（Ctrl+Alt+F3），卸载当前驱动：</li>
+</ul>
+<pre><code class="language-Plain">sudo apt purge nvidia* -y
+</code></pre>
+<ul>
+<li>重新安装推荐版本的驱动（方式 1）。</li>
+</ul>
+<h3 id="问题-2：nvidia-smi-提示「NVIDIA-SMI-has-failed-because-it-couldn’t-communicate-with-the-NVIDIA-driver」"><a href="#问题-2：nvidia-smi-提示「NVIDIA-SMI-has-failed-because-it-couldn’t-communicate-with-the-NVIDIA-driver」" class="headerlink" title="问题 2：nvidia-smi 提示「NVIDIA-SMI has failed because it couldn’t communicate with the NVIDIA driver」"></a>问题 2：<code>nvidia-smi</code> 提示「NVIDIA-SMI has failed because it couldn’t communicate with the NVIDIA driver」</h3><p>原因：驱动未正确加载或内核版本不匹配。解决方法：</p>
+<ul>
+<li>检查内核版本与驱动兼容性，安装对应版本的 linux-headers：</li>
+</ul>
+<pre><code class="language-Plain">sudo apt install linux-headers-$(uname -r) -y
+</code></pre>
+<ul>
+<li>重新生成驱动模块：</li>
+</ul>
+<pre><code class="language-Plain">sudo depmod -a
+sudo modprobe nvidia
+</code></pre>
+<h3 id="问题-3：手动安装时提示「Secure-Boot」相关错误"><a href="#问题-3：手动安装时提示「Secure-Boot」相关错误" class="headerlink" title="问题 3：手动安装时提示「Secure Boot」相关错误"></a>问题 3：手动安装时提示「Secure Boot」相关错误</h3><p>原因：系统开启了 Secure Boot，阻止非签名驱动加载。解决方法：</p>
+<ul>
+<li>进入 BIOS 关闭 Secure Boot；</li>
+<li>或在安装驱动时选择「Sign the kernel module」并设置密码，后续按提示完成签名。</li>
+</ul>
+<h2 id="六、卸载-NVIDIA-驱动"><a href="#六、卸载-NVIDIA-驱动" class="headerlink" title="六、卸载 NVIDIA 驱动"></a>六、卸载 NVIDIA 驱动</h2><p>若需要卸载驱动，执行以下命令：</p>
+<pre><code class="language-Plain"># 方式 1/2 安装的驱动卸载sudo apt purge nvidia* -ysudo apt autoremove -y# 方式 3 手动安装的驱动卸载sudo /usr/bin/nvidia-uninstall
+</code></pre>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>安装前<strong>必须禁用 nouveau 驱动</strong>，这是避免冲突的核心步骤；</li>
+<li>新手优先选择「官方仓库自动安装」，稳定性最高，操作最简单；</li>
+<li>验证安装是否成功的核心命令是 <code>nvidia-smi</code>，能输出显卡和驱动信息即表示安装完成</li>
+</ol>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

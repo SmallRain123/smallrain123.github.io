@@ -1,0 +1,411 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Zsh 和 Oh My Zsh 安装与个性化配置脚本 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="以下是一个完整的脚本，用于在 Ubuntu 系统上安装 Zsh、Oh My Zsh 并进行个性化配置。 使用说明 1. 保存脚本：nano install zsh.sh 将上述脚本内容粘贴进去，然后按 Ctrl+X，输入 Y 保存 2. 赋予执行权限：chmod +x insta">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zsh 和 Oh My Zsh 安装与个性化配置脚本">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/zsh-%E5%92%8C-oh-my-zsh-%E5%AE%89%E8%A3%85%E4%B8%8E%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="以下是一个完整的脚本，用于在 Ubuntu 系统上安装 Zsh、Oh My Zsh 并进行个性化配置。 使用说明 1. 保存脚本：nano install zsh.sh 将上述脚本内容粘贴进去，然后按 Ctrl+X，输入 Y 保存 2. 赋予执行权限：chmod +x insta">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:18.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:41.152Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/zsh-%E5%92%8C-oh-my-zsh-%E5%AE%89%E8%A3%85%E4%B8%8E%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E8%84%9A%E6%9C%AC/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Zsh 和 Oh My Zsh 安装与个性化配置脚本',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-1.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Zsh 和 Oh My Zsh 安装与个性化配置脚本</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">Linux / 系统</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#Linux / 系统</span></div><div class="kb-article"><p>以下是一个完整的脚本，用于在 Ubuntu 系统上安装 Zsh、Oh My Zsh 并进行个性化配置。</p>
+<pre><code class="language-Bash">#!/bin/bash
+
+# 设置颜色输出
+RED=&#39;\033[0;31m&#39;
+GREEN=&#39;\033[0;32m&#39;
+YELLOW=&#39;\033[1;33m&#39;
+BLUE=&#39;\033[0;34m&#39;
+NC=&#39;\033[0m&#39; # No Color
+
+# 日志函数
+log_info() {
+    echo -e &quot;${GREEN}[INFO]${NC} $(date &#39;+%Y-%m-%d %H:%M:%S&#39;) - $1&quot;
+}
+
+log_warning() {
+    echo -e &quot;${YELLOW}[WARNING]${NC} $(date &#39;+%Y-%m-%d %H:%M:%S&#39;) - $1&quot;
+}
+
+log_error() {
+    echo -e &quot;${RED}[ERROR]${NC} $(date &#39;+%Y-%m-%d %H:%M:%S&#39;) - $1&quot;
+}
+
+log_step() {
+    echo -e &quot;${BLUE}[STEP]${NC} $(date &#39;+%Y-%m-%d %H:%M:%S&#39;) - $1&quot;
+}
+
+# 检查是否以非root权限运行
+check_not_root() {
+    if [[ $EUID -eq 0 ]]; then
+        log_error &quot;此脚本不应以root权限运行，请以普通用户运行&quot;
+        exit 1
+    fi
+}
+
+# 安装 Zsh
+install_zsh() {
+    log_step &quot;安装 Zsh...&quot;
+    sudo apt-get update
+    sudo apt-get install -y zsh curl git
+    log_info &quot;Zsh 安装完成&quot;
+}
+
+# 安装 Oh My Zsh
+install_oh_my_zsh() {
+    log_step &quot;安装 Oh My Zsh...&quot;
+    
+    # 备份现有的 .zshrc 文件（如果存在）
+    if [ -f &quot;$HOME/.zshrc&quot; ]; then
+        log_info &quot;备份现有的 .zshrc 文件&quot;
+        mv &quot;$HOME/.zshrc&quot; &quot;$HOME/.zshrc.backup.$(date +%Y%m%d%H%M%S)&quot;
+    fi
+    
+    # 使用官方安装脚本安装 Oh My Zsh
+    sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot; &quot;&quot; --unattended
+    
+    if [ $? -eq 0 ]; then
+        log_info &quot;Oh My Zsh 安装完成&quot;
+    else
+        log_error &quot;Oh My Zsh 安装失败&quot;
+        exit 1
+    fi
+}
+
+# 安装 Powerlevel10k 主题
+install_powerlevel10k() {
+    log_step &quot;安装 Powerlevel10k 主题...&quot;
+    
+    # 克隆主题仓库
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    
+    # 设置主题
+    sed -i &#39;s/plugins=(.*)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-completions)/&#39; ~/.zshrc
+    
+    log_info &quot;常用插件安装完成&quot;
+}
+
+# 自定义配置
+custom_configuration() {
+    log_step &quot;应用自定义配置...&quot;
+    
+    # 添加常用别名
+    cat &gt;&gt; ~/.zshrc &lt;&lt; &#39;EOF&#39;
+
+# 自定义别名
+alias ll=&#39;ls -alF&#39;
+alias la=&#39;ls -A&#39;
+alias l=&#39;ls -CF&#39;
+alias update=&#39;sudo apt update &amp;&amp; sudo apt upgrade -y&#39;
+alias cls=&#39;clear&#39;
+alias zshconfig=&#39;nano ~/.zshrc&#39;
+alias ohmyzsh=&#39;nano ~/.oh-my-zsh&#39;
+alias grep=&#39;grep --color=auto&#39;
+alias egrep=&#39;egrep --color=auto&#39;
+alias fgrep=&#39;fgrep --color=auto&#39;
+
+# 历史命令配置
+HIST_STAMPS=&quot;yyyy-mm-dd&quot;
+HISTSIZE=100000
+SAVEHIST=100000
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt INC_APPEND_HISTORY_TIME
+setopt EXTENDED_HISTORY
+
+# 其他配置
+setopt autocd              # 自动进入目录
+setopt interactivecomments # 允许在交互模式中使用注释
+setopt magicequalsubst     # 启用等号扩展
+setopt nonomatch           # 如果没有匹配，不报错
+setopt notify              # 显示后台任务完成状态
+setopt numericglobsort     # 数字排序
+setopt promptsubst         # 启用提示符扩展
+
+# 提高命令补全
+autoload -Uz compinit
+compinit
+
+EOF
+    
+    log_info &quot;自定义配置完成&quot;
+}
+
+# 设置为默认shell
+set_default_shell() {
+    log_step &quot;设置 Zsh 为默认 shell...&quot;
+    
+    # 检查当前shell
+    CURRENT_SHELL=$(basename &quot;$SHELL&quot;)
+    if [ &quot;$CURRENT_SHELL&quot; != &quot;zsh&quot; ]; then
+        # 更改默认shell
+        chsh -s $(which zsh)
+        log_info &quot;Zsh 已设置为默认 shell，重新登录后生效&quot;
+    else
+        log_info &quot;Zsh 已经是默认 shell&quot;
+    fi
+}
+
+# 完成提示
+completion_message() {
+    echo &quot;&quot;
+    log_info &quot;Zsh 和 Oh My Zsh 安装配置完成！&quot;
+    log_info &quot;要应用所有更改，请执行: source ~/.zshrc&quot;
+    log_info &quot;或者重新启动终端&quot;
+    echo &quot;&quot;
+    log_info &quot;要配置 Powerlevel10k 主题，请重新启动终端后运行: p10k configure&quot;
+    echo &quot;&quot;
+}
+
+# 主函数
+main() {
+    log_step &quot;开始安装和配置 Zsh 与 Oh My Zsh...&quot;
+    check_not_root
+    install_zsh
+    install_oh_my_zsh
+    install_powerlevel10k
+    install_plugins
+    custom_configuration
+    set_default_shell
+    completion_message
+}
+
+# 执行主函数
+main &quot;$@&quot;
+</code></pre>
+<h1 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h1><ol>
+<li>保存脚本：nano install_zsh.sh # 将上述脚本内容粘贴进去，然后按 Ctrl+X，输入 Y 保存</li>
+<li>赋予执行权限：chmod +x install_zsh.sh</li>
+<li>运行脚本：.&#x2F;install_zsh.sh</li>
+</ol>
+<h2 id="个性化配置选项"><a href="#个性化配置选项" class="headerlink" title="个性化配置选项"></a>个性化配置选项</h2><p>安装完成后，你可以进行以下个性化配置：</p>
+<h3 id="配置-Powerlevel10k-主题"><a href="#配置-Powerlevel10k-主题" class="headerlink" title="配置 Powerlevel10k 主题"></a>配置 Powerlevel10k 主题</h3><p>重新启动终端后，运行以下命令配置 Powerlevel10k：</p>
+<pre><code class="language-Bash">p10k configure
+</code></pre>
+<p>按照提示选择你喜欢的样式和图标。</p>
+<h3 id="添加更多插件"><a href="#添加更多插件" class="headerlink" title="添加更多插件"></a>添加更多插件</h3><p>你可以在 <code>~/.zshrc</code> 文件中添加更多插件。常用的插件包括：</p>
+<ul>
+<li>autojump: 快速跳转到常用目录sudo apt install autojump 然后在插件列表中添加 autojump</li>
+<li>colored-man-pages: 彩色man页面gi</li>
+<li></li>
+<li>${ZSH_CUSTOM:-~&#x2F;.oh-my-zsh&#x2F;custom}&#x2F;plugins&#x2F;colored-man-pages 然后在插件列表中添加 colored-man-pages</li>
+</ul>
+<h3 id="自定义提示符"><a href="#自定义提示符" class="headerlink" title="自定义提示符"></a>自定义提示符</h3><p>你可以在 <code>~/.zshrc</code> 文件中添加自定义提示符设置。例如：</p>
+<pre><code class="language-Bash"># 在 ~/.zshrc 中添加
+PROMPT=&#39;%F{blue}%n%f@%F{green}%m%f:%F{yellow}%~%f$ &#39;
+</code></pre>
+<h3 id="添加更多别名"><a href="#添加更多别名" class="headerlink" title="添加更多别名"></a>添加更多别名</h3><p>在 <code>~/.zshrc</code> 文件中添加你常用的别名：</p>
+<pre><code class="language-Bash"># 自定义别名
+alias myip=&#39;curl http://ipecho.net/plain; echo&#39;
+alias weather=&#39;curl wttr.in&#39;
+alias ports=&#39;netstat -tulanp&#39;
+</code></pre>
+<h2 id="手动安装-Oh-My-Zsh-插件"><a href="#手动安装-Oh-My-Zsh-插件" class="headerlink" title="手动安装 Oh My Zsh 插件"></a>手动安装 Oh My Zsh 插件</h2><p>如果你想手动安装其他插件，可以使用以下命令：</p>
+<pre><code class="language-Bash"># 进入 Oh My Zsh 自定义插件目录
+cd ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins
+
+# 克隆插件仓库
+git clone &lt;插件仓库URL&gt;
+
+# 编辑 ~/.zshrc 文件，将插件添加到插件列表
+nano ~/.zshrc
+# 找到 plugins=(...) 行，添加你的插件名称
+</code></pre>
+<h2 id="恢复备份"><a href="#恢复备份" class="headerlink" title="恢复备份"></a>恢复备份</h2><p>如果安装过程中出现问题，你可以恢复备份的配置文件：</p>
+<pre><code class="language-Bash"># 恢复 .zshrc 备份
+mv ~/.zshrc.backup.* ~/.zshrc
+
+# 如果你想完全卸载 Oh My Zsh
+uninstall_oh_my_zsh
+</code></pre>
+<p>这个脚本提供了完整的 Zsh 和 Oh My Zsh 安装与配置流程，包括流行的 Powerlevel10k 主题和常用插件。你可以根据自己的喜好进一步自定义配置。</p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

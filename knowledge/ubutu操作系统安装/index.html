@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ubutu操作系统安装 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="2.1 选择中文(简体)，然后选择安装Ubuntu 2.2 默认选择继续 2.3 选择“我现在不想连接wi fi无线网络”，然后点继续 2.4 默认选正常安装，然后点继续 2.5 选择磁盘 因为默认是选择安装，因为我已经安装好了其他的系统，需要选择清除整个磁盘安装 ，然后点现在安">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ubutu操作系统安装">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/ubutu%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="2.1 选择中文(简体)，然后选择安装Ubuntu 2.2 默认选择继续 2.3 选择“我现在不想连接wi fi无线网络”，然后点继续 2.4 默认选正常安装，然后点继续 2.5 选择磁盘 因为默认是选择安装，因为我已经安装好了其他的系统，需要选择清除整个磁盘安装 ，然后点现在安">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:20.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:42.142Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/ubutu%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ubutu操作系统安装',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-3.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">ubutu操作系统安装</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">Linux / 系统</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#Linux / 系统</span></div><div class="kb-article"><h2 id="2-1-选择中文-简体-，然后选择安装Ubuntu"><a href="#2-1-选择中文-简体-，然后选择安装Ubuntu" class="headerlink" title="2.1 选择中文(简体)，然后选择安装Ubuntu"></a>2.1 选择中文(简体)，然后选择安装Ubuntu</h2><p><img src="https://feishu.cn/file/NDwXbdMqdoqOPGx0HJxcRey2nqf" alt="图片展示的是Ubuntu操作系统安装界面。左侧语言选项中“中文(简体)”被红色框突出显示。右侧有“试用Ubuntu”和“安装Ubuntu”两个选项，前者配有光盘图标，后者配有笔记本电脑图标。下方文字说明可从CD或USB试用或安装Ubuntu，若已准备好硬盘，可与现有系统并存或替换安装。该图片对应文档中“选择中文(简体)，然后选择安装Ubuntu”步骤，直观呈现了选择语言及安装选项的操作界面。"></p>
+<h2 id="2-2-默认选择继续"><a href="#2-2-默认选择继续" class="headerlink" title="2.2 默认选择继续"></a>2.2 默认选择继续</h2><p><img src="https://feishu.cn/file/UDrHbMUUWojObGxB9aJczPQ6nJe" alt="图片展示的是Ubuntu操作系统安装过程中选择键盘布局的界面。左侧列出多种语言选项，右侧是对应的语言键盘布局，其中“Chinese - Pinyin (zh-hans)”被红色框线突出显示。界面底部有“退出(Q)”“后退(B)”“继续”三个按钮。该图片与文档中“2.7配置账号密码”步骤相关，是配置账号密码前选择键盘布局的环节，用户需在此选择合适的键盘布局。"></p>
+<h2 id="2-3-选择“我现在不想连接wi-fi无线网络”，然后点继续"><a href="#2-3-选择“我现在不想连接wi-fi无线网络”，然后点继续" class="headerlink" title="2.3 选择“我现在不想连接wi-fi无线网络”，然后点继续"></a>2.3 选择“我现在不想连接wi-fi无线网络”，然后点继续</h2><p><img src="https://feishu.cn/file/Eg0kbNMdOoGjl4xdLshc9bw9nCb" alt="这张图片是Ubuntu操作系统安装过程中的无线设置界面，对应安装步骤里“选择‘我现在不想连接wi-fi无线网络’，然后点继续”的环节。界面顶部标注了“安装”与“无线”的相关提示，说明连接Wi-Fi可安装第三方软件、更新及获取语言支持；界面内有“我现在不想连接wi-fi无线网络”的选中选项，还列出了多个可用的Wi-Fi网络列表，下方设有“请跳过”“请访问”“继续”三个操作按钮，底部的进度圆点显示该环节是安装流程的其中一步。"></p>
+<h2 id="2-4-默认选正常安装，然后点继续"><a href="#2-4-默认选正常安装，然后点继续" class="headerlink" title="2.4 默认选正常安装，然后点继续"></a>2.4 默认选正常安装，然后点继续</h2><p><img src="https://feishu.cn/file/U2L2bADUiow4LixFZKccfXsVndh" alt="图片展示的是Ubuntu操作系统安装过程中“更新和其他软件”界面。界面中显示“您想先安装哪些应用？”选项，有“正常安装”和“最小安装”两个选项，当前选中“正常安装”。下方有“其他选项”区域，勾选了“安装Ubuntu PTU下载更新”和“为图形或无线硬件，以及其它媒体格式安装第三方软件”。界面底部有“退出”“后退”“继续”三个按钮。该图片与上文介绍的Ubuntu系统安装步骤相关，是选择安装选项及配置更新等操作的界面呈现。"></p>
+<h2 id="2-5-选择磁盘"><a href="#2-5-选择磁盘" class="headerlink" title="2.5 选择磁盘"></a>2.5 选择磁盘</h2><p>因为默认是选择安装，因为我已经安装好了其他的系统，需要选择清除整个磁盘安装 ，然后点现在安装</p>
+<p><img src="https://feishu.cn/file/ZLWIbJHMxooQK3xV7iAcJTEnnY3" alt="这张图片是Ubuntu操作系统安装过程中的磁盘选择环节界面，页面顶部标注有“安装类型”，上方文字说明当前计算机已安装Windows Boot Manager。界面提供多个安装选项，其中“清除整个磁盘并安装Ubuntu”选项被高亮选中，且该选项附带的说明文字提示此操作会删除磁盘中的所有文件、程序、照片等内容。界面底部设有“退后”“现在安装”等功能按钮，还有一排紫色圆点代表安装流程的进度节点。该界面对应文档中安装步骤2.5的磁盘选择环节，是完成Ubuntu安装的关键步骤之一。"></p>
+<p>这里需要点继续</p>
+<p><img src="https://feishu.cn/file/YOXsbre52obaEmx1Bb1cVNt4nuf" alt="图片展示的是Ubuntu操作系统安装过程中选择安装类型界面。界面提示该计算机已安装Windows Boot Manager，可选择安装Ubuntu与之共存或清除整个磁盘安装Ubuntu。当前选中“清除整个磁盘并安装Ubuntu”选项，下方有“高级选项...”按钮。弹出窗口询问是否继续，提示若选择“是”，将删除所有数据，且无法恢复，有“后退”和“继续”按钮。该图片与上文选择磁盘安装类型，需选择清除整个磁盘安装的内容相关，是后续操作前的确认步骤。"></p>
+<h2 id="2-6-选择时间"><a href="#2-6-选择时间" class="headerlink" title="2.6 选择时间"></a>2.6 选择时间</h2><p><img src="https://feishu.cn/file/AYtgb4HDlo4aeDx9jPacVhpOnWh" alt="图片显示的是Ubuntu操作系统安装过程中选择时区的界面。界面上方显示“您在什么地方？”，下方是一个世界地图，中国区域被绿色高亮显示。地图下方有“Shanghai”字样，表明当前选择的是上海。界面底部有“后退”和“继续”两个按钮。该图片与文档中“2.6选择时间”步骤对应，是选择时区环节的呈现，用户需在此选择所在位置以完成时间设置。"></p>
+<h2 id="2-7-配置账号密码"><a href="#2-7-配置账号密码" class="headerlink" title="2.7 配置账号密码"></a>2.7 配置账号密码</h2><p><img src="https://feishu.cn/file/HJCXbftzxo7j5ixHB93cG36Onig" alt="这是Ubuntu系统安装流程中的账号密码配置界面，界面标题为“您是谁？”，设有“您的姓名”“您的计算机名”“选择一个用户名”“选择一个密码”“确认您的密码”的输入项，其中用户名已填写。界面下方有“自动登录”“登录时需要密码”“使用Active Directory”等选项，底部有圆点进度指示器，右下角有“启动时”和“继续”两个按钮，光标正停留在“继续”按钮上，对应文档中安装步骤的2.7环节。"></p>
+<h2 id="2-8-安装"><a href="#2-8-安装" class="headerlink" title="2.8 安装"></a>2.8 安装</h2><p><img src="https://feishu.cn/file/K0Dyb72CQobaELxLO4ocWbBMnGs" alt="这张图片是Ubuntu操作系统安装过程中的界面，顶部显示“安装”标题，窗口内有“欢迎使用Ubuntu”的提示内容，提示文字提到最新版本的Ubuntu快速且具有丰富新特性，同时说明了安装有一些需要注意的新特性相关内容。界面下方有一个进度条，当前状态显示为“正在完成文件复制”，表明安装程序正处于复制安装文件的环节。"></p>
+<callout emoji="⛱️">
+注意：如果安装进度条走完，可以直接点立即重启即可，重启后按回车键
+</callout>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

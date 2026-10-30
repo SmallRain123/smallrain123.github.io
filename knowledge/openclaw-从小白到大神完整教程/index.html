@@ -1,0 +1,1192 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OpenClaw 从小白到大神完整教程 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="教程版本 ：2026年3月最新版 适用人群 ：零基础小白 → 高级开发者 预计学习时长 ：入门2小时，精通2 4周 📚 目录 第一部分：入门篇（小白必读） 第1章：认识OpenClaw 1.1 什么是OpenClaw？ OpenClaw （曾用名Clawdbot、Moltbot">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OpenClaw 从小白到大神完整教程">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/openclaw-%E4%BB%8E%E5%B0%8F%E7%99%BD%E5%88%B0%E5%A4%A7%E7%A5%9E%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="教程版本 ：2026年3月最新版 适用人群 ：零基础小白 → 高级开发者 预计学习时长 ：入门2小时，精通2 4周 📚 目录 第一部分：入门篇（小白必读） 第1章：认识OpenClaw 1.1 什么是OpenClaw？ OpenClaw （曾用名Clawdbot、Moltbot">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:00.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:33.192Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/openclaw-%E4%BB%8E%E5%B0%8F%E7%99%BD%E5%88%B0%E5%A4%A7%E7%A5%9E%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OpenClaw 从小白到大神完整教程',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-1.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">OpenClaw 从小白到大神完整教程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">AI / 工具</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#AI / 工具</span><span class="kb-article-tag">#OpenClaw</span></div><div class="kb-article"><blockquote>
+<p><strong>教程版本</strong>：2026年3月最新版  </p>
+<p><strong>适用人群</strong>：零基础小白 → 高级开发者  </p>
+<p><strong>预计学习时长</strong>：入门2小时，精通2-4周</p>
+</blockquote>
+<hr>
+<h2 id="📚-目录"><a href="#📚-目录" class="headerlink" title="📚 目录"></a>📚 目录</h2><pre><code class="language-Plain">第一部分：入门篇（小白必读）
+├── 第1章：认识OpenClaw
+├── 第2章：环境准备
+├── 第3章：快速安装部署
+└── 第4章：基础使用指南
+
+第二部分：进阶篇（效率提升）
+├── 第5章：Skills插件系统
+├── 第6章：自动化工作流
+├── 第7章：多模型配置
+└── 第8章：高级功能解锁
+
+第三部分：精通篇（开发者专属）
+├── 第9章：自定义Skill开发
+├── 第10章：企业级部署
+├── 第11章：性能优化与安全
+└── 第12章：生态贡献与扩展
+</code></pre>
+<hr>
+<h1 id="第一部分：入门篇（小白必读）"><a href="#第一部分：入门篇（小白必读）" class="headerlink" title="第一部分：入门篇（小白必读）"></a>第一部分：入门篇（小白必读）</h1><h2 id="第1章：认识OpenClaw"><a href="#第1章：认识OpenClaw" class="headerlink" title="第1章：认识OpenClaw"></a>第1章：认识OpenClaw</h2><h3 id="1-1-什么是OpenClaw？"><a href="#1-1-什么是OpenClaw？" class="headerlink" title="1.1 什么是OpenClaw？"></a>1.1 什么是OpenClaw？</h3><p><strong>OpenClaw</strong>（曾用名Clawdbot、Moltbot）是2026年最火爆的开源AI Agent项目，GitHub星标已突破27万+。它不是普通的聊天机器人，而是真正能<strong>替你执行操作</strong>的AI助理。</p>
+<table>
+<thead>
+<tr>
+<th>传统AI</th>
+<th>OpenClaw</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>你：帮我整理桌面文件</td>
+<td>你：帮我整理桌面文件</td>
+</tr>
+<tr>
+<td>AI：你可以创建文件夹…</td>
+<td>OpenClaw：<strong>已完成</strong>，共整理47个文件</td>
+</tr>
+<tr>
+<td>❌ 只说不做</td>
+<td>✅ 真正执行</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-核心特性"><a href="#1-2-核心特性" class="headerlink" title="1.2 核心特性"></a>1.2 核心特性</h3><pre><code class="language-Plain">🔹 本地优先：数据不出本地，隐私安全
+🔹 自主执行：自然语言→自动完成任务
+🔹 全平台打通：Windows/Mac/Linux全支持
+🔹 Skills扩展：插件系统无限扩展能力
+🔹 零代码上手：新手10分钟即可使用
+</code></pre>
+<h3 id="1-3-适用场景"><a href="#1-3-适用场景" class="headerlink" title="1.3 适用场景"></a>1.3 适用场景</h3><ul>
+<li>📁 <strong>文件管理</strong>：自动整理、分类、备份文件</li>
+<li>🌐 <strong>网页自动化</strong>：自动抓取、监控、填报</li>
+<li>📧 <strong>消息处理</strong>：邮件、飞书、微信自动回复</li>
+<li>💻 <strong>开发辅助</strong>：代码生成、调试、部署</li>
+<li>📊 <strong>数据处理</strong>：Excel批量处理、报表生成</li>
+<li>⏰ <strong>定时任务</strong>：自动化工作流调度</li>
+</ul>
+<hr>
+<h2 id="第2章：环境准备"><a href="#第2章：环境准备" class="headerlink" title="第2章：环境准备"></a>第2章：环境准备</h2><h3 id="2-1-系统要求"><a href="#2-1-系统要求" class="headerlink" title="2.1 系统要求"></a>2.1 系统要求</h3><table>
+<thead>
+<tr>
+<th>系统</th>
+<th>最低要求</th>
+<th>推荐配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Windows</strong></td>
+<td>Win 10</td>
+<td>Win 11</td>
+</tr>
+<tr>
+<td><strong>macOS</strong></td>
+<td>12+</td>
+<td>14+</td>
+</tr>
+<tr>
+<td><strong>Linux</strong></td>
+<td>Ubuntu 20.04+</td>
+<td>Ubuntu 22.04+</td>
+</tr>
+<tr>
+<td><strong>内存</strong></td>
+<td>2GB</td>
+<td>4GB+</td>
+</tr>
+<tr>
+<td><strong>存储</strong></td>
+<td>1GB</td>
+<td>5GB+</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-必装软件"><a href="#2-2-必装软件" class="headerlink" title="2.2 必装软件"></a>2.2 必装软件</h3><pre><code class="language-Bash"># Node.js（必须 v20+，推荐 v22 LTS）
+# 下载地址：https://nodejs.org/
+
+# 验证安装
+node --version  # 应显示 v20.x 或更高
+npm --version   # 应显示 9.x 或更高
+</code></pre>
+<h3 id="2-3-大模型API准备"><a href="#2-3-大模型API准备" class="headerlink" title="2.3 大模型API准备"></a>2.3 大模型API准备</h3><p>OpenClaw需要对接大模型，以下是常用选择：</p>
+<table>
+<thead>
+<tr>
+<th>模型提供商</th>
+<th>免费额度</th>
+<th>推荐场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>阿里云百炼</td>
+<td>✅ 有免费额度</td>
+<td>入门首选</td>
+</tr>
+<tr>
+<td>智谱GLM-4</td>
+<td>✅ 有免费额度</td>
+<td>中文任务</td>
+</tr>
+<tr>
+<td>Claude</td>
+<td>❌ 付费</td>
+<td>高质量输出</td>
+</tr>
+<tr>
+<td>本地模型</td>
+<td>✅ 完全免费</td>
+<td>隐私敏感</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="第3章：快速安装部署"><a href="#第3章：快速安装部署" class="headerlink" title="第3章：快速安装部署"></a>第3章：快速安装部署</h2><h3 id="3-1-方式一：本地一键安装（推荐新手）"><a href="#3-1-方式一：本地一键安装（推荐新手）" class="headerlink" title="3.1 方式一：本地一键安装（推荐新手）"></a>3.1 方式一：本地一键安装（推荐新手）</h3><h3 id="Windows-11"><a href="#Windows-11" class="headerlink" title="Windows 11"></a>Windows 11</h3><pre><code class="language-PowerShell"># 1. 以管理员身份打开 PowerShell
+# 2. 执行一键安装脚本
+irm https://openclaw.io/install.ps1 | iex
+
+# 3. 验证安装
+openclaw --version
+
+# 4. 运行配置向导
+openclaw config wizard
+</code></pre>
+<h3 id="macOS-Linux"><a href="#macOS-Linux" class="headerlink" title="macOS &#x2F; Linux"></a>macOS &#x2F; Linux</h3><pre><code class="language-Bash"># 1. 执行安装脚本
+curl -fsSL https://openclaw.io/install.sh | bash
+
+# 2. 验证安装
+openclaw --version
+
+# 3. 运行配置向导
+openclaw config wizard
+</code></pre>
+<h3 id="3-2-方式二：Docker部署（推荐生产环境）"><a href="#3-2-方式二：Docker部署（推荐生产环境）" class="headerlink" title="3.2 方式二：Docker部署（推荐生产环境）"></a>3.2 方式二：Docker部署（推荐生产环境）</h3><pre><code class="language-Bash"># 1. 拉取镜像
+docker pull openclaw/openclaw:latest
+
+# 2. 创建配置文件
+mkdir -p ~/.openclaw
+cp ~/.openclaw/config.example.yaml ~/.openclaw/config.yaml
+
+# 3. 启动容器
+docker run -d \
+  --name openclaw \
+  -p 3000:3000 \
+  -v ~/.openclaw:/app/config \
+  -v ~/openclaw-data:/app/data \
+  openclaw/openclaw:latest
+
+# 4. 访问Web界面
+# http://localhost:3000
+</code></pre>
+<h3 id="3-3-方式三：云服务器部署（阿里云-腾讯云）"><a href="#3-3-方式三：云服务器部署（阿里云-腾讯云）" class="headerlink" title="3.3 方式三：云服务器部署（阿里云&#x2F;腾讯云）"></a>3.3 方式三：云服务器部署（阿里云&#x2F;腾讯云）</h3><pre><code class="language-Bash"># 阿里云轻量服务器（2核2G起）
+# 1. SSH登录服务器
+ssh root@your-server-ip
+
+# 2. 安装OpenClaw
+curl -fsSL https://openclaw.io/install.sh | bash
+
+# 3. 配置防火墙
+# 阿里云控制台 → 安全组 → 开放3000端口
+
+# 4. 启动服务
+openclaw start
+
+# 5. 设置开机自启
+openclaw enable-autostart
+</code></pre>
+<h3 id="3-4-配置向导（交互步骤）"><a href="#3-4-配置向导（交互步骤）" class="headerlink" title="3.4 配置向导（交互步骤）"></a>3.4 配置向导（交互步骤）</h3><pre><code class="language-Plain">┌─────────────────────────────────────┐
+│     OpenClaw 配置向导               │
+├─────────────────────────────────────┤
+│ 1. 接受风险提示：输入 Yes           │
+│ 2. 选择模型提供商：[阿里云/智谱/...] │
+│ 3. 输入API Key：******************* │
+│ 4. 选择语言：中文/English           │
+│ 5. 配置数据目录：/home/user/data    │
+│ 6. 完成！服务已启动                 │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="第4章：基础使用指南"><a href="#第4章：基础使用指南" class="headerlink" title="第4章：基础使用指南"></a>第4章：基础使用指南</h2><h3 id="4-1-启动与访问"><a href="#4-1-启动与访问" class="headerlink" title="4.1 启动与访问"></a>4.1 启动与访问</h3><pre><code class="language-Bash"># 启动服务
+openclaw start
+
+# 查看状态
+openclaw status
+
+# 停止服务
+openclaw stop
+
+# 查看日志
+openclaw logs
+</code></pre>
+<p>访问Web界面：<code>http://localhost:3000</code></p>
+<h3 id="4-2-第一个指令"><a href="#4-2-第一个指令" class="headerlink" title="4.2 第一个指令"></a>4.2 第一个指令</h3><p>在聊天框输入：</p>
+<pre><code class="language-Plain">帮我整理下载文件夹，按文件类型分类
+</code></pre>
+<p>OpenClaw会：</p>
+<ol>
+<li>扫描下载文件夹</li>
+<li>识别文件类型（图片、文档、视频等）</li>
+<li>创建对应文件夹</li>
+<li>移动文件到对应位置</li>
+<li>返回执行报告</li>
+</ol>
+<h3 id="4-3-常用基础指令"><a href="#4-3-常用基础指令" class="headerlink" title="4.3 常用基础指令"></a>4.3 常用基础指令</h3><table>
+<thead>
+<tr>
+<th>指令类型</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件操作</td>
+<td>“把桌面所有PDF移到文档文件夹”</td>
+</tr>
+<tr>
+<td>信息查询</td>
+<td>“查一下今天北京的天气”</td>
+</tr>
+<tr>
+<td>网页操作</td>
+<td>“打开GitHub，给我看 trending 项目”</td>
+</tr>
+<tr>
+<td>定时任务</td>
+<td>“每天早上9点提醒我查看邮件”</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>“把这个Excel的销售数据做成图表”</td>
+</tr>
+</tbody></table>
+<h3 id="4-4-常见问题排查"><a href="#4-4-常见问题排查" class="headerlink" title="4.4 常见问题排查"></a>4.4 常见问题排查</h3><pre><code class="language-Bash"># 问题1：服务启动失败
+openclaw logs --tail 100  # 查看最近日志
+
+# 问题2：API调用失败
+openclaw config show      # 检查配置
+openclaw config update    # 重新配置
+
+# 问题3：权限问题
+# Windows：以管理员运行
+# Linux/Mac：sudo openclaw start
+
+# 问题4：端口被占用
+openclaw config set port 3001  # 更换端口
+</code></pre>
+<hr>
+<h2 id="第二部分：进阶篇（效率提升）"><a href="#第二部分：进阶篇（效率提升）" class="headerlink" title="第二部分：进阶篇（效率提升）"></a>第二部分：进阶篇（效率提升）</h2><h2 id="第5章：Skills插件系统"><a href="#第5章：Skills插件系统" class="headerlink" title="第5章：Skills插件系统"></a>第5章：Skills插件系统</h2><h3 id="5-1-什么是Skills？"><a href="#5-1-什么是Skills？" class="headerlink" title="5.1 什么是Skills？"></a>5.1 什么是Skills？</h3><p>Skills是OpenClaw的<strong>能力扩展插件</strong>，类似手机App，可以让AI获得特定功能。</p>
+<pre><code class="language-Plain">OpenClaw核心 = 大脑（思考决策）
+Skills       = 双手（执行操作）
+</code></pre>
+<h3 id="5-2-安装Skills"><a href="#5-2-安装Skills" class="headerlink" title="5.2 安装Skills"></a>5.2 安装Skills</h3><pre><code class="language-Bash"># 从官方市场安装
+clawhub install search-web      # 联网搜索
+clawhub install video-summary   # 视频总结
+clawhub install excel-pro       # Excel处理
+clawhub install email-auto      # 邮件自动化
+
+# 从GitHub安装
+clawhub install github:username/repo-name
+
+# 查看已安装
+clawhub list
+
+# 更新Skills
+clawhub update all
+
+# 卸载Skill
+clawhub uninstall skill-name
+</code></pre>
+<h3 id="5-3-2026年必装Skills清单"><a href="#5-3-2026年必装Skills清单" class="headerlink" title="5.3 2026年必装Skills清单"></a>5.3 2026年必装Skills清单</h3><table>
+<thead>
+<tr>
+<th>Skill名称</th>
+<th>功能</th>
+<th>难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>search-web</code></td>
+<td>联网搜索</td>
+<td>⭐</td>
+</tr>
+<tr>
+<td><code>file-manager</code></td>
+<td>高级文件管理</td>
+<td>⭐</td>
+</tr>
+<tr>
+<td><code>browser-control</code></td>
+<td>浏览器自动化</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td><code>excel-pro</code></td>
+<td>Excel批量处理</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td><code>email-auto</code></td>
+<td>邮件自动化</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td><code>video-summary</code></td>
+<td>视频内容总结</td>
+<td>⭐</td>
+</tr>
+<tr>
+<td><code>code-helper</code></td>
+<td>代码辅助</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td><code>schedule-task</code></td>
+<td>定时任务</td>
+<td>⭐</td>
+</tr>
+<tr>
+<td><code>api-connector</code></td>
+<td>API对接</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td><code>data-viz</code></td>
+<td>数据可视化</td>
+<td>⭐⭐</td>
+</tr>
+</tbody></table>
+<h3 id="5-4-Skills配置示例"><a href="#5-4-Skills配置示例" class="headerlink" title="5.4 Skills配置示例"></a>5.4 Skills配置示例</h3><pre><code class="language-YAML"># ~/.openclaw/skills/search-web/config.yaml
+enabled: true
+search_engine: bing  # 可选：bing/google/baidu
+max_results: 10
+timeout: 30
+</code></pre>
+<hr>
+<h2 id="第6章：自动化工作流"><a href="#第6章：自动化工作流" class="headerlink" title="第6章：自动化工作流"></a>第6章：自动化工作流</h2><h3 id="6-1-工作流基础"><a href="#6-1-工作流基础" class="headerlink" title="6.1 工作流基础"></a>6.1 工作流基础</h3><p>工作流 &#x3D; 多个Skills组合 + 条件判断 + 循环执行</p>
+<h3 id="6-2-创建工作流"><a href="#6-2-创建工作流" class="headerlink" title="6.2 创建工作流"></a>6.2 创建工作流</h3><pre><code class="language-Bash"># 创建新工作流
+openclaw workflow create daily-report
+
+# 编辑工作流
+openclaw workflow edit daily-report
+</code></pre>
+<h3 id="6-3-工作流示例：每日报告自动化"><a href="#6-3-工作流示例：每日报告自动化" class="headerlink" title="6.3 工作流示例：每日报告自动化"></a>6.3 工作流示例：每日报告自动化</h3><pre><code class="language-YAML"># ~/.openclaw/workflows/daily-report.yaml
+name: 每日工作报告
+trigger:
+  type: schedule
+  cron: &quot;0 18 * * 1-5&quot;  # 工作日18:00
+
+steps:
+  - name: 获取今日任务
+    skill: task-manager
+    action: get_today_tasks
+    
+  - name: 汇总完成状态
+    skill: excel-pro
+    action: summarize
+    input: &quot;{{steps[0].output}}&quot;
+    
+  - name: 生成报告
+    skill: doc-generator
+    action: create_report
+    template: daily_report_template
+    
+  - name: 发送飞书
+    skill: feishu-bot
+    action: send_message
+    to: &quot;工作群&quot;
+    content: &quot;{{steps[2].output}}&quot;
+    
+  - name: 存档
+    skill: file-manager
+    action: save
+    path: ~/reports/{{date}}.md
+</code></pre>
+<h3 id="6-4-工作流管理命令"><a href="#6-4-工作流管理命令" class="headerlink" title="6.4 工作流管理命令"></a>6.4 工作流管理命令</h3><pre><code class="language-Bash"># 列出所有工作流
+openclaw workflow list
+
+# 手动触发工作流
+openclaw workflow run daily-report
+
+# 查看执行历史
+openclaw workflow history daily-report
+
+# 禁用/启用工作流
+openclaw workflow disable daily-report
+openclaw workflow enable daily-report
+
+# 删除工作流
+openclaw workflow delete daily-report
+</code></pre>
+<hr>
+<h2 id="第7章：多模型配置"><a href="#第7章：多模型配置" class="headerlink" title="第7章：多模型配置"></a>第7章：多模型配置</h2><h3 id="7-1-配置多模型"><a href="#7-1-配置多模型" class="headerlink" title="7.1 配置多模型"></a>7.1 配置多模型</h3><pre><code class="language-YAML"># ~/.openclaw/config.yaml
+models:
+  primary:
+    provider: aliyun
+    model: qwen-max
+    api_key: ${ALIYUN_API_KEY}
+    
+  backup:
+    provider: zhipu
+    model: glm-4
+    api_key: ${ZHIPU_API_KEY}
+    
+  local:
+    provider: ollama
+    model: llama3
+    endpoint: http://localhost:11434
+
+# 智能切换策略
+model_strategy:
+  fallback_enabled: true  # 主模型失败时切换备用
+  cost_optimize: true     # 简单任务用便宜模型
+  quality_priority: false # 是否优先质量
+</code></pre>
+<h3 id="7-2-模型选择建议"><a href="#7-2-模型选择建议" class="headerlink" title="7.2 模型选择建议"></a>7.2 模型选择建议</h3><table>
+<thead>
+<tr>
+<th>任务类型</th>
+<th>推荐模型</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>日常对话</td>
+<td>阿里云通义</td>
+<td>免费额度充足</td>
+</tr>
+<tr>
+<td>代码生成</td>
+<td>Claude&#x2F;GPT-4</td>
+<td>代码能力强</td>
+</tr>
+<tr>
+<td>中文任务</td>
+<td>智谱GLM-4</td>
+<td>中文理解好</td>
+</tr>
+<tr>
+<td>隐私敏感</td>
+<td>本地模型</td>
+<td>数据不出本地</td>
+</tr>
+<tr>
+<td>复杂推理</td>
+<td>Claude-3.5</td>
+<td>推理能力强</td>
+</tr>
+</tbody></table>
+<h3 id="7-3-模型成本优化"><a href="#7-3-模型成本优化" class="headerlink" title="7.3 模型成本优化"></a>7.3 模型成本优化</h3><pre><code class="language-YAML"># 按任务复杂度分配模型
+task_routing:
+  simple:
+    patterns: [&quot;天气&quot;, &quot;时间&quot;, &quot;简单查询&quot;]
+    model: local
+  normal:
+    patterns: [&quot;文件&quot;, &quot;邮件&quot;, &quot;日常&quot;]
+    model: primary
+  complex:
+    patterns: [&quot;代码&quot;, &quot;分析&quot;, &quot;创作&quot;]
+    model: backup
+</code></pre>
+<hr>
+<h2 id="第8章：高级功能解锁"><a href="#第8章：高级功能解锁" class="headerlink" title="第8章：高级功能解锁"></a>第8章：高级功能解锁</h2><h3 id="8-1-私有知识库"><a href="#8-1-私有知识库" class="headerlink" title="8.1 私有知识库"></a>8.1 私有知识库</h3><pre><code class="language-Bash"># 创建知识库
+openclaw knowledge-base create my-docs
+
+# 添加文档
+openclaw knowledge-base add my-docs ~/documents/
+
+# 查询知识库
+openclaw knowledge-base query my-docs &quot;项目规范&quot;
+
+# 重建索引
+openclaw knowledge-base rebuild my-docs
+</code></pre>
+<h3 id="8-2-跨设备同步"><a href="#8-2-跨设备同步" class="headerlink" title="8.2 跨设备同步"></a>8.2 跨设备同步</h3><pre><code class="language-YAML"># ~/.openclaw/sync.yaml
+enabled: true
+provider: webdav  # 可选：webdav/s3/oss
+endpoint: https://your-webdav.com
+username: ${WEBDAV_USER}
+password: ${WEBDAV_PASS}
+sync_interval: 3600  # 每小时同步
+</code></pre>
+<h3 id="8-3-API接口调用"><a href="#8-3-API接口调用" class="headerlink" title="8.3 API接口调用"></a>8.3 API接口调用</h3><pre><code class="language-Bash"># 启用API服务
+openclaw api enable
+
+# API文档
+# http://localhost:3000/api/docs
+
+# 示例调用
+curl -X POST http://localhost:3000/api/v1/execute \
+  -H &quot;Authorization: Bearer YOUR_TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#39;{&quot;command&quot;: &quot;整理桌面文件&quot;}&#39;
+</code></pre>
+<h3 id="8-4-语音交互"><a href="#8-4-语音交互" class="headerlink" title="8.4 语音交互"></a>8.4 语音交互</h3><pre><code class="language-YAML"># ~/.openclaw/voice.yaml
+enabled: true
+stt_provider: whisper  # 语音转文字
+tts_provider: edge     # 文字转语音
+wake_word: &quot;小龙虾&quot;    # 唤醒词
+</code></pre>
+<hr>
+<h2 id="第三部分：精通篇（开发者专属）"><a href="#第三部分：精通篇（开发者专属）" class="headerlink" title="第三部分：精通篇（开发者专属）"></a>第三部分：精通篇（开发者专属）</h2><h2 id="第9章：自定义Skill开发"><a href="#第9章：自定义Skill开发" class="headerlink" title="第9章：自定义Skill开发"></a>第9章：自定义Skill开发</h2><h3 id="9-1-Skill开发基础"><a href="#9-1-Skill开发基础" class="headerlink" title="9.1 Skill开发基础"></a>9.1 Skill开发基础</h3><p>Skill结构：</p>
+<pre><code class="language-Plain">my-skill/
+├── SKILL.md          # 技能描述（YAML frontmatter + Markdown）
+├── src/
+│   ├── index.js      # 主入口
+│   ├── handler.js    # 业务逻辑
+│   └── utils.js      # 工具函数
+├── config.yaml       # 配置模板
+├── package.json      # 依赖管理
+└── tests/            # 测试文件
+</code></pre>
+<h3 id="9-2-SKILL-md-模板"><a href="#9-2-SKILL-md-模板" class="headerlink" title="9.2 SKILL.md 模板"></a>9.2 SKILL.md 模板</h3><pre><code class="language-Markdown">---
+name: my-custom-skill
+version: 1.0.0
+author: Your Name
+description: 我的自定义技能
+category: automation
+tags: [auto, custom]
+min_openclaw_version: 2.0.0
+---
+
+# My Custom Skill
+
+## 功能说明
+这里描述技能的功能...
+
+## 使用方法
+</code></pre>
+<p>执行某个操作</p>
+<pre><code class="language-Plain">
+## 配置项
+| 配置项 | 类型 | 默认值 | 说明 |
+|--------|------|--------|------|
+| api_key | string | &quot;&quot; | API密钥 |
+
+## 示例
+更多使用示例...
+</code></pre>
+<h3 id="9-3-开发实战：Excel数据处理Skill"><a href="#9-3-开发实战：Excel数据处理Skill" class="headerlink" title="9.3 开发实战：Excel数据处理Skill"></a>9.3 开发实战：Excel数据处理Skill</h3><pre><code class="language-JavaScript">// src/index.js
+const { SkillBase } = require(&#39;@openclaw/sdk&#39;);
+
+class ExcelProcessor extends SkillBase {
+  constructor(config) {
+    super(config);
+    this.name = &#39;excel-processor&#39;;
+  }
+
+  async execute(command, context) {
+    const { action, file, options } = this.parseCommand(command);
+    
+    switch(action) {
+      case &#39;summarize&#39;:
+        return await this.summarize(file, options);
+      case &#39;convert&#39;:
+        return await this.convert(file, options);
+      case &#39;merge&#39;:
+        return await this.merge(files, options);
+      default:
+        throw new Error(`未知操作：${action}`);
+    }
+  }
+
+  async summarize(file, options) {
+    const XLSX = require(&#39;xlsx&#39;);
+    const workbook = XLSX.readFile(file);
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const data = XLSX.utils.sheet_to_json(sheet);
+    
+    return {
+      total_rows: data.length,
+      columns: Object.keys(data[0]),
+      summary: this.calculateSummary(data)
+    };
+  }
+
+  calculateSummary(data) {
+    // 计算逻辑
+    return { /* 统计结果 */ };
+  }
+}
+
+module.exports = ExcelProcessor;
+</code></pre>
+<h3 id="9-4-测试与调试"><a href="#9-4-测试与调试" class="headerlink" title="9.4 测试与调试"></a>9.4 测试与调试</h3><pre><code class="language-Bash"># 初始化开发环境
+clawhub init my-skill
+
+# 本地测试
+clawhub test my-skill
+
+# 热重载开发
+clawhub dev my-skill
+
+# 打包发布
+clawhub build my-skill
+clawhub publish my-skill
+</code></pre>
+<h3 id="9-5-发布到ClawHub"><a href="#9-5-发布到ClawHub" class="headerlink" title="9.5 发布到ClawHub"></a>9.5 发布到ClawHub</h3><pre><code class="language-Bash"># 1. 注册ClawHub账号
+clawhub login
+
+# 2. 验证Skill
+clawhub validate my-skill
+
+# 3. 发布
+clawhub publish my-skill
+
+# 4. 查看发布状态
+clawhub status my-skill
+</code></pre>
+<hr>
+<h2 id="第10章：企业级部署"><a href="#第10章：企业级部署" class="headerlink" title="第10章：企业级部署"></a>第10章：企业级部署</h2><h3 id="10-1-架构设计"><a href="#10-1-架构设计" class="headerlink" title="10.1 架构设计"></a>10.1 架构设计</h3><pre><code class="language-Plain">┌─────────────────────────────────────────────────────┐
+│                    负载均衡器                        │
+│                   (Nginx/HAProxy)                   │
+└─────────────────────┬───────────────────────────────┘
+                      │
+        ┌─────────────┼─────────────┐
+        │             │             │
+   ┌────▼────┐   ┌────▼────┐   ┌────▼────┐
+   │OpenClaw │   │OpenClaw │   │OpenClaw │
+   │  Node1  │   │  Node2  │   │  Node3  │
+   └────┬────┘   └────┬────┘   └────┬────┘
+        │             │             │
+        └─────────────┼─────────────┘
+                      │
+        ┌─────────────┼─────────────┐
+        │             │             │
+   ┌────▼────┐   ┌────▼────┐   ┌────▼────┐
+   │  Redis  │   │PostgreSQL│  │   OSS   │
+   │  缓存   │   │  数据库  │   │  存储   │
+   └─────────┘   └─────────┘   └─────────┘
+</code></pre>
+<h3 id="10-2-Docker-Compose部署"><a href="#10-2-Docker-Compose部署" class="headerlink" title="10.2 Docker Compose部署"></a>10.2 Docker Compose部署</h3><pre><code class="language-YAML"># docker-compose.yml
+version: &#39;3.8&#39;
+
+services:
+  openclaw:
+    image: openclaw/openclaw:latest
+    replicas: 3
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - API_KEY=${API_KEY}
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redisdata:/data
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - &quot;80:80&quot;
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+volumes:
+  pgdata:
+  redisdata:
+</code></pre>
+<h3 id="10-3-企业级工作流示例"><a href="#10-3-企业级工作流示例" class="headerlink" title="10.3 企业级工作流示例"></a>10.3 企业级工作流示例</h3><pre><code class="language-YAML"># 飞书审批→OA→周报自动化
+name: 企业审批自动化
+trigger:
+  type: webhook
+  endpoint: /webhook/feishu-approval
+
+steps:
+  - name: 接收审批事件
+    skill: feishu-webhook
+    action: listen
+    
+  - name: 验证审批人
+    skill: auth-validator
+    action: verify
+    condition: &quot;{{steps[0].approver}} in {{allowed_approvers}}&quot;
+    
+  - name: 查询OA数据
+    skill: oa-connector
+    action: query
+    params:
+      approval_id: &quot;{{steps[0].id}}&quot;
+      
+  - name: 生成周报
+    skill: report-generator
+    action: create
+    template: enterprise_weekly
+    
+  - name: 推送群聊
+    skill: feishu-bot
+    action: send
+    to: &quot;{{steps[0].department_group}}&quot;
+    
+  - name: 记录审计日志
+    skill: audit-logger
+    action: log
+    level: info
+</code></pre>
+<h3 id="10-4-安全配置"><a href="#10-4-安全配置" class="headerlink" title="10.4 安全配置"></a>10.4 安全配置</h3><pre><code class="language-YAML"># ~/.openclaw/security.yaml
+authentication:
+  enabled: true
+  method: jwt  # jwt/oauth2/ldap
+  token_expiry: 86400
+
+authorization:
+  roles:
+    - name: admin
+      permissions: [&quot;*&quot;]
+    - name: developer
+      permissions: [&quot;skill:dev&quot;, &quot;workflow:edit&quot;]
+    - name: user
+      permissions: [&quot;execute&quot;, &quot;view&quot;]
+
+encryption:
+  data_at_rest: true
+  data_in_transit: true
+  key_rotation_days: 90
+
+audit:
+  enabled: true
+  log_path: /var/log/openclaw/audit.log
+  retention_days: 365
+</code></pre>
+<hr>
+<h2 id="第11章：性能优化与安全"><a href="#第11章：性能优化与安全" class="headerlink" title="第11章：性能优化与安全"></a>第11章：性能优化与安全</h2><h3 id="11-1-性能优化"><a href="#11-1-性能优化" class="headerlink" title="11.1 性能优化"></a>11.1 性能优化</h3><pre><code class="language-YAML"># ~/.openclaw/performance.yaml
+# 并发配置
+concurrency:
+  max_workers: 10
+  max_queue_size: 100
+  timeout_seconds: 300
+
+# 缓存配置
+cache:
+  enabled: true
+  type: redis
+  ttl_seconds: 3600
+  max_size_mb: 512
+
+# 数据库优化
+database:
+  connection_pool: 20
+  query_timeout: 30
+  slow_query_log: true
+
+# 资源限制
+resource_limits:
+  max_memory_mb: 2048
+  max_cpu_percent: 80
+  max_disk_usage_percent: 90
+</code></pre>
+<h3 id="11-2-监控与告警"><a href="#11-2-监控与告警" class="headerlink" title="11.2 监控与告警"></a>11.2 监控与告警</h3><pre><code class="language-Bash"># 启用监控
+openclaw monitor enable
+
+# 查看指标
+openclaw metrics show
+
+# 配置告警
+openclaw alert config --cpu 80 --memory 90 --disk 85
+
+# 集成Prometheus
+openclaw metrics export prometheus
+</code></pre>
+<h3 id="11-3-安全最佳实践"><a href="#11-3-安全最佳实践" class="headerlink" title="11.3 安全最佳实践"></a>11.3 安全最佳实践</h3><pre><code class="language-YAML"># 安全清单
+security_checklist:
+  - [x] 定期更新OpenClaw版本
+  - [x] 使用强密码/API密钥
+  - [x] 启用双因素认证
+  - [x] 限制Skills权限范围
+  - [x] 定期审计日志
+  - [x] 备份配置文件
+  - [x] 网络隔离生产环境
+  - [x] 加密敏感数据
+</code></pre>
+<h3 id="11-4-备份与恢复"><a href="#11-4-备份与恢复" class="headerlink" title="11.4 备份与恢复"></a>11.4 备份与恢复</h3><pre><code class="language-Bash"># 全量备份
+openclaw backup create --full --output ~/backups/
+
+# 增量备份
+openclaw backup create --incremental
+
+# 恢复备份
+openclaw backup restore ~/backups/backup-2026-03-20.tar.gz
+
+# 自动备份
+openclaw backup schedule --daily --retention 30
+</code></pre>
+<hr>
+<h2 id="第12章：生态贡献与扩展"><a href="#第12章：生态贡献与扩展" class="headerlink" title="第12章：生态贡献与扩展"></a>第12章：生态贡献与扩展</h2><h3 id="12-1-贡献代码"><a href="#12-1-贡献代码" class="headerlink" title="12.1 贡献代码"></a>12.1 贡献代码</h3><pre><code class="language-Bash"># 1. Fork项目
+git clone https://github.com/your-username/openclaw.git
+
+# 2. 创建分支
+git checkout -b feature/your-feature
+
+# 3. 开发并提交
+git add .
+git commit -m &quot;feat: 添加新功能&quot;
+git push origin feature/your-feature
+
+# 4. 提交PR
+# 在GitHub上创建Pull Request
+</code></pre>
+<h3 id="12-2-贡献Skills"><a href="#12-2-贡献Skills" class="headerlink" title="12.2 贡献Skills"></a>12.2 贡献Skills</h3><ol>
+<li>开发符合规范的Skill</li>
+<li>通过ClawHub验证</li>
+<li>提交到官方Skills仓库</li>
+<li>通过审核后上架市场</li>
+</ol>
+<h3 id="12-3-社区资源"><a href="#12-3-社区资源" class="headerlink" title="12.3 社区资源"></a>12.3 社区资源</h3><table>
+<thead>
+<tr>
+<th>资源</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>官方文档</td>
+<td><a target="_blank" rel="noopener" href="https://docs.openclaw.io/">https://docs.openclaw.io</a></td>
+</tr>
+<tr>
+<td>GitHub仓库</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/openclaw/openclaw">https://github.com/openclaw/openclaw</a></td>
+</tr>
+<tr>
+<td>ClawHub市场</td>
+<td><a target="_blank" rel="noopener" href="https://clawhub.io/">https://clawhub.io</a></td>
+</tr>
+<tr>
+<td>中文社区</td>
+<td><a target="_blank" rel="noopener" href="https://www.moltcn.com/">https://www.moltcn.com</a></td>
+</tr>
+<tr>
+<td>Discord社区</td>
+<td><a target="_blank" rel="noopener" href="https://discord.gg/openclaw">https://discord.gg/openclaw</a></td>
+</tr>
+</tbody></table>
+<h3 id="12-4-学习路线进阶"><a href="#12-4-学习路线进阶" class="headerlink" title="12.4 学习路线进阶"></a>12.4 学习路线进阶</h3><pre><code class="language-Plain">小白 (1-2周)
+  │
+  ▼
+入门用户 (1个月)
+  │── 熟练安装部署
+  │── 掌握基础指令
+  │── 使用官方Skills
+  │
+  ▼
+进阶用户 (3个月)
+  │── 自定义工作流
+  │── 多模型配置
+  │── 私有知识库
+  │
+  ▼
+开发者 (6个月+)
+  │── 自定义Skill开发
+  │── 企业级部署
+  │── 性能优化
+  │
+  ▼
+贡献者
+  │── 提交代码PR
+  │── 发布Skills
+  │── 社区答疑
+</code></pre>
+<hr>
+<h2 id="📋-附录"><a href="#📋-附录" class="headerlink" title="📋 附录"></a>📋 附录</h2><h2 id="A-常用命令速查"><a href="#A-常用命令速查" class="headerlink" title="A. 常用命令速查"></a>A. 常用命令速查</h2><pre><code class="language-Bash"># 基础命令
+openclaw start          # 启动
+openclaw stop           # 停止
+openclaw restart        # 重启
+openclaw status         # 状态
+openclaw logs           # 日志
+
+# 配置命令
+openclaw config show    # 查看配置
+openclaw config edit    # 编辑配置
+openclaw config reset   # 重置配置
+
+# Skills命令
+clawhub install &lt;name&gt;  # 安装
+clawhub uninstall &lt;name&gt;# 卸载
+clawhub list            # 列表
+clawhub update          # 更新
+
+# 工作流命令
+openclaw workflow list  # 列表
+openclaw workflow run   # 运行
+openclaw workflow edit  # 编辑
+
+# 开发命令
+clawhub init &lt;name&gt;     # 初始化
+clawhub dev &lt;name&gt;      # 开发模式
+clawhub build &lt;name&gt;    # 构建
+clawhub publish &lt;name&gt;  # 发布
+</code></pre>
+<h2 id="B-故障排查指南"><a href="#B-故障排查指南" class="headerlink" title="B. 故障排查指南"></a>B. 故障排查指南</h2><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>可能原因</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>启动失败</td>
+<td>端口占用</td>
+<td><code>openclaw config set port 3001</code></td>
+</tr>
+<tr>
+<td>API错误</td>
+<td>Key失效</td>
+<td>重新获取并更新配置</td>
+</tr>
+<tr>
+<td>Skills不工作</td>
+<td>未启用</td>
+<td><code>clawhub enable &lt;skill&gt;</code></td>
+</tr>
+<tr>
+<td>内存过高</td>
+<td>并发过大</td>
+<td>调整<code>max_workers</code>配置</td>
+</tr>
+<tr>
+<td>同步失败</td>
+<td>网络问题</td>
+<td>检查代理&#x2F;防火墙设置</td>
+</tr>
+</tbody></table>
+<h2 id="C-版本更新日志"><a href="#C-版本更新日志" class="headerlink" title="C. 版本更新日志"></a>C. 版本更新日志</h2><pre><code class="language-Plain">v2.5.0 (2026-03)
+  + 新增语音交互支持
+  + 优化工作流编辑器
+  + 修复Skills加载问题
+
+v2.4.0 (2026-02)
+  + 企业级权限管理
+  + 多模型智能切换
+  + 性能提升30%
+
+v2.3.0 (2026-01)
+  + ClawHub市场上线
+  + 自定义Skill SDK
+  + Docker官方镜像
+</code></pre>
+<hr>
+<h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 总结</h2><p>恭喜你完成OpenClaw从小白到大神的学习旅程！</p>
+<p><strong>核心要点回顾：</strong></p>
+<ol>
+<li>✅ OpenClaw是能真正执行操作的AI助理</li>
+<li>✅ 10分钟即可完成基础部署</li>
+<li>✅ Skills系统无限扩展能力</li>
+<li>✅ 工作流实现自动化闭环</li>
+<li>✅ 开发者可自定义Skill</li>
+<li>✅ 企业级部署支持高可用</li>
+</ol>
+<p><strong>下一步行动：</strong></p>
+<ul>
+<li>📌 完成基础部署并体验第一个指令</li>
+<li>📌 安装3-5个常用Skills</li>
+<li>📌 创建你的第一个自动化工作流</li>
+<li>📌 尝试开发一个自定义Skill</li>
+<li>📌 加入社区分享你的经验</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>教程最后更新</strong>：2026年3月20日  </p>
+<p><strong>官方文档</strong>：<a target="_blank" rel="noopener" href="https://docs.openclaw.io/">https://docs.openclaw.io</a>  </p>
+<p><strong>社区支持</strong>：<a target="_blank" rel="noopener" href="https://www.moltcn.com/">https://www.moltcn.com</a></p>
+</blockquote>
+<p>🦞 <strong>祝你在OpenClaw的世界里探索愉快！</strong></p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

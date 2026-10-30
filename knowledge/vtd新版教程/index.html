@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>VTD新版教程 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="确认操作系统和显卡驱动 系统推荐：Ubuntu 18.04 显卡驱动：NVIDIA 版本需 ≥ 440.82 安装依赖 安装 VTD 软件 3.1 安装基本软件包 1. 安装前确认硬盘空间：至少 30G 2. 在 home 目录下创建 VIRES 文件夹 3. 在安装包所在目录打">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VTD新版教程">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/vtd%E6%96%B0%E7%89%88%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="确认操作系统和显卡驱动 系统推荐：Ubuntu 18.04 显卡驱动：NVIDIA 版本需 ≥ 440.82 安装依赖 安装 VTD 软件 3.1 安装基本软件包 1. 安装前确认硬盘空间：至少 30G 2. 在 home 目录下创建 VIRES 文件夹 3. 在安装包所在目录打">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:37.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:50.855Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/vtd%E6%96%B0%E7%89%88%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'VTD新版教程',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">VTD新版教程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">AI / 工具</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#AI / 工具</span><span class="kb-article-tag">#VTD</span></div><div class="kb-article"><h2 id="确认操作系统和显卡驱动"><a href="#确认操作系统和显卡驱动" class="headerlink" title="确认操作系统和显卡驱动"></a>确认操作系统和显卡驱动</h2><ul>
+<li>系统推荐：Ubuntu 18.04</li>
+<li>显卡驱动：NVIDIA 版本需 ≥ 440.82</li>
+</ul>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><pre><code class="language-Plain">sudo apt-get install xterm freeglut3 openssh-server nfs-common mesa-utils xfonts-75dpi libusb-0.1-4 python mesa-common-dev libgl1-mesa-dev
+sudo apt-get update
+</code></pre>
+<h2 id="安装-VTD-软件"><a href="#安装-VTD-软件" class="headerlink" title="安装 VTD 软件"></a>安装 VTD 软件</h2><h3 id="3-1-安装基本软件包"><a href="#3-1-安装基本软件包" class="headerlink" title="3.1 安装基本软件包"></a>3.1 安装基本软件包</h3><ol>
+<li>安装前确认硬盘空间：至少 30G</li>
+<li>在<code>home</code>目录下创建<code>VIRES</code>文件夹</li>
+<li>在安装包所在目录打开终端，执行命令：</li>
+</ol>
+<pre><code class="language-Plain">./VTD.2020_Run.Perception.Installer.20200515.bin -i gui
+</code></pre>
+<ol>
+<li>安装界面一路<code>next</code>，安装目录需选择有读写权限的路径</li>
+<li>安装完成后选择不添加 license 信息</li>
+</ol>
+<h3 id="3-2-安装-perception-附加软件包"><a href="#3-2-安装-perception-附加软件包" class="headerlink" title="3.2 安装 perception 附加软件包"></a>3.2 安装 perception 附加软件包</h3><p>在安装包所在目录打开终端，执行命令：</p>
+<pre><code class="language-Plain">./VTD.2020_Dev.Perception.Installer.20200515.bin -i gui
+</code></pre>
+<p>出现界面后一路<code>next</code>完成安装</p>
+<h3 id="3-3-安装-ROD-附加软件包"><a href="#3-3-安装-ROD-附加软件包" class="headerlink" title="3.3 安装 ROD 附加软件包"></a>3.3 安装 ROD 附加软件包</h3><p>将 ROD 压缩包解压至<code>VTD.2020/Runtime/Tools</code>目录</p>
+<h2 id="运行-VTD"><a href="#运行-VTD" class="headerlink" title="运行 VTD"></a>运行 VTD</h2><p>在<code>VTD.2020/bin</code>目录打开终端，执行命令：</p>
+<pre><code class="language-Plain">./vtdStart.sh
+</code></pre>
+<p>主界面启动后，上侧工具栏中间的勾为灰色，表示未激活</p>
+<hr>
+<h2 id="二、激活-VTD（安装-helium）"><a href="#二、激活-VTD（安装-helium）" class="headerlink" title="二、激活 VTD（安装 helium）"></a>二、激活 VTD（安装 helium）</h2><h3 id="确认主机名和-MAC-地址"><a href="#确认主机名和-MAC-地址" class="headerlink" title="确认主机名和 MAC 地址"></a>确认主机名和 MAC 地址</h3><h3 id="1-1-Ubuntu-账户格式"><a href="#1-1-Ubuntu-账户格式" class="headerlink" title="1.1 Ubuntu 账户格式"></a>1.1 Ubuntu 账户格式</h3><p>格式：<code>A@B</code>，示例：<code>zhijiauto@zhijiauto-abcd123</code></p>
+<h3 id="1-2-查询-MAC-地址"><a href="#1-2-查询-MAC-地址" class="headerlink" title="1.2 查询 MAC 地址"></a>1.2 查询 MAC 地址</h3><p>终端执行命令：</p>
+<pre><code class="language-Plain">ifconfig
+</code></pre>
+<p><code>eth0</code>对应的地址即为 MAC 地址</p>
+<h3 id="安装依赖-1"><a href="#安装依赖-1" class="headerlink" title="安装依赖"></a>安装依赖</h3><h3 id="2-1-安装-java-依赖"><a href="#2-1-安装-java-依赖" class="headerlink" title="2.1 安装 java 依赖"></a>2.1 安装 java 依赖</h3><pre><code class="language-Plain">sudo apt install openjdk-8*
+</code></pre>
+<h3 id="2-2-安装-lsb"><a href="#2-2-安装-lsb" class="headerlink" title="2.2 安装 lsb"></a>2.2 安装 lsb</h3><pre><code class="language-Plain">sudo apt-get install lsb
+</code></pre>
+<h3 id="更改-license-文件"><a href="#更改-license-文件" class="headerlink" title="更改 license 文件"></a>更改 license 文件</h3><h3 id="3-1-安装-vim（未安装时执行）"><a href="#3-1-安装-vim（未安装时执行）" class="headerlink" title="3.1 安装 vim（未安装时执行）"></a>3.1 安装 vim（未安装时执行）</h3><pre><code class="language-Plain">sudo apt install vim
+</code></pre>
+<h3 id="3-2-修改-license-第一行"><a href="#3-2-修改-license-第一行" class="headerlink" title="3.2 修改 license 第一行"></a>3.2 修改 license 第一行</h3><p>格式：<code>SERVER 主机名(B) MAC地址 27500</code> 示例：<code>SERVER zhijiauto-abcd123 XX:XX:XX:XX:XX:XX 27500</code></p>
+<h3 id="3-3-修改-license-第二行"><a href="#3-3-修改-license-第二行" class="headerlink" title="3.3 修改 license 第二行"></a>3.3 修改 license 第二行</h3><ol>
+<li>在<code>VIRES</code>文件夹打开终端，创建目录：</li>
+</ol>
+<pre><code class="language-Plain">mkdir MSCLicensing
+mkdir MSCLicensing/LOG
+</code></pre>
+<ol>
+<li>修改第二行格式：<code>DAEMON MSC /home/A/VIRES/MSCLicensing/Helium</code></li>
+</ol>
+<h3 id="安装-helium"><a href="#安装-helium" class="headerlink" title="安装 helium"></a>安装 helium</h3><h3 id="法一（推荐）：Console-安装"><a href="#法一（推荐）：Console-安装" class="headerlink" title="法一（推荐）：Console 安装"></a>法一（推荐）：Console 安装</h3><pre><code class="language-Plain">./msc_licensing_helium_linux64.bin --mode console
+</code></pre>
+<p>后续操作：</p>
+<ol>
+<li>输入<code>Y</code>确认</li>
+<li>安装路径：<code>/home/A/VIRES/MSCLicensing</code></li>
+<li>日志路径：<code>/home/A/VIRES/MSCLicensing/LOG</code></li>
+<li>输入 license 的 dat 文件路径</li>
+<li>按两次空格，依次输入<code>Y</code>、<code>Y</code>、<code>N</code></li>
+</ol>
+<p>验证进程：</p>
+<pre><code class="language-Plain"># 进入Helium文件夹查看ls# 查看运行状态
+./lmutil lmstat -c license.dat
+</code></pre>
+<p>修改启动脚本：</p>
+<pre><code class="language-Plain"># 进入VTD bin目录vim vtdStart.sh
+</code></pre>
+<p>取消第 38 行注释，修改为：<code>=&quot;27500@B&quot;</code>（保留双引号）</p>
+<h3 id="法二（不推荐）：GUI-安装"><a href="#法二（不推荐）：GUI-安装" class="headerlink" title="法二（不推荐）：GUI 安装"></a>法二（不推荐）：GUI 安装</h3><pre><code class="language-Plain"># 修改权限sudo chmod 777 msc_licensing_helium_linux64.bin
+sudo chmod +x msc_licensing_helium_linux64.bin
+# 启动安装
+./msc_licensing_helium_linux64.bin
+</code></pre>
+<p>⚠️ 注意：默认路径需删除空格，否则无法二次启动；部分场景会出现卡顿</p>
+<h3 id="验证激活成功"><a href="#验证激活成功" class="headerlink" title="验证激活成功"></a>验证激活成功</h3><p>在<code>VTD.2020/bin</code>目录执行：</p>
+<pre><code class="language-Plain">./vtdStart.sh
+</code></pre>
+<p>工具栏中间的勾变为绿色，代表激活成功</p>
+<hr>
+<h2 id="三、其他设置"><a href="#三、其他设置" class="headerlink" title="三、其他设置"></a>三、其他设置</h2><p>完成激活后，以下为无关激活的辅助配置：</p>
+<h3 id="License-Server-单独控制"><a href="#License-Server-单独控制" class="headerlink" title="License Server 单独控制"></a>License Server 单独控制</h3><pre><code class="language-Plain"># 启动
+./lmutil lmstat -c license.dat
+# 显式启动
+./lmgrd -c license.dat -l ../LOG/lmgrd.log
+# 关闭
+./lmutil lmdown -c license.dat
+</code></pre>
+<h3 id="开机自启配置"><a href="#开机自启配置" class="headerlink" title="开机自启配置"></a>开机自启配置</h3><ol>
+<li>查看<code>Helium/startup_script/README</code></li>
+<li>复制脚本：</li>
+</ol>
+<pre><code class="language-Plain">cp msclmgrd.example /etc/init.d/msclmgrd
+sudo chmod +x msclmgrd
+</code></pre>
+<ol>
+<li>查询启动级别：<code>runlevel</code>，在对应<code>rcN.d</code>创建软链接</li>
+<li>验证：<code>./lmutil lmstat -c license.dat</code></li>
+</ol>
+<h3 id="卸载-helium"><a href="#卸载-helium" class="headerlink" title="卸载 helium"></a>卸载 helium</h3><pre><code class="language-Plain">./msc_licensing_helium_linux64.bin --mode console
+</code></pre>
+<p>选择<code>Uninstall</code>完成卸载</p>
+<h3 id="网卡设置"><a href="#网卡设置" class="headerlink" title="网卡设置"></a>网卡设置</h3><p>禁用无关网卡，避免 License Server 识别错误 MAC 地址</p>
+<h3 id="VTD-环境变量配置"><a href="#VTD-环境变量配置" class="headerlink" title="VTD 环境变量配置"></a>VTD 环境变量配置</h3><p>修改<code>VTD.2019.1/bin/vtdStart.sh</code>，追加：</p>
+<pre><code class="language-Plain">&lt;EnvVar name=&quot;LM_LICENSE_FILE&quot; val=&quot;27500@vtdmaster&quot; /&gt;
+</code></pre>
+<p>终端临时配置：</p>
+<pre><code class="language-Plain">export LM_LICENSE_FILE=&quot;[PORT]@[LICENSE-SERVER]&quot;
+</code></pre>
+<h3 id="分布式从机配置"><a href="#分布式从机配置" class="headerlink" title="分布式从机配置"></a>分布式从机配置</h3><p>在从机<code>Process</code>内添加环境变量：</p>
+<pre><code class="language-Plain">&lt;EnvVar name=&quot;LM_LICENSE_FILE&quot; val=&quot;27500@vtdmaster&quot; /&gt;
+</code></pre>
+<hr>
+<h2 id="四、同一局域网下服务器连接（客户端获取-license）"><a href="#四、同一局域网下服务器连接（客户端获取-license）" class="headerlink" title="四、同一局域网下服务器连接（客户端获取 license）"></a>四、同一局域网下服务器连接（客户端获取 license）</h2><h3 id="服务器端安装并启动-SSH"><a href="#服务器端安装并启动-SSH" class="headerlink" title="服务器端安装并启动 SSH"></a>服务器端安装并启动 SSH</h3><pre><code class="language-Plain"># 安装服务端sudo apt-get install openssh-server
+# 重启服务
+/etc/init.d/ssh restart
+# 验证运行状态netstat -tlp
+</code></pre>
+<p>出现<code>tcp6 0 0 *:ssh </code><em><code>:</code></em><code> LISTEN -</code>表示运行正常</p>
+<h3 id="客户端连接服务器"><a href="#客户端连接服务器" class="headerlink" title="客户端连接服务器"></a>客户端连接服务器</h3><p>服务器账户格式：<code>C@D</code> 在客户端 bin 目录执行：</p>
+<pre><code class="language-Plain">ssh C@D
+</code></pre>
+<h3 id="客户端修改-vtdStart-sh"><a href="#客户端修改-vtdStart-sh" class="headerlink" title="客户端修改 vtdStart.sh"></a>客户端修改 vtdStart.sh</h3><pre><code class="language-Plain">vim vtdStart.sh
+</code></pre>
+<p>取消第 38 行注释，修改为：<code>=&quot;27500@D&quot;</code>（保留双引号）</p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

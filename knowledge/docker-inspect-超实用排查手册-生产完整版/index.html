@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>docker inspect 超实用排查手册（生产完整版） | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="docker inspect 是 Docker 排错最强命令 ，90% 容器异常：闪退、启动失败、端口冲突、挂载错误、自动退出、OOM、网络异常，都靠它定位根因。 默认输出 JSON 完整结构，生产中 绝不建议裸跑无参数 inspect ，必须用 format 模板精准过滤 。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="docker inspect 超实用排查手册（生产完整版）">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/docker-inspect-%E8%B6%85%E5%AE%9E%E7%94%A8%E6%8E%92%E6%9F%A5%E6%89%8B%E5%86%8C-%E7%94%9F%E4%BA%A7%E5%AE%8C%E6%95%B4%E7%89%88/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="docker inspect 是 Docker 排错最强命令 ，90% 容器异常：闪退、启动失败、端口冲突、挂载错误、自动退出、OOM、网络异常，都靠它定位根因。 默认输出 JSON 完整结构，生产中 绝不建议裸跑无参数 inspect ，必须用 format 模板精准过滤 。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:11.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:38.175Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/docker-inspect-%E8%B6%85%E5%AE%9E%E7%94%A8%E6%8E%92%E6%9F%A5%E6%89%8B%E5%86%8C-%E7%94%9F%E4%BA%A7%E5%AE%8C%E6%95%B4%E7%89%88/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'docker inspect 超实用排查手册（生产完整版）',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-3.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">docker inspect 超实用排查手册（生产完整版）</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">Docker / 容器</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#Docker / 容器</span><span class="kb-article-tag">#Docker</span></div><div class="kb-article"><p><strong>docker inspect 是 Docker 排错最强命令</strong>，90% 容器异常：闪退、启动失败、端口冲突、挂载错误、自动退出、OOM、网络异常，都靠它定位根因。</p>
+<p>默认输出 JSON 完整结构，生产中<strong>绝不建议裸跑无参数 inspect</strong>，必须用 <strong>–format 模板精准过滤</strong>。</p>
+<hr>
+<h2 id="一、基础语法"><a href="#一、基础语法" class="headerlink" title="一、基础语法"></a>一、基础语法</h2><pre><code class="language-Plain"># 支持 容器名 / 容器ID / 镜像ID
+docker inspect [容器/镜像]
+
+# 精华用法：格式化输出（生产必备）
+docker inspect --format &#39;{{模板}}&#39; 容器名
+</code></pre>
+<hr>
+<h2 id="二、核心状态排查（容器闪退、退出、挂掉-首选）"><a href="#二、核心状态排查（容器闪退、退出、挂掉-首选）" class="headerlink" title="二、核心状态排查（容器闪退、退出、挂掉 首选）"></a>二、核心状态排查（容器闪退、退出、挂掉 首选）</h2><p><strong>重点：所有容器异常，第一步先看 State 状态</strong></p>
+<h3 id="2-1-一键查看退出码、运行状态、OOM"><a href="#2-1-一键查看退出码、运行状态、OOM" class="headerlink" title="2.1 一键查看退出码、运行状态、OOM"></a>2.1 一键查看退出码、运行状态、OOM</h3><pre><code class="language-Plain">docker inspect --format &#39;
+运行状态：{{.State.Status}}
+是否运行：{{.State.Running}}
+退出码：{{.State.ExitCode}}
+是否OOM杀死：{{.State.OOMKilled}}
+启动时间：{{.State.StartedAt}}
+停止时间：{{.State.FinishedAt}}
+错误信息：{{.State.Error}}
+&#39; 容器名
+</code></pre>
+<h3 id="2-2-退出码黄金解读（生产-100-够用）"><a href="#2-2-退出码黄金解读（生产-100-够用）" class="headerlink" title="2.2 退出码黄金解读（生产 100% 够用）"></a>2.2 退出码黄金解读（生产 100% 够用）</h3><ul>
+<li><strong>ExitCode &#x3D; 0</strong>：正常主动退出</li>
+<li><strong>ExitCode &#x3D; 1</strong>：程序代码异常、配置错误、启动参数错误</li>
+<li><strong>ExitCode &#x3D; 137</strong>：被系统强制 kill -9 &#x2F; 内存溢出 OOM</li>
+<li><strong>ExitCode &#x3D; 143</strong>：优雅终止 SIGTERM（被 docker stop&#x2F;重启&#x2F;脚本停掉）</li>
+</ul>
+<hr>
+<h2 id="三、容器启动配置排查（启动失败必查）"><a href="#三、容器启动配置排查（启动失败必查）" class="headerlink" title="三、容器启动配置排查（启动失败必查）"></a>三、容器启动配置排查（启动失败必查）</h2><h3 id="3-1-查看真正启动命令（最常用）"><a href="#3-1-查看真正启动命令（最常用）" class="headerlink" title="3.1 查看真正启动命令（最常用）"></a>3.1 查看真正启动命令（最常用）</h3><pre><code class="language-Plain">docker inspect --format &#39;
+入口程序：{{.Config.Entrypoint}}
+启动参数：{{.Config.Cmd}}
+工作目录：{{.Config.WorkingDir}}
+&#39; 容器名
+</code></pre>
+<h3 id="3-2-查看环境变量"><a href="#3-2-查看环境变量" class="headerlink" title="3.2 查看环境变量"></a>3.2 查看环境变量</h3><pre><code class="language-Plain">docker inspect --format &#39;{{.Config.Env | json}}&#39; 容器名
+</code></pre>
+<h3 id="3-3-查看重启策略（解决容器不自动重启）"><a href="#3-3-查看重启策略（解决容器不自动重启）" class="headerlink" title="3.3 查看重启策略（解决容器不自动重启）"></a>3.3 查看重启策略（解决容器不自动重启）</h3><pre><code class="language-Plain">docker inspect --format &#39;
+重启策略：{{.HostConfig.RestartPolicy.Name}}
+最大重试次数：{{.HostConfig.RestartPolicy.MaximumRetryCount}}
+&#39; 容器名
+</code></pre>
+<p>生产标准：<strong>always</strong> 宕机、重启、异常自动拉起</p>
+<hr>
+<h2 id="四、端口与网络排查（服务访问不通必查）"><a href="#四、端口与网络排查（服务访问不通必查）" class="headerlink" title="四、端口与网络排查（服务访问不通必查）"></a>四、端口与网络排查（服务访问不通必查）</h2><h3 id="4-1-查看宿主机-容器端口映射"><a href="#4-1-查看宿主机-容器端口映射" class="headerlink" title="4.1 查看宿主机 &amp; 容器端口映射"></a>4.1 查看宿主机 &amp; 容器端口映射</h3><pre><code class="language-Plain">docker inspect --format &#39;{{.HostConfig.PortBindings | json}}&#39; 容器名
+</code></pre>
+<h3 id="4-2-查看容器真实IP、网关、网络模式"><a href="#4-2-查看容器真实IP、网关、网络模式" class="headerlink" title="4.2 查看容器真实IP、网关、网络模式"></a>4.2 查看容器真实IP、网关、网络模式</h3><pre><code class="language-Plain">docker inspect --format &#39;
+{{range $k,$v := .NetworkSettings.Networks}}
+网络模式：{{$k}}
+容器IP：{{$v.IPAddress}}
+网关：{{$v.Gateway}}
+{{end}}&#39; 容器名
+</code></pre>
+<h3 id="4-3-查看容器暴露端口"><a href="#4-3-查看容器暴露端口" class="headerlink" title="4.3 查看容器暴露端口"></a>4.3 查看容器暴露端口</h3><pre><code class="language-Plain">docker inspect --format &#39;{{.Config.ExposedPorts | json}}&#39; 容器名
+</code></pre>
+<hr>
+<h2 id="五、挂载数据卷排查（数据丢失、配置不生效必查）"><a href="#五、挂载数据卷排查（数据丢失、配置不生效必查）" class="headerlink" title="五、挂载数据卷排查（数据丢失、配置不生效必查）"></a>五、挂载数据卷排查（数据丢失、配置不生效必查）</h2><pre><code class="language-Plain">docker inspect --format &#39;
+{{range .Mounts}}
+宿主机路径：{{.Source}}
+容器内路径：{{.Destination}}
+挂载类型：{{.Type}}
+{{end}}&#39; 容器名
+</code></pre>
+<p><strong>核心结论：没有挂载 &#x3D; 容器删除数据全部丢失</strong></p>
+<hr>
+<h2 id="六、日志排查（定位报错源头）"><a href="#六、日志排查（定位报错源头）" class="headerlink" title="六、日志排查（定位报错源头）"></a>六、日志排查（定位报错源头）</h2><h3 id="6-1-获取容器真实日志文件路径"><a href="#6-1-获取容器真实日志文件路径" class="headerlink" title="6.1 获取容器真实日志文件路径"></a>6.1 获取容器真实日志文件路径</h3><pre><code class="language-Plain">docker inspect --format &#39;{{.LogPath}}&#39; 容器名
+</code></pre>
+<p>可直接用 tail&#x2F;less 查看原始日志，比 docker logs 更稳定</p>
+<pre><code class="language-Plain">tail -f $(docker inspect --format &#39;{{.LogPath}}&#39; 容器名)
+</code></pre>
+<h3 id="6-2-查看日志驱动-日志限制"><a href="#6-2-查看日志驱动-日志限制" class="headerlink" title="6.2 查看日志驱动 &amp; 日志限制"></a>6.2 查看日志驱动 &amp; 日志限制</h3><pre><code class="language-Plain">docker inspect --format &#39;{{.HostConfig.LogConfig | json}}&#39; 容器名
+</code></pre>
+<hr>
+<h2 id="七、资源限制排查（OOM、卡顿必查）"><a href="#七、资源限制排查（OOM、卡顿必查）" class="headerlink" title="七、资源限制排查（OOM、卡顿必查）"></a>七、资源限制排查（OOM、卡顿必查）</h2><pre><code class="language-Plain">docker inspect --format &#39;
+内存限制：{{.HostConfig.Memory}}
+CPU核心：{{.HostConfig.NanoCpus}}
+PID数量限制：{{.HostConfig.PidsLimit}}
+&#39; 容器名
+</code></pre>
+<hr>
+<h2 id="八、生产最强一键排查命令（全套信息）"><a href="#八、生产最强一键排查命令（全套信息）" class="headerlink" title="八、生产最强一键排查命令（全套信息）"></a>八、生产最强一键排查命令（全套信息）</h2><p>复制直接用，一个命令输出所有排错关键信息</p>
+<pre><code class="language-Plain">docker inspect --format &#39;
+==========容器基础信息==========
+容器ID：{{.Id}}
+容器名：{{.Name}}
+创建时间：{{.Created}}
+
+==========运行状态==========
+运行状态：{{.State.Status}}
+是否运行：{{.State.Running}}
+退出码：{{.State.ExitCode}}
+OOM杀死：{{.State.OOMKilled}}
+启动时间：{{.State.StartedAt}}
+停止时间：{{.State.FinishedAt}}
+
+==========启动配置==========
+启动入口：{{.Config.Entrypoint}}
+启动参数：{{.Config.Cmd}}
+工作目录：{{.Config.WorkingDir}}
+重启策略：{{.HostConfig.RestartPolicy.Name}}
+
+==========网络端口==========
+端口映射：{{.HostConfig.PortBindings | json}}
+
+==========日志路径==========
+日志文件：{{.LogPath}}
+&#39; 容器名
+</code></pre>
+<hr>
+<h2 id="九、inspect-结合排错完整流程（标准流水线）"><a href="#九、inspect-结合排错完整流程（标准流水线）" class="headerlink" title="九、inspect 结合排错完整流程（标准流水线）"></a>九、inspect 结合排错完整流程（标准流水线）</h2><p><strong>容器异常 &#x3D; 固定排查顺序</strong></p>
+<ol>
+<li>inspect 查看 ExitCode、OOM 状态（定位大类问题）</li>
+<li>查看日志，确认崩溃前报错详情</li>
+<li>检查启动命令是否正确、参数是否缺失</li>
+<li>检查端口冲突、监听地址、网络</li>
+<li>检查挂载是否生效、配置文件是否持久化</li>
+<li>检查资源限制（内存&#x2F;CPU）</li>
+<li>检查重启策略，防止意外停止不拉起</li>
+</ol>
+<hr>
+<h2 id="十、常见问题速查"><a href="#十、常见问题速查" class="headerlink" title="十、常见问题速查"></a>十、常见问题速查</h2><h3 id="1-容器运行一会儿自动停？"><a href="#1-容器运行一会儿自动停？" class="headerlink" title="1. 容器运行一会儿自动停？"></a>1. 容器运行一会儿自动停？</h3><p>inspect 看 ExitCode&#x3D;143 → 外部停止，设置 always 重启策略</p>
+<h3 id="2-容器启动瞬间闪退？"><a href="#2-容器启动瞬间闪退？" class="headerlink" title="2. 容器启动瞬间闪退？"></a>2. 容器启动瞬间闪退？</h3><p>inspect 看 ExitCode&#x3D;1 → 程序配置&#x2F;启动命令错误，看启动参数 + 日志</p>
+<h3 id="3-容器莫名被杀死？"><a href="#3-容器莫名被杀死？" class="headerlink" title="3. 容器莫名被杀死？"></a>3. 容器莫名被杀死？</h3><p>inspect 看 OOMKilled&#x3D;true &#x2F; ExitCode&#x3D;137 → 内存溢出</p>
+<h3 id="4-修改配置不生效？"><a href="#4-修改配置不生效？" class="headerlink" title="4. 修改配置不生效？"></a>4. 修改配置不生效？</h3><p>inspect 看 Mounts，检查挂载是否正确覆盖</p>
+<h3 id="5-外网访问不通？"><a href="#5-外网访问不通？" class="headerlink" title="5. 外网访问不通？"></a>5. 外网访问不通？</h3><p>inspect 看 PortBindings + 容器监听 IP 是否为 0.0.0.0</p>
+<hr>
+<h2 id="十一、inspect-高阶技巧"><a href="#十一、inspect-高阶技巧" class="headerlink" title="十一、inspect 高阶技巧"></a>十一、inspect 高阶技巧</h2><h3 id="1-json-格式化输出（万能解析）"><a href="#1-json-格式化输出（万能解析）" class="headerlink" title="1. json 格式化输出（万能解析）"></a>1. json 格式化输出（万能解析）</h3><pre><code class="language-Plain"># 任意字段直接json格式化，排版超级舒服
+docker inspect --format &#39;{{.State | json}}&#39; 容器名
+docker inspect --format &#39;{{.NetworkSettings | json}}&#39; 容器名
+</code></pre>
+<h3 id="2-if-判断输出状态"><a href="#2-if-判断输出状态" class="headerlink" title="2. if 判断输出状态"></a>2. if 判断输出状态</h3><pre><code class="language-Plain">docker inspect --format &#39;{{if .State.Running}}✅运行中{{else}}❌已停止{{end}}&#39; 容器名
+</code></pre>
+<h3 id="3-批量查看所有容器状态"><a href="#3-批量查看所有容器状态" class="headerlink" title="3. 批量查看所有容器状态"></a>3. 批量查看所有容器状态</h3><pre><code class="language-Plain">docker ps -a --format &#39;{{.Names}}&#39; | xargs -I {} sh -c &quot;echo ===== {} =====; docker inspect --format &#39;状态:{{.State.Status}} 退出码:{{.State.ExitCode}}&#39; {}&quot;
+</code></pre>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

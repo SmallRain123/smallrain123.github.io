@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Windows 11 安装 uv包括：更新、常用命令、Python 管理、环境切换等,（Astral 的 Python 包/环境工具）完整指南 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="下面给你一套 Windows 11 已安装 uv（Astral 的 Python 包&#x2F;环境工具）完整指南 ，包括：更新、常用命令、Python 管理、环境切换等，直接照着用就行。 一、UV 更新方法 uv 是一个单文件工具，更新非常简单： ✅ 方法1（推荐） ✅ 方法2（重新安装">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Windows 11 安装 uv包括：更新、常用命令、Python 管理、环境切换等,（Astral 的 Python 包&#x2F;环境工具）完整指南">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/windows-11-%E5%AE%89%E8%A3%85-uv%E5%8C%85%E6%8B%AC-%E6%9B%B4%E6%96%B0-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-python-%E7%AE%A1%E7%90%86-%E7%8E%AF%E5%A2%83%E5%88%87%E6%8D%A2%E7%AD%89-astral-%E7%9A%84-python-%E5%8C%85-%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7-%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="下面给你一套 Windows 11 已安装 uv（Astral 的 Python 包&#x2F;环境工具）完整指南 ，包括：更新、常用命令、Python 管理、环境切换等，直接照着用就行。 一、UV 更新方法 uv 是一个单文件工具，更新非常简单： ✅ 方法1（推荐） ✅ 方法2（重新安装">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:06.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:35.851Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/windows-11-%E5%AE%89%E8%A3%85-uv%E5%8C%85%E6%8B%AC-%E6%9B%B4%E6%96%B0-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-python-%E7%AE%A1%E7%90%86-%E7%8E%AF%E5%A2%83%E5%88%87%E6%8D%A2%E7%AD%89-astral-%E7%9A%84-python-%E5%8C%85-%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7-%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Windows 11 安装 uv包括：更新、常用命令、Python 管理、环境切换等,（Astral 的 Python 包/环境工具）完整指南',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-1.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Windows 11 安装 uv包括：更新、常用命令、Python 管理、环境切换等,（Astral 的 Python 包/环境工具）完整指南</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">开发环境</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#开发环境</span></div><div class="kb-article"><p>下面给你一套 <strong>Windows 11 已安装 uv（Astral 的 Python 包&#x2F;环境工具）完整指南</strong>，包括：更新、常用命令、Python 管理、环境切换等，直接照着用就行。</p>
+<hr>
+<h1 id="一、UV-更新方法"><a href="#一、UV-更新方法" class="headerlink" title="一、UV 更新方法"></a>一、UV 更新方法</h1><p>uv 是一个单文件工具，更新非常简单：</p>
+<h2 id="✅-方法1（推荐）"><a href="#✅-方法1（推荐）" class="headerlink" title="✅ 方法1（推荐）"></a>✅ 方法1（推荐）</h2><pre><code class="language-Bash">uv self update
+</code></pre>
+<hr>
+<h2 id="✅-方法2（重新安装覆盖）"><a href="#✅-方法2（重新安装覆盖）" class="headerlink" title="✅ 方法2（重新安装覆盖）"></a>✅ 方法2（重新安装覆盖）</h2><p>如果上面失败，可以直接重新安装（会自动覆盖旧版本）：</p>
+<pre><code class="language-Bash">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
+</code></pre>
+<hr>
+<h2 id="✅-检查版本"><a href="#✅-检查版本" class="headerlink" title="✅ 检查版本"></a>✅ 检查版本</h2><pre><code class="language-Bash">uv --version
+</code></pre>
+<hr>
+<p>以上安装部上可以试试这个方案：</p>
+<p>通过winget安装</p>
+<pre><code class="language-PowerShell">winget install --id=astral-sh.uv -e
+</code></pre>
+<h2 id="二、UV-核心概念（你必须知道）"><a href="#二、UV-核心概念（你必须知道）" class="headerlink" title="二、UV 核心概念（你必须知道）"></a>二、UV 核心概念（你必须知道）</h2><p>uv ≈ pip + virtualenv + pyenv + poetry 的结合体：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>uv 对应</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>安装 Python</td>
+<td>uv python install</td>
+</tr>
+<tr>
+<td>管理版本</td>
+<td>uv python list</td>
+</tr>
+<tr>
+<td>创建虚拟环境</td>
+<td>uv venv</td>
+</tr>
+<tr>
+<td>安装依赖</td>
+<td>uv pip install</td>
+</tr>
+<tr>
+<td>运行脚本</td>
+<td>uv run</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="三、Python-版本管理（重点）"><a href="#三、Python-版本管理（重点）" class="headerlink" title="三、Python 版本管理（重点）"></a>三、Python 版本管理（重点）</h2><h3 id="1️⃣-查看可安装-Python-版本"><a href="#1️⃣-查看可安装-Python-版本" class="headerlink" title="1️⃣ 查看可安装 Python 版本"></a>1️⃣ 查看可安装 Python 版本</h3><pre><code class="language-Bash">uv python list
+</code></pre>
+<p>👉 会显示：</p>
+<hr>
+<h3 id="2️⃣-安装-Python（推荐-3-11-或-3-12）"><a href="#2️⃣-安装-Python（推荐-3-11-或-3-12）" class="headerlink" title="2️⃣ 安装 Python（推荐 3.11 或 3.12）"></a>2️⃣ 安装 Python（推荐 3.11 或 3.12）</h3><pre><code class="language-Bash">uv python install 3.11
+</code></pre>
+<p>或指定版本：</p>
+<pre><code class="language-Bash">uv python install 3.11.9
+</code></pre>
+<hr>
+<h3 id="3️⃣-查看已安装-Python"><a href="#3️⃣-查看已安装-Python" class="headerlink" title="3️⃣ 查看已安装 Python"></a>3️⃣ 查看已安装 Python</h3><pre><code class="language-Bash">uv python list --installed
+</code></pre>
+<hr>
+<h3 id="4️⃣-设置全局默认-Python"><a href="#4️⃣-设置全局默认-Python" class="headerlink" title="4️⃣ 设置全局默认 Python"></a>4️⃣ 设置全局默认 Python</h3><pre><code class="language-Bash">uv python pin 3.11
+</code></pre>
+<p>👉 类似 pyenv global</p>
+<hr>
+<h3 id="5️⃣-项目级-Python（推荐）"><a href="#5️⃣-项目级-Python（推荐）" class="headerlink" title="5️⃣ 项目级 Python（推荐）"></a>5️⃣ 项目级 Python（推荐）</h3><p>进入项目目录：</p>
+<pre><code class="language-Bash">uv python pin 3.11
+</code></pre>
+<p>会生成：</p>
+<pre><code class="language-Plain">.python-version
+</code></pre>
+<hr>
+<h3 id="6️⃣-使用指定-Python-运行"><a href="#6️⃣-使用指定-Python-运行" class="headerlink" title="6️⃣ 使用指定 Python 运行"></a>6️⃣ 使用指定 Python 运行</h3><pre><code class="language-Bash">uv run --python 3.11 python script.py
+</code></pre>
+<hr>
+<h2 id="四、虚拟环境（替代-venv-conda）"><a href="#四、虚拟环境（替代-venv-conda）" class="headerlink" title="四、虚拟环境（替代 venv &#x2F; conda）"></a>四、虚拟环境（替代 venv &#x2F; conda）</h2><h3 id="1️⃣-创建虚拟环境"><a href="#1️⃣-创建虚拟环境" class="headerlink" title="1️⃣ 创建虚拟环境"></a>1️⃣ 创建虚拟环境</h3><pre><code class="language-Bash">uv venv
+</code></pre>
+<p>或指定 Python：</p>
+<pre><code class="language-Bash">uv venv --python 3.11
+</code></pre>
+<hr>
+<h3 id="2️⃣-激活环境（Windows）"><a href="#2️⃣-激活环境（Windows）" class="headerlink" title="2️⃣ 激活环境（Windows）"></a>2️⃣ 激活环境（Windows）</h3><pre><code class="language-Bash">.venv\Scripts\activate
+</code></pre>
+<hr>
+<h3 id="3️⃣-删除环境"><a href="#3️⃣-删除环境" class="headerlink" title="3️⃣ 删除环境"></a>3️⃣ 删除环境</h3><p>直接删 <code>.venv</code> 文件夹即可</p>
+<hr>
+<h2 id="五、依赖管理（替代-pip）"><a href="#五、依赖管理（替代-pip）" class="headerlink" title="五、依赖管理（替代 pip）"></a>五、依赖管理（替代 pip）</h2><h3 id="1️⃣-安装包"><a href="#1️⃣-安装包" class="headerlink" title="1️⃣ 安装包"></a>1️⃣ 安装包</h3><pre><code class="language-Bash">uv pip install open-webui
+</code></pre>
+<hr>
+<h3 id="2️⃣-安装-requirements-txt"><a href="#2️⃣-安装-requirements-txt" class="headerlink" title="2️⃣ 安装 requirements.txt"></a>2️⃣ 安装 requirements.txt</h3><pre><code class="language-Bash">uv pip install -r requirements.txt
+</code></pre>
+<hr>
+<h3 id="3️⃣-导出依赖"><a href="#3️⃣-导出依赖" class="headerlink" title="3️⃣ 导出依赖"></a>3️⃣ 导出依赖</h3><pre><code class="language-Bash">uv pip freeze &gt; requirements.txt
+</code></pre>
+<hr>
+<h3 id="4️⃣-升级包"><a href="#4️⃣-升级包" class="headerlink" title="4️⃣ 升级包"></a>4️⃣ 升级包</h3><pre><code class="language-Bash">uv pip install -U 包名
+</code></pre>
+<hr>
+<h2 id="六、运行项目（很强大）"><a href="#六、运行项目（很强大）" class="headerlink" title="六、运行项目（很强大）"></a>六、运行项目（很强大）</h2><h3 id="1️⃣-直接运行-Python"><a href="#1️⃣-直接运行-Python" class="headerlink" title="1️⃣ 直接运行 Python"></a>1️⃣ 直接运行 Python</h3><pre><code class="language-Bash">uv run python main.py
+</code></pre>
+<hr>
+<h3 id="2️⃣-自动创建环境-安装依赖（神器）"><a href="#2️⃣-自动创建环境-安装依赖（神器）" class="headerlink" title="2️⃣ 自动创建环境 + 安装依赖（神器）"></a>2️⃣ 自动创建环境 + 安装依赖（神器）</h3><p>如果有 <code>pyproject.toml</code>：</p>
+<pre><code class="language-Bash">uv run main.py
+</code></pre>
+<p>👉 uv 会自动：</p>
+<hr>
+<h2 id="七、项目初始化（类似-poetry）"><a href="#七、项目初始化（类似-poetry）" class="headerlink" title="七、项目初始化（类似 poetry）"></a>七、项目初始化（类似 poetry）</h2><pre><code class="language-Bash">uv init
+</code></pre>
+<p>生成：</p>
+<hr>
+<h2 id="八、锁定依赖（比-pip-更强）"><a href="#八、锁定依赖（比-pip-更强）" class="headerlink" title="八、锁定依赖（比 pip 更强）"></a>八、锁定依赖（比 pip 更强）</h2><pre><code class="language-Bash">uv lock
+</code></pre>
+<p>生成：</p>
+<pre><code class="language-Plain">uv.lock
+</code></pre>
+<hr>
+<h2 id="九、常见实战命令（你这种场景）"><a href="#九、常见实战命令（你这种场景）" class="headerlink" title="九、常见实战命令（你这种场景）"></a>九、常见实战命令（你这种场景）</h2><h3 id="👉-安装-Python-3-11-创建环境"><a href="#👉-安装-Python-3-11-创建环境" class="headerlink" title="👉 安装 Python 3.11 + 创建环境"></a>👉 安装 Python 3.11 + 创建环境</h3><pre><code class="language-Bash">uv python install 3.11
+uv venv --python 3.11
+</code></pre>
+<hr>
+<h3 id="👉-安装-open-webui（你之前场景）"><a href="#👉-安装-open-webui（你之前场景）" class="headerlink" title="👉 安装 open-webui（你之前场景）"></a>👉 安装 open-webui（你之前场景）</h3><pre><code class="language-Bash">uv pip install open-webui
+</code></pre>
+<hr>
+<h3 id="👉-运行-open-webui"><a href="#👉-运行-open-webui" class="headerlink" title="👉 运行 open-webui"></a>👉 运行 open-webui</h3><pre><code class="language-Bash">uv run open-webui serve
+</code></pre>
+<hr>
+<h3 id="👉-使用代理（国内）"><a href="#👉-使用代理（国内）" class="headerlink" title="👉 使用代理（国内）"></a>👉 使用代理（国内）</h3><pre><code class="language-Bash">set HTTP_PROXY=http://127.0.0.1:7890
+set HTTPS_PROXY=http://127.0.0.1:7890
+</code></pre>
+<hr>
+<h2 id="十、UV-vs-pip-conda（重点理解）"><a href="#十、UV-vs-pip-conda（重点理解）" class="headerlink" title="十、UV vs pip &#x2F; conda（重点理解）"></a>十、UV vs pip &#x2F; conda（重点理解）</h2><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>uv</th>
+<th>pip</th>
+<th>conda</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>速度</td>
+<td>🚀 极快</td>
+<td>慢</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Python管理</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>虚拟环境</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>锁文件</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>自动环境</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<p>👉 结论：  </p>
+<p><strong>uv &#x3D; 下一代 Python 工具（强烈建议你全面替换 pip + venv）</strong></p>
+<hr>
+<h2 id="十一、常见坑（你一定会遇到）"><a href="#十一、常见坑（你一定会遇到）" class="headerlink" title="十一、常见坑（你一定会遇到）"></a>十一、常见坑（你一定会遇到）</h2><h3 id="❗-1-Python-版本冲突"><a href="#❗-1-Python-版本冲突" class="headerlink" title="❗ 1. Python 版本冲突"></a>❗ 1. Python 版本冲突</h3><p>👉 不要用系统 Python  </p>
+<p>👉 全部用：</p>
+<pre><code class="language-Bash">uv python install
+</code></pre>
+<hr>
+<h3 id="❗-2-open-webui-跑不起来"><a href="#❗-2-open-webui-跑不起来" class="headerlink" title="❗ 2. open-webui 跑不起来"></a>❗ 2. open-webui 跑不起来</h3><p>👉 80% 是：</p>
+<hr>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Claude Code + LongCat 使用教程 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="LongCat 是 Claude Opus 4.6 模型的一个代号，这是目前最先进的 Claude 模型，特别适合复杂的软件开发任务。 LongCat 的优势 \ 🚀 更强的代码理解能力 ：能理解复杂的代码逻辑和架构 \ 🧠 更准确的推理 ：在解决问题时提供更准确的方案 \">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Claude Code + LongCat 使用教程">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/claude-code-longcat-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="LongCat 是 Claude Opus 4.6 模型的一个代号，这是目前最先进的 Claude 模型，特别适合复杂的软件开发任务。 LongCat 的优势 \ 🚀 更强的代码理解能力 ：能理解复杂的代码逻辑和架构 \ 🧠 更准确的推理 ：在解决问题时提供更准确的方案 \">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:26.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:45.148Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/claude-code-longcat-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Claude Code + LongCat 使用教程',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-3.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Claude Code + LongCat 使用教程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">AI / 工具</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#AI / 工具</span><span class="kb-article-tag">#Claude</span></div><div class="kb-article"><p>LongCat 是 Claude Opus 4.6 模型的一个代号，这是目前最先进的 Claude 模型，特别适合复杂的软件开发任务。</p>
+<h2 id="LongCat-的优势"><a href="#LongCat-的优势" class="headerlink" title="LongCat 的优势"></a>LongCat 的优势</h2><p>- 🚀 <strong>更强的代码理解能力</strong>：能理解复杂的代码逻辑和架构</p>
+<p>- 🧠 <strong>更准确的推理</strong>：在解决问题时提供更准确的方案</p>
+<p>- 📝 <strong>更好的文档生成</strong>：生成更详细、更准确的文档</p>
+<p>- 🔧 <strong>更智能的调试</strong>：能更好地诊断和解决复杂问题</p>
+<h2 id="配置-LongCat-模型"><a href="#配置-LongCat-模型" class="headerlink" title="配置 LongCat 模型"></a>配置 LongCat 模型</h2><h3 id="设置默认模型"><a href="#设置默认模型" class="headerlink" title="设置默认模型"></a>设置默认模型</h3><pre><code class="language-Bash"># 将 LongCat (Claude Opus 4.6) 设为默认模型
+claude config set model claude-opus-4-6
+
+# 验证配置
+claude config list
+</code></pre>
+<h3 id="临时使用-LongCat"><a href="#临时使用-LongCat" class="headerlink" title="临时使用 LongCat"></a>临时使用 LongCat</h3><pre><code class="language-Bash"># 在特定会话中使用 LongCat
+claude --model claude-opus-4-6
+
+# 或者在对话中指定
+claude --model longcat-flash-chat
+</code></pre>
+<h2 id="LongCat-专用功能"><a href="#LongCat-专用功能" class="headerlink" title="LongCat 专用功能"></a>LongCat 专用功能</h2><h3 id="1-复杂架构设计"><a href="#1-复杂架构设计" class="headerlink" title="1. 复杂架构设计"></a>1. 复杂架构设计</h3><p>LongCat 特别擅长处理复杂的软件架构设计：</p>
+<pre><code class="language-Plain">用户：设计一个微服务架构的电商平台，包含用户服务、商品服务、订单服务
+LongCat：让我为你设计一个完整的微服务架构...
+</code></pre>
+<p><strong>LongCat 会提供：</strong></p>
+<ul>
+<li>服务划分和职责定义</li>
+<li>API 设计规范</li>
+<li>数据流和通信机制</li>
+<li>部署架构建议</li>
+<li>监控和日志方案</li>
+</ul>
+<h3 id="2-深度代码分析"><a href="#2-深度代码分析" class="headerlink" title="2. 深度代码分析"></a>2. 深度代码分析</h3><pre><code class="language-Plain">用户：分析这个代码库的性能瓶颈
+LongCat：让我深入分析代码性能...
+</code></pre>
+<p>LongCat 能够：</p>
+<ul>
+<li>识别算法复杂度问题</li>
+<li>发现内存泄漏风险</li>
+<li>建议并发优化方案</li>
+<li>提供缓存策略</li>
+</ul>
+<h3 id="3-智能重构建议"><a href="#3-智能重构建议" class="headerlink" title="3. 智能重构建议"></a>3. 智能重构建议</h3><pre><code class="language-Plain">用户：重构这个老旧的单体应用到现代化架构
+LongCat：这是一个复杂的重构任务，让我制定详细计划...
+</code></pre>
+<h2 id="使用技巧和最佳实践"><a href="#使用技巧和最佳实践" class="headerlink" title="使用技巧和最佳实践"></a>使用技巧和最佳实践</h2><h3 id="1-利用-LongCat-的推理能力"><a href="#1-利用-LongCat-的推理能力" class="headerlink" title="1. 利用 LongCat 的推理能力"></a>1. 利用 LongCat 的推理能力</h3><p><strong>好的提问方式：</strong></p>
+<pre><code class="language-Plain">用户：我们的系统在高并发下出现性能问题，数据库查询很慢，如何优化？
+LongCat：让我分析这个性能问题...
+</code></pre>
+<p><strong>不好的提问方式：</strong></p>
+<pre><code class="language-Plain">用户：系统很慢怎么办？❌
+</code></pre>
+<h3 id="2-分步骤复杂任务"><a href="#2-分步骤复杂任务" class="headerlink" title="2. 分步骤复杂任务"></a>2. 分步骤复杂任务</h3><p>对于复杂任务，使用计划模式：</p>
+<pre><code class="language-Plain">用户：我们需要将现有的 Python 2.7 代码迁移到 Python 3.11，包含 50 多个模块
+LongCat：这是一个大型迁移项目，让我制定迁移计划...
+</code></pre>
+<p><strong>LongCat 会：</strong></p>
+<ol>
+<li>分析现有代码结构</li>
+<li>识别不兼容的语法</li>
+<li>制定迁移顺序</li>
+<li>生成测试方案</li>
+<li>提供回滚策略</li>
+</ol>
+<h3 id="3-代码审查和质量保证"><a href="#3-代码审查和质量保证" class="headerlink" title="3. 代码审查和质量保证"></a>3. 代码审查和质量保证</h3><pre><code class="language-Plain">用户：审查这个 Pull Request 的代码质量和安全性
+LongCat：让我全面审查这个 PR...
+</code></pre>
+<p>LongCat 会检查：</p>
+<ul>
+<li>代码风格和最佳实践</li>
+<li>安全漏洞（SQL注入、XSS等）</li>
+<li>性能问题</li>
+<li>测试覆盖率</li>
+<li>文档完整性</li>
+</ul>
+<h2 id="实际案例演示"><a href="#实际案例演示" class="headerlink" title="实际案例演示"></a>实际案例演示</h2><h3 id="案例-1：构建高性能-API"><a href="#案例-1：构建高性能-API" class="headerlink" title="案例 1：构建高性能 API"></a>案例 1：构建高性能 API</h3><pre><code class="language-Plain">用户：使用 FastAPI 构建一个高性能的用户管理 API，要求支持 1000+ QPS
+LongCat：让我为你设计一个高性能的 FastAPI 应用...
+</code></pre>
+<pre><code class="language-Python">from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.orm import Session
+from redis import Redis
+import asyncio
+from typing import List
+
+app = FastAPI()
+
+# Redis 缓存
+redis_client = Redis(host=&#39;localhost&#39;, port=6379, db=0)
+
+@app.get(&quot;/users/{user_id}&quot;)
+async def get_user(user_id: int, db: Session = Depends(get_db)):
+    # 先查缓存
+    cache_key = f&quot;user:{user_id}&quot;
+    cached_user = redis_client.get(cache_key)
+
+    if cached_user:
+        return {&quot;user&quot;: cached_user, &quot;from_cache&quot;: True}
+
+    # 缓存未命中，查数据库
+    user = await db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+
+    # 设置缓存
+    redis_client.setex(cache_key, 300, user.json())  # 5分钟过期
+
+    return {&quot;user&quot;: user, &quot;from_cache&quot;: False}
+
+@app.get(&quot;/users/&quot;)
+async def get_users(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db)
+):
+    # 使用分页和连接池优化
+    users = await db.query(User).offset(skip).limit(limit).all()
+    return users
+</code></pre>
+<h3 id="案例-2：复杂数据处理"><a href="#案例-2：复杂数据处理" class="headerlink" title="案例 2：复杂数据处理"></a>案例 2：复杂数据处理</h3><pre><code class="language-Plain">用户：处理大规模用户行为数据，需要实时分析和批量处理
+LongCat：让我设计一个完整的数据处理架构...
+</code></pre>
+<pre><code class="language-Python">import pandas as pd
+import numpy as np
+from pyspark.sql import SparkSession
+from kafka import KafkaConsumer
+import asyncio
+
+class UserBehaviorProcessor:
+    def __init__(self):
+        self.spark = SparkSession.builder \
+            .appName(&quot;UserBehaviorAnalysis&quot;) \
+            .config(&quot;spark.sql.adaptive.enabled&quot;, &quot;true&quot;) \
+            .getOrCreate()
+
+    async def real_time_processing(self):
+        &quot;&quot;&quot;实时处理用户行为数据&quot;&quot;&quot;
+        consumer = KafkaConsumer(
+            &#39;user-behavior&#39;,
+            bootstrap_servers=[&#39;localhost:9092&#39;],
+            value_deserializer=lambda x: json.loads(x.decode(&#39;utf-8&#39;))
+        )
+
+        for message in consumer:
+            data = message.value
+            await self.process_single_event(data)
+
+    def batch_processing(self, date_range):
+        &quot;&quot;&quot;批量处理历史数据&quot;&quot;&quot;
+        df = self.spark.read.parquet(f&quot;s3://data-lake/user-behavior/{date_range}&quot;)
+
+        # 用户行为分析
+        result = df.groupBy(&quot;user_id&quot;, &quot;event_type&quot;) \
+                   .agg({
+                       &quot;timestamp&quot;: &quot;count&quot;,
+                       &quot;duration&quot;: &quot;avg&quot;
+                   }) \
+                   .withColumnRenamed(&quot;count(timestamp)&quot;, &quot;event_count&quot;) \
+                   .withColumnRenamed(&quot;avg(duration)&quot;, &quot;avg_duration&quot;)
+
+        return result
+</code></pre>
+<h2 id="LongCat-专用提示词技巧"><a href="#LongCat-专用提示词技巧" class="headerlink" title="LongCat 专用提示词技巧"></a>LongCat 专用提示词技巧</h2><h3 id="1-明确指定使用-LongCat-能力"><a href="#1-明确指定使用-LongCat-能力" class="headerlink" title="1. 明确指定使用 LongCat 能力"></a>1. 明确指定使用 LongCat 能力</h3><pre><code class="language-Plain">用户：使用 LongCat 的深度推理能力来分析这个架构设计
+用户：利用 LongCat 的高级代码理解来优化这个算法
+</code></pre>
+<h3 id="2-分层次提问"><a href="#2-分层次提问" class="headerlink" title="2. 分层次提问"></a>2. 分层次提问</h3><pre><code class="language-Plain">用户：
+1. 首先分析当前架构的问题
+2. 然后提出改进方案
+3. 最后给出具体的实现步骤
+</code></pre>
+<h3 id="3-要求详细解释"><a href="#3-要求详细解释" class="headerlink" title="3. 要求详细解释"></a>3. 要求详细解释</h3><pre><code class="language-Plain">用户：请详细解释这个解决方案的每个步骤，包括为什么选择这个方案
+</code></pre>
+<h2 id="性能优化建议"><a href="#性能优化建议" class="headerlink" title="性能优化建议"></a>性能优化建议</h2><h3 id="1-合理使用-LongCat"><a href="#1-合理使用-LongCat" class="headerlink" title="1. 合理使用 LongCat"></a>1. 合理使用 LongCat</h3><p>- <strong>适合 LongCat 的任务：</strong></p>
+<ul>
+<li>复杂架构设计</li>
+<li>深度代码分析</li>
+<li>性能优化</li>
+<li>安全审计</li>
+<li>大规模重构</li>
+</ul>
+<p>- <strong>适合其他模型的任务：</strong></p>
+<ul>
+<li>简单代码生成</li>
+<li>基础语法问题</li>
+<li>简单文档编写</li>
+</ul>
+<h3 id="2-优化提示词"><a href="#2-优化提示词" class="headerlink" title="2. 优化提示词"></a>2. 优化提示词</h3><pre><code class="language-Plain">用户：我需要一个完整的解决方案，包括：
+- 技术选型理由
+- 架构设计图
+- 核心代码实现
+- 测试方案
+- 部署指南
+</code></pre>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="Q1-LongCat-响应速度如何？"><a href="#Q1-LongCat-响应速度如何？" class="headerlink" title="Q1: LongCat 响应速度如何？"></a>Q1: LongCat 响应速度如何？</h3><p><strong>答：</strong> LongCat 由于模型更大，响应时间可能比其他模型稍长，但对于复杂任务来说，质量提升显著。</p>
+<h3 id="Q2-如何平衡成本和效果？"><a href="#Q2-如何平衡成本和效果？" class="headerlink" title="Q2: 如何平衡成本和效果？"></a>Q2: 如何平衡成本和效果？</h3><p><strong>答：</strong> 对于复杂任务使用 LongCat，简单任务使用其他模型。</p>
+<h3 id="Q3-LongCat-有什么限制？"><a href="#Q3-LongCat-有什么限制？" class="headerlink" title="Q3: LongCat 有什么限制？"></a>Q3: LongCat 有什么限制？</h3><p><strong>答：</strong> 虽然 LongCat 很强大，但仍需要清晰的上下文和具体的需求描述。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>LongCat (Claude Opus 4.6) 是处理复杂软件开发任务的强大工具。通过合理使用，可以显著提高开发效率和质量。</p>
+<p><strong>记住：</strong></p>
+<ul>
+<li>明确需求和上下文</li>
+<li>分步骤处理复杂任务</li>
+<li>充分利用 LongCat 的推理能力</li>
+<li>平衡成本和效果</li>
+</ul>
+<p>开始你的 LongCat 之旅！🐱‍💻</p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>All-in-One (AIO) 实战教程 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="本教程基于当前最主流、最稳定的技术栈： 底层 PVE 8.x + 主路由 iKuai (爱快) + 旁路由 OpenWrt&#x2F;iStoreOS + Docker&#x2F;NAS 服务 。旨在帮助您用一台小主机取代路由器、NAS、下载机和电视盒子，实现“一机搞定全家网络”。 🚀 软路由 A">
+<meta property="og:type" content="website">
+<meta property="og:title" content="All-in-One (AIO) 实战教程">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/all-in-one-aio-%E5%AE%9E%E6%88%98%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="本教程基于当前最主流、最稳定的技术栈： 底层 PVE 8.x + 主路由 iKuai (爱快) + 旁路由 OpenWrt&#x2F;iStoreOS + Docker&#x2F;NAS 服务 。旨在帮助您用一台小主机取代路由器、NAS、下载机和电视盒子，实现“一机搞定全家网络”。 🚀 软路由 A">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:01.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:33.639Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/all-in-one-aio-%E5%AE%9E%E6%88%98%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'All-in-One (AIO) 实战教程',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">All-in-One (AIO) 实战教程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">AI / 工具</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#AI / 工具</span></div><div class="kb-article"><p>本教程基于当前最主流、最稳定的技术栈：<strong>底层 PVE 8.x + 主路由 iKuai (爱快) + 旁路由 OpenWrt&#x2F;iStoreOS + Docker&#x2F;NAS 服务</strong>。旨在帮助您用一台小主机取代路由器、NAS、下载机和电视盒子，实现“一机搞定全家网络”。</p>
+<hr>
+<h1 id="🚀-软路由-All-in-One-AIO-终极指南：从入门到精通-2026版"><a href="#🚀-软路由-All-in-One-AIO-终极指南：从入门到精通-2026版" class="headerlink" title="🚀 软路由 All-in-One (AIO) 终极指南：从入门到精通 (2026版)"></a>🚀 软路由 All-in-One (AIO) 终极指南：从入门到精通 (2026版)</h1><blockquote>
+<p><strong>📅 更新时间</strong>：2026-03-20</p>
+<p><strong>💡 核心理念</strong>：拒绝“All-in-Boom”（一崩全崩），构建高可用、易维护的家庭网络中心。</p>
+<p><strong>⏱️ 预计耗时</strong>：1.5 - 2 小时</p>
+<p><strong>🎯 适用硬件</strong>：多网口 x86 小主机 (推荐 N100, N305, 或二手 J4125&#x2F;J6412)</p>
+</blockquote>
+<hr>
+<h2 id="1-准备工作-Prerequisites"><a href="#1-准备工作-Prerequisites" class="headerlink" title="1. 准备工作 (Prerequisites)"></a>1. 准备工作 (Prerequisites)</h2><p>在开始之前，请确保您拥有以下硬件和软件资源。</p>
+<h3 id="🛠️-硬件清单"><a href="#🛠️-硬件清单" class="headerlink" title="🛠️ 硬件清单"></a>🛠️ 硬件清单</h3><table>
+<thead>
+<tr>
+<th>设备</th>
+<th>要求</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>软路由主机</strong></td>
+<td>至少 2 个网口 (推荐 4 个 2.5G 网口)</td>
+<td>核心设备，推荐搭载 Intel N100&#x2F;N305 处理器</td>
+</tr>
+<tr>
+<td><strong>U 盘</strong></td>
+<td>容量 ≥ 8GB</td>
+<td>用于制作启动安装盘</td>
+</tr>
+<tr>
+<td><strong>显示器 &amp; 键盘</strong></td>
+<td>任意</td>
+<td>仅安装系统时临时使用，后续可拔掉</td>
+</tr>
+<tr>
+<td><strong>网线</strong></td>
+<td>超五类或六类线</td>
+<td>至少 2 根，建议准备 4 根</td>
+</tr>
+</tbody></table>
+<h3 id="💾-软件镜像下载"><a href="#💾-软件镜像下载" class="headerlink" title="💾 软件镜像下载"></a>💾 软件镜像下载</h3><p>请提前下载以下 ISO 镜像文件到电脑本地：</p>
+<ol>
+<li><strong>Ventoy</strong> (制作启动盘工具): <a target="_blank" rel="noopener" href="https://www.ventoy.net/">官网下载</a></li>
+<li><strong>Proxmox VE (PVE) 8.x ISO</strong>: <a target="_blank" rel="noopener" href="https://www.proxmox.com/en/downloads">官方下载</a></li>
+<li><strong>iKuai (爱快) ISO</strong>: <a target="_blank" rel="noopener" href="https://www.ikuai.com/download">官方下载</a></li>
+<li><strong>OpenWrt &#x2F; iStoreOS ISO</strong>: <a target="_blank" rel="noopener" href="https://www.istoreos.com/">推荐下载恩山论坛编译版或 iStoreOS 官方镜像</a></li>
+</ol>
+<hr>
+<h2 id="2-第一步：制作启动盘与安装-PVE"><a href="#2-第一步：制作启动盘与安装-PVE" class="headerlink" title="2. 第一步：制作启动盘与安装 PVE"></a>2. 第一步：制作启动盘与安装 PVE</h2><p>PVE (Proxmox Virtual Environment) 是整个 AIO 的基石，它负责管理所有虚拟机。</p>
+<h3 id="2-1-制作-Ventoy-启动盘"><a href="#2-1-制作-Ventoy-启动盘" class="headerlink" title="2.1 制作 Ventoy 启动盘"></a>2.1 制作 Ventoy 启动盘</h3><ol>
+<li>插入 U 盘，运行 <strong>Ventoy2Disk.exe</strong>。</li>
+<li>点击 <strong>“安装”</strong> (注意：这会格式化 U 盘，请备份数据)。</li>
+<li>安装完成后，直接将下载好的 <strong>PVE ISO</strong>、<strong>iKuai ISO</strong>、<strong>OpenWrt ISO</strong> 三个文件<strong>复制</strong>到 U 盘根目录。</li>
+</ol>
+<p><img src="https://via.placeholder.com/800x400?text=Ventoy+Installation+Step" alt="Ventoy 制作示意图"></p>
+<p><em>图 1：将多个 ISO 直接复制到 U 盘即可，无需反复刻录</em></p>
+<h3 id="2-2-安装-PVE-系统"><a href="#2-2-安装-PVE-系统" class="headerlink" title="2.2 安装 PVE 系统"></a>2.2 安装 PVE 系统</h3><ol>
+<li><p>将 U 盘插入软路由主机，连接显示器和键盘，开机。</p>
+</li>
+<li><p>连续按 <code>F11</code> 或 <code>Del</code> 进入启动菜单，选择您的 U 盘 (UEFI: Ventoy)。</p>
+</li>
+<li><p>在 Ventoy 菜单中选择 <strong>Proxmox VE Installer</strong>。</p>
+</li>
+<li><p>按照向导操作：</p>
+<ul>
+<li><p><strong>Install Proxmox VE</strong> -&gt; 同意协议。</p>
+</li>
+<li><p><strong>目标硬盘</strong>：选择您的主机内置硬盘 (数据将被清空！)。</p>
+</li>
+<li><p><strong>国家&#x2F;时区</strong>：选择 <code>China</code> &#x2F; <code>Asia/Shanghai</code>。</p>
+</li>
+<li><p><strong>密码设置</strong>：设置 <code>root</code> 用户的密码 (请务必记牢！)。</p>
+</li>
+<li><p><strong>网络配置</strong>：</p>
+<ul>
+<li><code>Hostname</code>: 例如 <code>pve.home</code></li>
+<li><code>IP Address</code>: 设置一个固定内网 IP (如 <code>192.168.1.2</code>)，<strong>不要</strong>与主路由冲突。</li>
+<li><code>Gateway</code>: 指向您现有的主路由网关 (如 <code>192.168.1.1</code>)。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>安装完成后重启，拔掉 U 盘。</p>
+</li>
+</ol>
+<blockquote>
+<p>💡 <strong>小贴士</strong>：安装成功后，您可以在同一局域网的另一台电脑浏览器输入 <code>https://192.168.1.2:8006</code> 访问 PVE 管理后台。忽略证书警告即可。</p>
+</blockquote>
+<hr>
+<h2 id="3-第二步：部署主路由-iKuai-爱快"><a href="#3-第二步：部署主路由-iKuai-爱快" class="headerlink" title="3. 第二步：部署主路由 iKuai (爱快)"></a>3. 第二步：部署主路由 iKuai (爱快)</h2><p>iKuai 以其强大的流控和稳定性著称，非常适合作为 AIO 的主路由负责拨号和流量分发。</p>
+<h3 id="3-1-上传镜像与创建虚拟机"><a href="#3-1-上传镜像与创建虚拟机" class="headerlink" title="3.1 上传镜像与创建虚拟机"></a>3.1 上传镜像与创建虚拟机</h3><ol>
+<li><p>登录 PVE 后台，点击左侧节点名 -&gt; <strong>local (pve)</strong> -&gt; <strong>ISO Images</strong> -&gt; <strong>Upload</strong>，上传 iKuai ISO。</p>
+</li>
+<li><p>点击右上角 <strong>创建虚拟机 (Create VM)</strong>：</p>
+<ul>
+<li><strong>VM ID</strong>: <code>100</code></li>
+<li><strong>名称</strong>: <code>iKuai-Master</code></li>
+<li><strong>ISO 镜像</strong>: 选择刚才上传的 iKuai 镜像。</li>
+<li><strong>系统</strong>: 默认 (Linux 6.x - 2.6 Kernel)。</li>
+<li><strong>磁盘</strong>: 大小给 <code>4GB</code> 即可 (精简格式)。</li>
+<li><strong>CPU</strong>: 核心数 <code>2</code> (根据硬件调整)。</li>
+<li><strong>内存</strong>: <code>1024 MB</code> (1G 足够)。</li>
+<li><strong>网络</strong>: 桥接模式，选择您的 <strong>WAN 口对应的物理网卡</strong> (例如 <code>enp2s0</code>)。</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-2-关键步骤：添加第二张网卡-LAN"><a href="#3-2-关键步骤：添加第二张网卡-LAN" class="headerlink" title="3.2 关键步骤：添加第二张网卡 (LAN)"></a>3.2 关键步骤：添加第二张网卡 (LAN)</h3><p>iKuai 需要至少两张网卡 (WAN 和 LAN)。</p>
+<ol>
+<li>虚拟机创建完成后，点击该虚拟机 -&gt; <strong>硬件 (Hardware)</strong>。</li>
+<li>点击 <strong>添加 (Add)</strong> -&gt; <strong>网络设备 (Network Device)</strong>。</li>
+<li><strong>桥接 (Bridge)</strong>: 选择 <code>vmbr0</code> (或者您希望作为 LAN 口的物理网卡，如 <code>enp3s0</code>)。</li>
+<li><strong>模型</strong>: 推荐 <code>VirtIO (半虚拟化)</code>。</li>
+</ol>
+<h3 id="3-3-安装与配置"><a href="#3-3-安装与配置" class="headerlink" title="3.3 安装与配置"></a>3.3 安装与配置</h3><ol>
+<li><p>点击 <strong>控制台 (Console)</strong> 启动虚拟机。</p>
+</li>
+<li><p>等待安装完成，输入 <code>y</code> 确认安装到硬盘。</p>
+</li>
+<li><p>安装重启后，界面会显示：</p>
+<ul>
+<li><code>LAN1</code>: IP 地址 (例如 <code>192.168.10.1</code>)</li>
+<li><code>WAN1</code>: DHCP 获取中…</li>
+</ul>
+</li>
+<li><p><strong>物理接线</strong>：</p>
+<ul>
+<li>将光猫&#x2F;入户网线插入 <strong>WAN 口</strong> 对应的物理网口。</li>
+<li>将电脑&#x2F;交换机插入 <strong>LAN 口</strong> 对应的物理网口。</li>
+</ul>
+</li>
+<li><p>电脑浏览器访问 iKuai 的 LAN 口 IP (如 <code>192.168.10.1</code>)，进行初始化设置 (PPPoE 拨号等)。</p>
+</li>
+</ol>
+<p><img src="https://via.placeholder.com/800x450?text=iKuai+Network+Topology" alt="iKuai 网络拓扑图"></p>
+<p><em>图 2：iKuai 接管拨号，负责整个家庭网络的流量分发</em></p>
+<hr>
+<h2 id="4-第三步：部署旁路由-OpenWrt-iStoreOS"><a href="#4-第三步：部署旁路由-OpenWrt-iStoreOS" class="headerlink" title="4. 第三步：部署旁路由 OpenWrt &#x2F; iStoreOS"></a>4. 第三步：部署旁路由 OpenWrt &#x2F; iStoreOS</h2><p>OpenWrt 负责进阶功能：去广告、科学上网、Docker 容器管理等。</p>
+<h3 id="4-1-创建虚拟机"><a href="#4-1-创建虚拟机" class="headerlink" title="4.1 创建虚拟机"></a>4.1 创建虚拟机</h3><ol>
+<li><p>在 PVE 中重复创建虚拟机的步骤：</p>
+<ul>
+<li><strong>名称</strong>: <code>OpenWrt-Plus</code></li>
+<li><strong>CPU</strong>: <code>2</code> 核心。</li>
+<li><strong>内存</strong>: <code>512MB</code> - <code>1024MB</code>。</li>
+<li><strong>磁盘</strong>: <code>2GB</code> - <code>4GB</code>。</li>
+<li><strong>网络</strong>: <strong>关键！</strong> 这里只添加<strong>一张</strong>网卡，桥接到 <code>vmbr0</code> (即 iKuai 的 LAN 侧网络)。</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-2-配置-OpenWrt"><a href="#4-2-配置-OpenWrt" class="headerlink" title="4.2 配置 OpenWrt"></a>4.2 配置 OpenWrt</h3><ol>
+<li><p>启动虚拟机，进入控制台。</p>
+</li>
+<li><p>输入命令修改 IP (假设 iKuai 网关是 <code>192.168.10.1</code>)：<em>(注：新版 iStoreOS 通常有图形化初始化界面，可直接在网页设置)</em></p>
+<pre><code class="language-Bash">vi /etc/config/network
+# 找到 config interface &#39;lan&#39;
+# 修改 option ipaddr &#39;192.168.10.2&#39;  (确保不与 iKuai 冲突)
+# 修改 option gateway &#39;192.168.10.1&#39;  (指向 iKuai)
+# 修改 option dns &#39;192.168.10.1&#39;      (或公共 DNS 223.5.5.5)
+</code></pre>
+</li>
+<li><p><strong>重要设置</strong>：</p>
+<ul>
+<li>登录 OpenWrt 后台 (<code>192.168.10.2</code>)。</li>
+<li>进入 <strong>网络</strong> -&gt; <strong>接口</strong> -&gt; <strong>LAN</strong> -&gt; <strong>编辑</strong>。</li>
+<li><strong>防火墙设置</strong>：勾选 <strong>“忽略此接口”</strong> (防止双重 NAT 和防火墙冲突)。</li>
+<li>保存并应用。</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-3-流量引流"><a href="#4-3-流量引流" class="headerlink" title="4.3 流量引流"></a>4.3 流量引流</h3><p>回到 <strong>iKuai 后台</strong>：</p>
+<ol>
+<li>进入 <strong>网络设置</strong> -&gt; <strong>内外网设置</strong> -&gt; <strong>网关设置</strong>。</li>
+<li>添加自定义网关，填写 OpenWrt 的 IP (<code>192.168.10.2</code>)。</li>
+<li>进入 <strong>行为管理</strong> -&gt; <strong>分流设置</strong> -&gt; <strong>端口分流</strong> (或智能分流)。</li>
+<li>设置规则：将所有流量 (或特定设备) 的网关指向 OpenWrt。</li>
+</ol>
+<hr>
+<h2 id="5-第四步：扩展玩法-Docker-NAS"><a href="#5-第四步：扩展玩法-Docker-NAS" class="headerlink" title="5. 第四步：扩展玩法 (Docker &amp; NAS)"></a>5. 第四步：扩展玩法 (Docker &amp; NAS)</h2><p>AIO 的魅力在于无限扩展。您可以在 PVE 中再创建一个 <strong>Linux 虚拟机 (如 Debian&#x2F;Ubuntu)</strong> 或直接使用 <strong>LXC 容器</strong> 来运行 Docker。</p>
+<h3 id="5-1-推荐方案：轻量级-Debian-容器"><a href="#5-1-推荐方案：轻量级-Debian-容器" class="headerlink" title="5.1 推荐方案：轻量级 Debian 容器"></a>5.1 推荐方案：轻量级 Debian 容器</h3><ol>
+<li><p>在 PVE 右键节点 -&gt; <strong>创建 CT (容器)</strong>。</p>
+</li>
+<li><p>模板选择 <code>debian-12-standard</code>。</p>
+</li>
+<li><p>勾选 <strong>特权容器 (Privileged container)</strong> (方便挂载硬盘)。</p>
+</li>
+<li><p>在网络中勾选 <strong>桥接</strong>。</p>
+</li>
+<li><p>启动后，一键安装 Docker：</p>
+<pre><code class="language-Bash">curl -fsSL https://get.docker.com | bash
+</code></pre>
+</li>
+</ol>
+<h3 id="5-2-常见容器应用"><a href="#5-2-常见容器应用" class="headerlink" title="5.2 常见容器应用"></a>5.2 常见容器应用</h3><p>您可以轻松部署以下服务：</p>
+<table>
+<thead>
+<tr>
+<th>应用</th>
+<th>用途</th>
+<th>Docker 命令示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Qbittorrent</strong></td>
+<td>离线下载</td>
+<td><code>docker run -d --name qb ...</code></td>
+</tr>
+<tr>
+<td><strong>Jellyfin</strong></td>
+<td>家庭影院</td>
+<td>利用 N100 核显硬解 4K</td>
+</tr>
+<tr>
+<td><strong>Home Assistant</strong></td>
+<td>智能家居中枢</td>
+<td>接入米家、HomeKit</td>
+</tr>
+<tr>
+<td><strong>Alist</strong></td>
+<td>网盘挂载</td>
+<td>挂载阿里云盘&#x2F;百度网盘到本地</td>
+</tr>
+</tbody></table>
+<p><img src="https://via.placeholder.com/800x300?text=Docker+Dashboard+Example" alt="Docker 仪表盘"></p>
+<p><em>图 3：通过 Portainer 或 CasaOS 可视化管理所有服务</em></p>
+<hr>
+<h2 id="6-⚠️-避坑指南：如何拒绝-“All-in-Boom”"><a href="#6-⚠️-避坑指南：如何拒绝-“All-in-Boom”" class="headerlink" title="6. ⚠️ 避坑指南：如何拒绝 “All-in-Boom”"></a>6. ⚠️ 避坑指南：如何拒绝 “All-in-Boom”</h2><p>很多新手担心“软路由挂了全家断网”，以下是稳定运行的核心秘诀：</p>
+<h3 id="✅-1-物理隔离与备份"><a href="#✅-1-物理隔离与备份" class="headerlink" title="✅ 1. 物理隔离与备份"></a>✅ 1. 物理隔离与备份</h3><ul>
+<li><strong>保留旧路由</strong>：在调试期间，不要扔掉旧路由器。如果 AIO 配置错误，随时可以插回旧路由恢复网络。</li>
+<li><strong>UPS 电源</strong>：强烈建议配备一个小型 UPS (不间断电源)，防止意外断电导致磁盘损坏。</li>
+</ul>
+<h3 id="✅-2-定期备份-PVE-核心功能"><a href="#✅-2-定期备份-PVE-核心功能" class="headerlink" title="✅ 2. 定期备份 (PVE 核心功能)"></a>✅ 2. 定期备份 (PVE 核心功能)</h3><ul>
+<li>在 PVE 中，对 <code>iKuai</code> 和 <code>OpenWrt</code> 虚拟机设置 <strong>自动备份</strong>。</li>
+<li>路径：<strong>数据中心</strong> -&gt; <strong>备份</strong> -&gt; <strong>添加</strong>。</li>
+<li>设置每天凌晨 3 点备份，存储位置可以是外接 USB 硬盘或另一台 NAS。</li>
+<li><strong>一旦系统崩溃，可在 5 分钟内从备份恢复！</strong></li>
+</ul>
+<h3 id="✅-3-散热与硬件"><a href="#✅-3-散热与硬件" class="headerlink" title="✅ 3. 散热与硬件"></a>✅ 3. 散热与硬件</h3><ul>
+<li>N100 等芯片虽然功耗低，但积热严重。确保小主机风道通畅，必要时加装静音风扇。</li>
+<li>不要将软路由放在微波炉、打印机等强干扰源旁边，这会导致 WiFi (如果使用了无线网卡) 或 2.5G 网口不稳定。</li>
+</ul>
+<hr>
+<h2 id="7-总结与下一步"><a href="#7-总结与下一步" class="headerlink" title="7. 总结与下一步"></a>7. 总结与下一步</h2><p>恭喜！您已经成功搭建了一套 <strong>2026 年标准的家庭 All-in-One 网络中心</strong>。</p>
+<h3 id="🎉-您现在拥有了："><a href="#🎉-您现在拥有了：" class="headerlink" title="🎉 您现在拥有了："></a>🎉 您现在拥有了：</h3><ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+<strong>高性能主路由</strong> (iKuai 流控)</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+<strong>全能旁路由</strong> (OpenWrt 插件生态)</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+<strong>私有云服务器</strong> (Docker 运行各种服务)</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+<strong>低功耗运行</strong> (整机待机通常 &lt; 15W)</p>
+</li>
+</ul>
+<h3 id="📚-进阶推荐"><a href="#📚-进阶推荐" class="headerlink" title="📚 进阶推荐"></a>📚 进阶推荐</h3><ul>
+<li><strong>尝试直通 (Passthrough)</strong>：将网卡或 NVMe 硬盘直通给特定虚拟机，提升性能。</li>
+<li><strong>外网访问</strong>：配置 ZeroTier 或 Tailscale，实现随时随地安全访问家中网络。</li>
+<li><strong>IPv6 部署</strong>：在 iKuai 中开启 IPv6 原生支持，体验更快的网络连接。</li>
+</ul>
+<blockquote>
+<p><strong>最后提醒</strong>：技术折腾无止境，但<strong>数据安全第一</strong>。请务必养成定期备份配置的习惯！</p>
+</blockquote>
+<hr>
+<p><em>作者：您的 AI 助手 | 基于 2026 年最新社区实践整理</em></p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

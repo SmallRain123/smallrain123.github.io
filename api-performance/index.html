@@ -1,0 +1,271 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>一次 API 性能排查：从 800ms 到 90ms | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="一次真实接口变慢的排查记录：先量化，再定位，最后用数据验证优化效果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次 API 性能排查：从 800ms 到 90ms">
+<meta property="og:url" content="http://192.168.0.234:4000/api-performance/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="一次真实接口变慢的排查记录：先量化，再定位，最后用数据验证优化效果。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/cover-3.jpg">
+<meta property="article:published_time" content="2026-10-21T13:40:00.000Z">
+<meta property="article:modified_time" content="2026-10-21T13:40:00.000Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="API">
+<meta property="article:tag" content="性能优化">
+<meta property="article:tag" content="排查">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/cover-3.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "一次 API 性能排查：从 800ms 到 90ms",
+  "url": "http://192.168.0.234:4000/api-performance/",
+  "image": "http://192.168.0.234:4000/img/cover-3.jpg",
+  "datePublished": "2026-10-21T13:40:00.000Z",
+  "dateModified": "2026-10-21T13:40:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "小鱼",
+      "url": "http://192.168.0.234:4000"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/api-performance/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一次 API 性能排查：从 800ms 到 90ms',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/cover-3.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a><a class="nav-page-title" href="/"><span class="site-name">一次 API 性能排查：从 800ms 到 90ms</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">一次 API 性能排查：从 800ms 到 90ms</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-21T13:40:00.000Z" title="发表于 2026-10-21 21:40:00">2026-10-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-21T13:40:00.000Z" title="更新于 2026-10-21 21:40:00">2026-10-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>接口从 200ms 涨到 800ms，监控上没有报错，CPU 也不高。这种问题最容易让人凭直觉改代码，但真正有效的做法只有一个：<strong>先量化，再定位</strong>。</p>
+<p>这篇记录一次典型的接口性能排查过程。</p>
+<span id="more"></span>
+
+<h2 id="现象：慢，但不知道慢在哪"><a href="#现象：慢，但不知道慢在哪" class="headerlink" title="现象：慢，但不知道慢在哪"></a>现象：慢，但不知道慢在哪</h2><p>一个商品详情接口，平均耗时 800ms，P99 超过 1.5s。调用方开始超时重试，数据库连接数随之上涨。</p>
+<p>先别急着看业务代码。用 <code>curl</code> 打几次，把时间拆开：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -o /dev/null -s -w \</span><br><span class="line">  <span class="string">&#x27;dns: %&#123;time_namelookup&#125;s\ntcp: %&#123;time_connect&#125;s\ntls: %&#123;time_appconnect&#125;s\nttfb: %&#123;time_starttransfer&#125;s\ntotal: %&#123;time_total&#125;s\n&#x27;</span> \</span><br><span class="line">  <span class="string">&#x27;http://127.0.0.1:8080/api/products/42&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>结果很稳定：网络和 TLS 都正常，时间几乎全部花在服务端处理上。问题被缩小到了应用内部。</p>
+<h2 id="第一步：让调用链说话"><a href="#第一步：让调用链说话" class="headerlink" title="第一步：让调用链说话"></a>第一步：让调用链说话</h2><p>给接口加上分段计时，或者直接看 APM 的 span。这个案例里，一次请求里出现了 <strong>1 次主查询 + 3 次关联查询 + 1 次远程调用</strong>，其中三次关联查询是串行的。</p>
+<p>伪代码大概是：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">product = repo.get_product(product_id)</span><br><span class="line">category = repo.get_category(product.category_id)       <span class="comment"># 30ms</span></span><br><span class="line">shop = repo.get_shop(product.shop_id)                   <span class="comment"># 40ms</span></span><br><span class="line">stock = client.get_stock(product.sku)                   <span class="comment"># 120ms</span></span><br><span class="line">reviews = repo.get_review_summary(product_id)           <span class="comment"># 80ms</span></span><br></pre></td></tr></table></figure>
+
+<p>单看每一步都不算慢，但串起来、再乘以并发，就成了瓶颈。</p>
+<h2 id="第二步：把串行变并行"><a href="#第二步：把串行变并行" class="headerlink" title="第二步：把串行变并行"></a>第二步：把串行变并行</h2><p>没有依赖关系的查询，没有必要排队。用线程池或异步任务把三次独立调用并发出去：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> pool:</span><br><span class="line">    category_f = pool.submit(repo.get_category, product.category_id)</span><br><span class="line">    shop_f = pool.submit(repo.get_shop, product.shop_id)</span><br><span class="line">    stock_f = pool.submit(client.get_stock, product.sku)</span><br><span class="line"></span><br><span class="line">    category, shop, stock = category_f.result(), shop_f.result(), stock_f.result()</span><br></pre></td></tr></table></figure>
+
+<p>耗时从相加变成取最大值，理论收益大约是 2&#x2F;3。但要给线程池设置合理的队列和超时，避免把下游打垮。</p>
+<h2 id="第三步：检查-SQL-和索引"><a href="#第三步：检查-SQL-和索引" class="headerlink" title="第三步：检查 SQL 和索引"></a>第三步：检查 SQL 和索引</h2><p>并发解决的是等待，数据库本身的慢查询还得单独处理。打开慢查询日志后，发现关联查询里有一张表走了全表扫描。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 优化前：status 区分度很低，优化器放弃索引</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> product_review <span class="keyword">WHERE</span> product_id <span class="operator">=</span> ? <span class="keyword">AND</span> status <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 建立组合索引，并只取需要的列</span></span><br><span class="line"><span class="keyword">CREATE</span> INDEX idx_review_product_status <span class="keyword">ON</span> product_review (product_id, status);</span><br></pre></td></tr></table></figure>
+
+<p>两个原则：</p>
+<ol>
+<li><strong>组合索引的顺序</strong>：区分度高的列放前面，但也要结合查询模式。</li>
+<li><strong>避免 <code>SELECT *</code></strong>：减少回表、网络传输和序列化成本。</li>
+</ol>
+<h2 id="第四步：给热点数据加缓存"><a href="#第四步：给热点数据加缓存" class="headerlink" title="第四步：给热点数据加缓存"></a>第四步：给热点数据加缓存</h2><p>商品详情是典型读多写少。把商品基础信息、店铺信息和评论摘要放进 Redis，设置 5 分钟过期，并在更新时主动删除缓存。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cache_key = <span class="string">f&quot;product:detail:<span class="subst">&#123;product_id&#125;</span>&quot;</span></span><br><span class="line">cached = redis.get(cache_key)</span><br><span class="line"><span class="keyword">if</span> cached:</span><br><span class="line">    <span class="keyword">return</span> json.loads(cached)</span><br><span class="line"></span><br><span class="line">data = build_product_detail(product_id)</span><br><span class="line">redis.setex(cache_key, <span class="number">300</span>, json.dumps(data))</span><br><span class="line"><span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
+
+<p>缓存的关键不是“加上”，而是想清楚：<strong>什么时候失效、缓存穿透怎么办、数据不一致能接受多久。</strong></p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><table>
+<thead>
+<tr>
+<th align="left">指标</th>
+<th align="right">优化前</th>
+<th align="right">优化后</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">平均耗时</td>
+<td align="right">800ms</td>
+<td align="right">90ms</td>
+</tr>
+<tr>
+<td align="left">P99</td>
+<td align="right">1.5s</td>
+<td align="right">210ms</td>
+</tr>
+<tr>
+<td align="left">数据库 QPS</td>
+<td align="right">偏高</td>
+<td align="right">下降约 60%</td>
+</tr>
+</tbody></table>
+<h2 id="复盘"><a href="#复盘" class="headerlink" title="复盘"></a>复盘</h2><p>这次排查没有用到什么高深技巧，关键步骤是：</p>
+<ol>
+<li>先把“慢”拆成可度量的时间段；</li>
+<li>用调用链找到真正的等待点；</li>
+<li>能并行的并行，能缓存的缓存，该建索引的建索引；</li>
+<li>用数据验证，而不是凭感觉。</li>
+</ol>
+<blockquote>
+<p>性能优化不是把代码写得更复杂，而是让每一次等待都有明确的理由。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://192.168.0.234:4000">小鱼</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://192.168.0.234:4000/api-performance/">http://192.168.0.234:4000/api-performance/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://192.168.0.234:4000" target="_blank">小鱼技术栈</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a><a class="post-meta__tags" href="/tags/API/">API</a><a class="post-meta__tags" href="/tags/%E6%8E%92%E6%9F%A5/">排查</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/markdown-guide/" title="Markdown 写作速查：让排版回归简单"><img class="cover" src="/img/cover-2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Markdown 写作速查：让排版回归简单</div></div><div class="info-2"><div class="info-item-1">一份常用 Markdown 语法清单，以及几个让长文更好读的小习惯。</div></div></div></a><a class="pagination-related" href="/docker-compose-dev/" title="用 Docker Compose 搭一套可复现的本地开发环境"><img class="cover" src="/img/cover-1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">用 Docker Compose 搭一套可复现的本地开发环境</div></div><div class="info-2"><div class="info-item-1">把数据库、缓存和依赖服务交给 Docker Compose，让新同事一条命令跑起项目。</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E8%B1%A1%EF%BC%9A%E6%85%A2%EF%BC%8C%E4%BD%86%E4%B8%8D%E7%9F%A5%E9%81%93%E6%85%A2%E5%9C%A8%E5%93%AA"><span class="toc-number">1.</span> <span class="toc-text">现象：慢，但不知道慢在哪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E8%AE%A9%E8%B0%83%E7%94%A8%E9%93%BE%E8%AF%B4%E8%AF%9D"><span class="toc-number">2.</span> <span class="toc-text">第一步：让调用链说话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E6%8A%8A%E4%B8%B2%E8%A1%8C%E5%8F%98%E5%B9%B6%E8%A1%8C"><span class="toc-number">3.</span> <span class="toc-text">第二步：把串行变并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%A3%80%E6%9F%A5-SQL-%E5%92%8C%E7%B4%A2%E5%BC%95"><span class="toc-number">4.</span> <span class="toc-text">第三步：检查 SQL 和索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E7%BB%99%E7%83%AD%E7%82%B9%E6%95%B0%E6%8D%AE%E5%8A%A0%E7%BC%93%E5%AD%98"><span class="toc-number">5.</span> <span class="toc-text">第四步：给热点数据加缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">6.</span> <span class="toc-text">结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%9B%98"><span class="toc-number">7.</span> <span class="toc-text">复盘</span></a></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

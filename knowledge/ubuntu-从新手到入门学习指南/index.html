@@ -1,0 +1,675 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Ubuntu 从新手到入门学习指南 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="这份指南为零基础读者设计：从完全不了解 Linux 的状态出发，用 2～4 周时间，掌握 Ubuntu 的安装、日常使用和终端基本功，达到能独立使用 Ubuntu 的水平。文中命令以 Ubuntu 26.04 LTS 为例，同样适用于 24.04、22.04 LTS。 学习原则：">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ubuntu 从新手到入门学习指南">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/ubuntu-%E4%BB%8E%E6%96%B0%E6%89%8B%E5%88%B0%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="这份指南为零基础读者设计：从完全不了解 Linux 的状态出发，用 2～4 周时间，掌握 Ubuntu 的安装、日常使用和终端基本功，达到能独立使用 Ubuntu 的水平。文中命令以 Ubuntu 26.04 LTS 为例，同样适用于 24.04、22.04 LTS。 学习原则：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:39.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:51.712Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/ubuntu-%E4%BB%8E%E6%96%B0%E6%89%8B%E5%88%B0%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ubuntu 从新手到入门学习指南',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-1.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Ubuntu 从新手到入门学习指南</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">Linux / 系统</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#Linux / 系统</span><span class="kb-article-tag">#Ubuntu</span></div><div class="kb-article"><p>这份指南为零基础读者设计：从完全不了解 Linux 的状态出发，用 2～4 周时间，掌握 Ubuntu 的安装、日常使用和终端基本功，达到能独立使用 Ubuntu 的水平。文中命令以 Ubuntu 26.04 LTS 为例，同样适用于 24.04、22.04 LTS。</p>
+<callout emoji="🎯">
+学习原则：动手优先，边学边练。每条命令都亲手敲一遍，比看十遍教程更有效；遇到问题先自己搜索排查，再向社区求助。
+</callout>
+
+<h1 id="学习路径总览"><a href="#学习路径总览" class="headerlink" title="学习路径总览"></a>学习路径总览</h1><p>从新手到入门共六个阶段，每个阶段都有明确目标和完成标志。建议按顺序推进，不要跳步；每完成一个阶段就停下来验证成果。</p>
+<pre><code class="language-mermaid">flowchart LR
+    A[&quot;阶段1 认识与准备
+理解概念·选版本&quot;] --&gt; B[&quot;阶段2 安装系统
+装出可用系统&quot;]
+    B --&gt; C[&quot;阶段3 桌面日常
+日常使用不慌&quot;]
+    C --&gt; D[&quot;阶段4 终端基础
+掌握常用命令&quot;]
+    D --&gt; E[&quot;阶段5 日常进阶
+包管理·SSH·排障&quot;]
+    E --&gt; F[&quot;阶段6 自测拓展
+查漏补缺定方向&quot;]
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>学习内容</th>
+<th>完成标志</th>
+<th>建议时长</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>认识 Ubuntu、选版本、做准备</td>
+<td>明确学习目标与安装方式</td>
+<td>0.5 天</td>
+</tr>
+<tr>
+<td>2</td>
+<td>安装 Ubuntu</td>
+<td>成功进入桌面系统</td>
+<td>1～2 天</td>
+</tr>
+<tr>
+<td>3</td>
+<td>桌面环境与目录结构</td>
+<td>能完成日常办公、上网、装软件</td>
+<td>3～5 天</td>
+</tr>
+<tr>
+<td>4</td>
+<td>终端与常用命令</td>
+<td>敢用命令行完成文件、权限、进程操作</td>
+<td>5～7 天</td>
+</tr>
+<tr>
+<td>5</td>
+<td>包管理、用户、SSH 与排障</td>
+<td>能独立解决常见问题</td>
+<td>3～5 天</td>
+</tr>
+<tr>
+<td>6</td>
+<td>自测与下一步规划</td>
+<td>通过入门自测，明确进阶方向</td>
+<td>1 天</td>
+</tr>
+</tbody></table>
+<h2 id="认识-Ubuntu-与学习准备"><a href="#认识-Ubuntu-与学习准备" class="headerlink" title="认识 Ubuntu 与学习准备"></a>认识 Ubuntu 与学习准备</h2><h3 id="Ubuntu-是什么"><a href="#Ubuntu-是什么" class="headerlink" title="Ubuntu 是什么"></a>Ubuntu 是什么</h3><p>Ubuntu 是基于 Linux 内核的开源操作系统，由 Canonical 公司维护，是目前全球使用最广泛的 Linux 发行版之一。它免费、开放、安全，广泛用于个人桌面、服务器、云计算和人工智能开发。</p>
+<ul>
+<li><strong>开源免费</strong>：系统本身和绝大多数软件免费，可自由使用和修改。</li>
+<li><strong>版本体系</strong>：每 6 个月发布一个普通版；每 2 年发布一个 LTS（长期支持）版本，提供 5 年标准安全维护。</li>
+<li><strong>生态成熟</strong>：软件仓库拥有数万个软件包，几乎可以替代 Windows 的日常用途。</li>
+</ul>
+<h3 id="选择版本"><a href="#选择版本" class="headerlink" title="选择版本"></a>选择版本</h3><p>对新手来说，只认准 LTS 版本即可：稳定、支持期长、教程资料最多。截至 2026 年 9 月，正在维护的 LTS 版本有 26.04、24.04、22.04。</p>
+<table>
+<thead>
+<tr>
+<th>你的情况</th>
+<th>推荐版本</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>新手 &#x2F; 日常使用 &#x2F; 服务器</td>
+<td>Ubuntu 26.04 LTS</td>
+<td>2026 年 4 月发布，标准支持至 2031 年，功能最新</td>
+</tr>
+<tr>
+<td>追求更成熟稳定</td>
+<td>Ubuntu 24.04 LTS</td>
+<td>已发布两年多，生态适配完善，教程最多</td>
+</tr>
+<tr>
+<td>想尝鲜新功能</td>
+<td>最新普通版</td>
+<td>每 6 个月一版，仅 9 个月支持，不建议新手日常用</td>
+</tr>
+<tr>
+<td>电脑配置较低</td>
+<td>Xubuntu &#x2F; Lubuntu</td>
+<td>Ubuntu 官方衍生版，轻量桌面，适合旧机器</td>
+</tr>
+</tbody></table>
+<h3 id="学习前的准备"><a href="#学习前的准备" class="headerlink" title="学习前的准备"></a>学习前的准备</h3><ol>
+<li><strong>确认硬件</strong>：4GB 以上内存、25GB 以上磁盘空间即可流畅运行桌面版；配置越高体验越好。</li>
+<li><strong>备份数据</strong>：如果计划安装双系统，先备份 Windows 中的重要文件，并确认电脑支持从 U 盘启动。</li>
+<li><strong>选择上手方式</strong>：新手建议先用虚拟机（不影响现有系统），熟悉后再决定是否实体机安装。</li>
+<li><strong>准备好网络</strong>：安装和后续软件下载都依赖网络，最好能连上稳定的互联网。</li>
+</ol>
+<h2 id="第一步：安装-Ubuntu"><a href="#第一步：安装-Ubuntu" class="headerlink" title="第一步：安装 Ubuntu"></a>第一步：安装 Ubuntu</h2><p>目标：在电脑上装出一个能正常进入桌面的 Ubuntu 系统。全程约 20～40 分钟。</p>
+<h3 id="选择安装方式"><a href="#选择安装方式" class="headerlink" title="选择安装方式"></a>选择安装方式</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适合人群</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>虚拟机</td>
+<td>新手首选、想先体验</td>
+<td>在 Windows 里用 VMware &#x2F; VirtualBox 运行 Ubuntu，不碰现有系统，随时可删</td>
+</tr>
+<tr>
+<td>双系统</td>
+<td>想长期使用、需要性能</td>
+<td>与 Windows 共存，开机选择进入哪个系统；需预留磁盘分区</td>
+</tr>
+<tr>
+<td>WSL</td>
+<td>开发为主、不想装图形界面</td>
+<td>Windows 自带的 Linux 子系统，命令行体验，适合学习终端和开发</td>
+</tr>
+<tr>
+<td>整机安装</td>
+<td>专用机器、熟悉后</td>
+<td>彻底替换原系统，性能最佳，适合以后专机专用</td>
+</tr>
+</tbody></table>
+<h3 id="制作启动盘或创建虚拟机"><a href="#制作启动盘或创建虚拟机" class="headerlink" title="制作启动盘或创建虚拟机"></a>制作启动盘或创建虚拟机</h3><ol>
+<li>访问 Ubuntu 官网下载对应 LTS 版本的 ISO 镜像文件（约 5GB）。</li>
+<li>实体机安装：用 Rufus 或 balenaEtcher 把 ISO 写入 U 盘，制作启动盘。</li>
+<li>虚拟机安装：在 VMware &#x2F; VirtualBox 中新建虚拟机，选择下载好的 ISO 作为安装镜像。</li>
+<li>重启电脑进入 U 盘启动（或启动虚拟机），选择「试用或安装 Ubuntu」。</li>
+</ol>
+<h3 id="安装过程要点"><a href="#安装过程要点" class="headerlink" title="安装过程要点"></a>安装过程要点</h3><ol>
+<li><strong>语言与键盘</strong>：按需选择简体中文和默认键盘布局。</li>
+<li><strong>磁盘分区</strong>：新手选「清除整个磁盘并安装 Ubuntu」最省心；想保留 Windows 则选「与 Windows 共存」，安装器会自动分区。</li>
+<li><strong>账号设置</strong>：设置用户名和密码。请记住密码，后续安装软件、系统更新都要用到。</li>
+<li><strong>完成安装</strong>：等待安装进度条走完，重启并移除安装介质。</li>
+</ol>
+<callout emoji="✅">
+阶段验证：能正常进入桌面、看到欢迎界面、联网成功，即视为安装阶段完成。
+</callout>
+
+<h2 id="第二步：熟悉桌面环境"><a href="#第二步：熟悉桌面环境" class="headerlink" title="第二步：熟悉桌面环境"></a>第二步：熟悉桌面环境</h2><p>目标：像使用 Windows 一样完成日常操作——上网、办公、装软件、更新系统。</p>
+<h3 id="GNOME-桌面基础操作"><a href="#GNOME-桌面基础操作" class="headerlink" title="GNOME 桌面基础操作"></a>GNOME 桌面基础操作</h3><ul>
+<li><strong>活动视图</strong>：按 Super 键（Windows 键）打开总览，可搜索应用、切换窗口。</li>
+<li><strong>顶栏与 Dock</strong>：顶栏显示时间、网络、音量；左侧 Dock 可固定常用应用。</li>
+<li><strong>系统设置</strong>：在「设置」中调整显示、网络、声音、电源等。</li>
+<li><strong>常用快捷键</strong>：Ctrl+Alt+T 打开终端；Super+A 显示全部应用；Super+L 锁屏。</li>
+</ul>
+<h3 id="文件系统与目录结构"><a href="#文件系统与目录结构" class="headerlink" title="文件系统与目录结构"></a>文件系统与目录结构</h3><p>Linux 采用单一根目录树，所有文件都从 <code>/</code> 开始，没有 Windows 那样的 C 盘、D 盘。理解目录结构是入门的关键一步。</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;home</td>
+<td>普通用户的个人目录，你的文档、图片、下载都在这（如 &#x2F;home&#x2F;你的用户名）</td>
+</tr>
+<tr>
+<td>&#x2F;etc</td>
+<td>系统配置文件目录，如软件源、网络配置</td>
+</tr>
+<tr>
+<td>&#x2F;usr</td>
+<td>系统安装的软件和共享文件</td>
+</tr>
+<tr>
+<td>&#x2F;var</td>
+<td>经常变化的数据，如日志（&#x2F;var&#x2F;log）、缓存</td>
+</tr>
+<tr>
+<td>&#x2F;tmp</td>
+<td>临时文件，重启后通常被清空</td>
+</tr>
+<tr>
+<td>&#x2F;bin、&#x2F;sbin</td>
+<td>系统基本命令和系统管理命令</td>
+</tr>
+<tr>
+<td>&#x2F;opt</td>
+<td>第三方商业软件安装位置</td>
+</tr>
+</tbody></table>
+<h3 id="安装软件的三种方式"><a href="#安装软件的三种方式" class="headerlink" title="安装软件的三种方式"></a>安装软件的三种方式</h3><ol>
+<li><strong>软件中心（图形化）</strong>：打开「Ubuntu 软件」应用，搜索、点击安装，适合新手。</li>
+<li><strong>apt 命令</strong>：从软件仓库安装，是 Ubuntu 最核心的安装方式，详见后续章节。</li>
+<li><strong>deb 包 &#x2F; Snap</strong>：从官网下载 .deb 文件双击安装；Snap 是 Canonical 推广的跨发行版打包格式，命令为 <code>sudo snap install 包名</code>。</li>
+</ol>
+<h3 id="系统更新与软件升级"><a href="#系统更新与软件升级" class="headerlink" title="系统更新与软件升级"></a>系统更新与软件升级</h3><p>Ubuntu 不会强制弹窗升级，建议每周手动更新一次，保持系统安全和稳定。</p>
+<pre><code class="language-bash">sudo apt update
+</code></pre>
+<pre><code class="language-bash">sudo apt upgrade
+</code></pre>
+<callout emoji="✅">
+阶段验证：能安装一个软件（如浏览器）、完成一次系统更新，即视为通过。
+</callout>
+
+<h2 id="第三步：掌握终端基础"><a href="#第三步：掌握终端基础" class="headerlink" title="第三步：掌握终端基础"></a>第三步：掌握终端基础</h2><p>目标：理解终端的工作方式，用命令行完成文件管理、权限和进程等常见操作。终端是 Linux 的”灵魂”，也是进一步学习服务器、开发、运维的必经之路。</p>
+<h3 id="打开终端与命令格式"><a href="#打开终端与命令格式" class="headerlink" title="打开终端与命令格式"></a>打开终端与命令格式</h3><p>按 Ctrl+Alt+T 打开终端。命令的基本格式是「命令 + 选项 + 参数」，例如 <code>ls -l /home</code> 表示以详细列表方式查看 &#x2F;home 目录。可用 <code>命令 --help</code> 查看帮助，用 Tab 键自动补全，用上下方向键翻看历史命令。</p>
+<h3 id="文件与目录常用命令"><a href="#文件与目录常用命令" class="headerlink" title="文件与目录常用命令"></a>文件与目录常用命令</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pwd</td>
+<td>显示当前所在目录</td>
+<td>pwd</td>
+</tr>
+<tr>
+<td>ls</td>
+<td>列出目录内容；-l 详细、-a 含隐藏文件</td>
+<td>ls -la</td>
+</tr>
+<tr>
+<td>cd</td>
+<td>切换目录；.. 上级、~ 家目录</td>
+<td>cd &#x2F;etc</td>
+</tr>
+<tr>
+<td>mkdir</td>
+<td>创建目录</td>
+<td>mkdir myproject</td>
+</tr>
+<tr>
+<td>touch</td>
+<td>创建空文件</td>
+<td>touch note.txt</td>
+</tr>
+<tr>
+<td>cp</td>
+<td>复制文件或目录（-r 递归）</td>
+<td>cp a.txt b.txt</td>
+</tr>
+<tr>
+<td>mv</td>
+<td>移动或重命名</td>
+<td>mv a.txt docs&#x2F;</td>
+</tr>
+<tr>
+<td>rm</td>
+<td>删除；-r 递归删目录，-f 强制</td>
+<td>rm -rf tmp&#x2F;</td>
+</tr>
+<tr>
+<td>cat</td>
+<td>查看文件全部内容</td>
+<td>cat note.txt</td>
+</tr>
+<tr>
+<td>less</td>
+<td>分页查看大文件，q 退出</td>
+<td>less &#x2F;var&#x2F;log&#x2F;syslog</td>
+</tr>
+<tr>
+<td>grep</td>
+<td>在文件中搜索关键词</td>
+<td>grep error log.txt</td>
+</tr>
+</tbody></table>
+<callout emoji="💡">
+危险动作提醒：`rm -rf` 会静默删除且不可恢复，执行前务必确认路径正确，不要在重要目录（如 /home）下随手使用。
+</callout>
+
+<h3 id="文件权限与-sudo"><a href="#文件权限与-sudo" class="headerlink" title="文件权限与 sudo"></a>文件权限与 sudo</h3><ul>
+<li><strong>权限位</strong>：<code>ls -l</code> 第一列如 <code>rwxr-xr-x</code> 表示 属主&#x2F;属组&#x2F;其他用户 的读、写、执行权限。</li>
+<li><strong>修改权限</strong>：<code>chmod 755 文件名</code> 用数字修改权限，如 <code>chmod +x 脚本.sh</code> 给文件加执行权限。</li>
+<li><strong>sudo 提权</strong>：以管理员身份执行命令。日常操作不需要 sudo，只有改系统配置、装软件时才用，避免权限滥用。</li>
+</ul>
+<h3 id="查看系统信息与进程"><a href="#查看系统信息与进程" class="headerlink" title="查看系统信息与进程"></a>查看系统信息与进程</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>uname -a</td>
+<td>查看内核与系统版本信息</td>
+</tr>
+<tr>
+<td>df -h</td>
+<td>查看磁盘空间使用情况</td>
+</tr>
+<tr>
+<td>free -h</td>
+<td>查看内存使用情况</td>
+</tr>
+<tr>
+<td>top &#x2F; htop</td>
+<td>实时查看进程与资源占用，q 退出</td>
+</tr>
+<tr>
+<td>ps aux</td>
+<td>列出当前所有进程</td>
+</tr>
+<tr>
+<td>ip a</td>
+<td>查看网卡和 IP 地址</td>
+</tr>
+</tbody></table>
+<callout emoji="✅">
+阶段验证：能不看笔记完成新建目录、复制文件、查看磁盘和内存、用 grep 搜索日志，即视为通过。
+</callout>
+
+<h2 id="第四步：日常使用进阶"><a href="#第四步：日常使用进阶" class="headerlink" title="第四步：日常使用进阶"></a>第四步：日常使用进阶</h2><p>目标：解决实际使用中的真实问题——装软件、管用户、远程连接、排查故障。</p>
+<h3 id="软件包管理深入"><a href="#软件包管理深入" class="headerlink" title="软件包管理深入"></a>软件包管理深入</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sudo apt update</td>
+<td>更新软件源索引（装软件前先执行）</td>
+</tr>
+<tr>
+<td>sudo apt install 包名</td>
+<td>安装软件</td>
+</tr>
+<tr>
+<td>sudo apt remove 包名</td>
+<td>卸载软件（保留配置文件）</td>
+</tr>
+<tr>
+<td>sudo apt purge 包名</td>
+<td>彻底卸载（连同配置）</td>
+</tr>
+<tr>
+<td>apt search 关键词</td>
+<td>搜索软件仓库</td>
+</tr>
+<tr>
+<td>apt show 包名</td>
+<td>查看软件包详细信息</td>
+</tr>
+<tr>
+<td>sudo apt autoremove</td>
+<td>清理不再需要的依赖包</td>
+</tr>
+</tbody></table>
+<p>如果官方源下载慢，可把软件源换成国内镜像（清华、阿里云、中科大），修改 <code>/etc/apt/sources.list</code> 后执行 <code>sudo apt update</code>。</p>
+<h3 id="用户与权限管理"><a href="#用户与权限管理" class="headerlink" title="用户与权限管理"></a>用户与权限管理</h3><ul>
+<li><strong>查看当前用户</strong>：<code>whoami</code></li>
+<li><strong>添加用户</strong>：<code>sudo adduser 用户名</code></li>
+<li><strong>修改密码</strong>：<code>passwd</code>（改自己的）&#x2F; <code>sudo passwd 用户名</code>（改别人的）</li>
+<li><strong>授予管理员权限</strong>：<code>sudo usermod -aG sudo 用户名</code></li>
+<li><strong>切换用户</strong>：<code>su - 用户名</code></li>
+</ul>
+<h3 id="远程连接：SSH"><a href="#远程连接：SSH" class="headerlink" title="远程连接：SSH"></a>远程连接：SSH</h3><p>SSH 是 Linux 远程管理的标配。让另一台电脑通过网络命令行远程操作 Ubuntu，是学习服务器运维的第一步。</p>
+<ol>
+<li>在目标机器上安装并启动 SSH 服务：<code>sudo apt install openssh-server</code>，然后 <code>sudo systemctl enable --now ssh</code>。</li>
+<li>查看目标机器的 IP：<code>ip a</code>。</li>
+<li>在本地电脑连接：<code>ssh 用户名@IP地址</code>，输入密码即可登录。</li>
+</ol>
+<h3 id="常见问题排查"><a href="#常见问题排查" class="headerlink" title="常见问题排查"></a>常见问题排查</h3><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解决办法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>忘了登录密码</td>
+<td>重启进入 GRUB 菜单，选「高级选项 → 恢复模式」，在 root 终端执行 <code>passwd 用户名</code> 重置</td>
+</tr>
+<tr>
+<td>apt 安装报错</td>
+<td>先执行 <code>sudo apt update</code>；仍报错则 <code>sudo apt --fix-broken install</code> 修复依赖</td>
+</tr>
+<tr>
+<td>软件源下载慢</td>
+<td>更换为国内镜像源（清华 TUNA、阿里云等）</td>
+</tr>
+<tr>
+<td>命令提示找不到</td>
+<td>用 <code>apt search 关键词</code> 找到对应软件包并安装</td>
+</tr>
+<tr>
+<td>系统突然卡顿</td>
+<td>用 <code>top</code> 查看占用高的进程，<code>kill 进程号</code> 结束异常进程</td>
+</tr>
+<tr>
+<td>上不了网</td>
+<td>检查网卡 <code>ip a</code>、网络设置；有线无网络可先尝试 <code>sudo systemctl restart NetworkManager</code></td>
+</tr>
+</tbody></table>
+<callout emoji="✅">
+阶段验证：能用 apt 安装卸载软件、新增一个用户、通过 SSH 远程登录，即视为通过。
+</callout>
+
+<h2 id="入门自测与下一步方向"><a href="#入门自测与下一步方向" class="headerlink" title="入门自测与下一步方向"></a>入门自测与下一步方向</h2><h3 id="入门自测清单"><a href="#入门自测清单" class="headerlink" title="入门自测清单"></a>入门自测清单</h3><p>逐项勾选，全部能独立完成即达到「入门」水平。</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+能说出 Ubuntu 与 Windows 的主要区别，以及 LTS 版本的含义</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+能独立完成一次 Ubuntu 安装（虚拟机或实体机均可）</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+能在桌面完成文件管理、软件安装和系统更新</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+能说明 &#x2F;home、&#x2F;etc、&#x2F;usr、&#x2F;var 等目录的主要作用</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+能熟练使用 10 个以上常用终端命令完成文件操作</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+理解文件权限 rwx 的含义，能使用 sudo 和 chmod</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+能用 apt 完成软件的搜索、安装、卸载</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+能通过 SSH 远程连接另一台 Ubuntu 主机</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+遇到问题时能自己搜索资料并描述清楚问题</p>
+</li>
+</ul>
+<h3 id="新手常见坑"><a href="#新手常见坑" class="headerlink" title="新手常见坑"></a>新手常见坑</h3><ul>
+<li><strong>盲目使用 sudo</strong>：能用普通权限就别加 sudo，系统文件改错了很难恢复。</li>
+<li><strong>随意执行网上复制的命令</strong>：尤其是带 <code>rm</code>、<code>curl | bash</code> 的脚本，先看懂再执行。</li>
+<li><strong>分区时选错磁盘</strong>：双系统安装分区时看清盘符，避免误清数据。</li>
+<li><strong>只记命令不理解原理</strong>：命令会过时，理解文件系统、权限、进程等概念才能举一反三。</li>
+</ul>
+<h3 id="学习资源推荐"><a href="#学习资源推荐" class="headerlink" title="学习资源推荐"></a>学习资源推荐</h3><table>
+<thead>
+<tr>
+<th>资源</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ubuntu 官方文档</td>
+<td>documentation.ubuntu.com，最权威的官方手册，涵盖桌面、服务器全场景</td>
+</tr>
+<tr>
+<td>Ubuntu 中文社区 &#x2F; 论坛</td>
+<td>中文问答与教程聚集地，遇到问题优先搜索</td>
+</tr>
+<tr>
+<td>《鸟哥的 Linux 私房菜》</td>
+<td>华语最经典的 Linux 入门书，基础篇特别适合新手通读</td>
+</tr>
+<tr>
+<td>终端练习网站</td>
+<td>Linux Journey、Command Challenge 等在线交互练习，边玩边学</td>
+</tr>
+<tr>
+<td>动手小项目</td>
+<td>搭一个 LAMP（Linux+Apache+MySQL+PHP）网站、搭建 NAS、配置 SSH 密钥登录，用项目巩固知识</td>
+</tr>
+</tbody></table>
+<callout emoji="🚀">
+入门之后往哪走：想搞开发 → 学 Vim、Git、Docker；想搞运维 → 学 Shell 脚本、systemd、Nginx；想搞 AI/数据 → 学 Python、CUDA 环境配置。Ubuntu 打好基础后，这些方向都顺理成章。
+</callout>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

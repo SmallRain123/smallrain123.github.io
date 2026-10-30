@@ -1,0 +1,527 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Ubuntu 安装 NVIDIA 显卡驱动完整教程 | 小鱼技术栈</title><meta name="author" content="小鱼"><meta name="copyright" content="小鱼"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#fff8fc"><meta name="description" content="适用系统 : Ubuntu 20.04 &#x2F; 22.04 &#x2F; 24.04 LTS 适用显卡 : NVIDIA GeForce &#x2F; Quadro &#x2F; Tesla &#x2F; RTX 系列 最后更新 : 2026 03 20 难度 : ⭐⭐ 初级&#x2F;中级 安装前检查 1.1 检查显卡硬件 预期输">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ubuntu 安装 NVIDIA 显卡驱动完整教程">
+<meta property="og:url" content="http://192.168.0.234:4000/knowledge/ubuntu-%E5%AE%89%E8%A3%85-nvidia-%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="小鱼技术栈">
+<meta property="og:description" content="适用系统 : Ubuntu 20.04 &#x2F; 22.04 &#x2F; 24.04 LTS 适用显卡 : NVIDIA GeForce &#x2F; Quadro &#x2F; Tesla &#x2F; RTX 系列 最后更新 : 2026 03 20 难度 : ⭐⭐ 初级&#x2F;中级 安装前检查 1.1 检查显卡硬件 预期输">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://192.168.0.234:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-10-29T09:21:28.000Z">
+<meta property="article:modified_time" content="2026-10-29T09:34:46.098Z">
+<meta property="article:author" content="小鱼">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="二次元">
+<meta property="article:tag" content="动漫">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://192.168.0.234:4000/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://192.168.0.234:4000/knowledge/ubuntu-%E5%AE%89%E8%A3%85-nvidia-%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#1a1324')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#fff8fc')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":420,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ubuntu 安装 NVIDIA 显卡驱动完整教程',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="preload" href="/fonts/ZenMaruGothicSC-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/ZenMaruGothicSC-Bold.woff2" as="font" type="font/woff2" crossorigin><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="小鱼技术栈" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: linear-gradient(180deg, #fff8fc 0%, #fdf1f8 48%, #f3eaff 100%);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-knowledge" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background-image: url(/img/cover-2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">小鱼技术栈</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/knowledge/"><i class="fa-fw fas fa-book-open"></i><span> 知识库</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">Ubuntu 安装 NVIDIA 显卡驱动完整教程</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><p class="kb-back"><a href="/knowledge/">← 返回知识库</a></p><div class="kb-article-meta"><span class="kb-article-cat">GPU / 驱动</span><span class="kb-article-tag">#知识库</span><span class="kb-article-tag">#GPU / 驱动</span><span class="kb-article-tag">#Ubuntu</span><span class="kb-article-tag">#NVIDIA</span></div><div class="kb-article"><blockquote>
+<p><strong>适用系统</strong>: Ubuntu 20.04 &#x2F; 22.04 &#x2F; 24.04 LTS  </p>
+<p><strong>适用显卡</strong>: NVIDIA GeForce &#x2F; Quadro &#x2F; Tesla &#x2F; RTX 系列  </p>
+<p><strong>最后更新</strong>: 2026-03-20  </p>
+<p><strong>难度</strong>: ⭐⭐ 初级&#x2F;中级</p>
+</blockquote>
+<hr>
+<hr>
+<h1 id="安装前检查"><a href="#安装前检查" class="headerlink" title="安装前检查"></a>安装前检查</h1><h2 id="1-1-检查显卡硬件"><a href="#1-1-检查显卡硬件" class="headerlink" title="1.1 检查显卡硬件"></a>1.1 检查显卡硬件</h2><pre><code class="language-Bash"># 查看 NVIDIA 显卡是否被系统识别
+lspci | grep -i nvidia
+</code></pre>
+<p><strong>预期输出示例</strong>：</p>
+<pre><code class="language-Plain">01:00.0 VGA compatible controller: NVIDIA Corporation GA102 [GeForce RTX 3080] (rev a1)
+</code></pre>
+<blockquote>
+<p>⚠️ <strong>如果没有输出</strong>，请检查：</p>
+<ul>
+<li>显卡是否正确插入 PCIe 插槽</li>
+<li>显卡供电线是否连接</li>
+<li>BIOS 中是否禁用了独立显卡</li>
+</ul>
+</blockquote>
+<h2 id="1-2-检查-Secure-Boot（重要！）"><a href="#1-2-检查-Secure-Boot（重要！）" class="headerlink" title="1.2 检查 Secure Boot（重要！）"></a>1.2 检查 Secure Boot（重要！）</h2><p>NVIDIA 专有驱动需要加载内核模块，如果 <strong>Secure Boot 启用</strong>，驱动将无法加载。</p>
+<p><strong>检查方法</strong>：</p>
+<pre><code class="language-Bash">mokutil --sb-state
+</code></pre>
+<p><strong>如果显示 <code>SecureBoot enabled</code>，需要禁用</strong>：</p>
+<ol>
+<li>重启电脑，进入 BIOS&#x2F;UEFI（按 <code>F2</code>&#x2F;<code>F12</code>&#x2F;<code>Del</code> 键）</li>
+<li>找到 <code>Secure Boot</code> 选项</li>
+<li>设置为 <code>Disabled</code></li>
+<li>保存并退出</li>
+</ol>
+<h2 id="1-3-查看当前驱动状态"><a href="#1-3-查看当前驱动状态" class="headerlink" title="1.3 查看当前驱动状态"></a>1.3 查看当前驱动状态</h2><pre><code class="language-Bash"># 查看已安装的 NVIDIA 驱动
+nvidia-smi
+
+# 查看当前使用的驱动
+lsmod | grep nvidia
+</code></pre>
+<blockquote>
+<p>如果 <code>nvidia-smi</code> 报错，说明驱动未安装或有问题，可以继续本教程。</p>
+</blockquote>
+<h2 id="1-4-更新系统"><a href="#1-4-更新系统" class="headerlink" title="1.4 更新系统"></a>1.4 更新系统</h2><pre><code class="language-Bash">sudo apt update
+sudo apt upgrade -y
+sudo reboot
+</code></pre>
+<hr>
+<h2 id="方法一：使用-ubuntu-drivers（强烈推荐）⭐"><a href="#方法一：使用-ubuntu-drivers（强烈推荐）⭐" class="headerlink" title="方法一：使用 ubuntu-drivers（强烈推荐）⭐"></a>方法一：使用 ubuntu-drivers（强烈推荐）⭐</h2><p>这是<strong>最简单、最安全</strong>的方法，适合 95% 的用户。</p>
+<h3 id="步骤-1：查看可用驱动版本"><a href="#步骤-1：查看可用驱动版本" class="headerlink" title="步骤 1：查看可用驱动版本"></a>步骤 1：查看可用驱动版本</h3><pre><code class="language-Bash">ubuntu-drivers devices
+</code></pre>
+<p><strong>输出示例</strong>：</p>
+<pre><code class="language-Plain">== /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 ==
+modalias : pci:v000010DEd00002487sv00001458sd0000407Bbc03sc00i00
+vendor   : NVIDIA Corporation
+model    : GA102 [GeForce RTX 3080]
+driver   : nvidia-driver-535 - distro non-free recommended
+driver   : nvidia-driver-525 - distro non-free
+driver   : nvidia-driver-470 - distro non-free
+</code></pre>
+<h3 id="步骤-2：安装推荐驱动"><a href="#步骤-2：安装推荐驱动" class="headerlink" title="步骤 2：安装推荐驱动"></a>步骤 2：安装推荐驱动</h3><pre><code class="language-Bash"># 自动安装推荐版本（最简单）
+sudo ubuntu-drivers autoinstall
+</code></pre>
+<p><strong>或手动指定版本</strong>：</p>
+<pre><code class="language-Bash"># 安装特定版本（如 535）
+sudo apt install -y nvidia-driver-535
+</code></pre>
+<h3 id="步骤-3：安装额外组件（可选）"><a href="#步骤-3：安装额外组件（可选）" class="headerlink" title="步骤 3：安装额外组件（可选）"></a>步骤 3：安装额外组件（可选）</h3><pre><code class="language-Bash"># NVIDIA 设置工具
+sudo apt install -y nvidia-settings
+
+# CUDA 开发工具（如需深度学习开发）
+sudo apt install -y nvidia-cuda-toolkit
+</code></pre>
+<h3 id="步骤-4：重启系统"><a href="#步骤-4：重启系统" class="headerlink" title="步骤 4：重启系统"></a>步骤 4：重启系统</h3><pre><code class="language-Bash">sudo reboot
+</code></pre>
+<h3 id="步骤-5：验证安装"><a href="#步骤-5：验证安装" class="headerlink" title="步骤 5：验证安装"></a>步骤 5：验证安装</h3><pre><code class="language-Bash">nvidia-smi
+</code></pre>
+<hr>
+<h2 id="方法二：使用附加驱动-GUI"><a href="#方法二：使用附加驱动-GUI" class="headerlink" title="方法二：使用附加驱动 GUI"></a>方法二：使用附加驱动 GUI</h2><p>适合不喜欢命令行的用户。</p>
+<h3 id="步骤-1：打开”软件和更新”"><a href="#步骤-1：打开”软件和更新”" class="headerlink" title="步骤 1：打开”软件和更新”"></a>步骤 1：打开”软件和更新”</h3><pre><code class="language-Bash">software-properties-gtk
+</code></pre>
+<p>或在应用菜单中搜索 <strong>“软件和更新”</strong> (Software &amp; Updates)。</p>
+<h3 id="步骤-2：切换到”附加驱动”标签"><a href="#步骤-2：切换到”附加驱动”标签" class="headerlink" title="步骤 2：切换到”附加驱动”标签"></a>步骤 2：切换到”附加驱动”标签</h3><ol>
+<li>点击 <strong>“附加驱动”</strong> (Additional Drivers) 标签</li>
+<li>等待系统搜索可用驱动（可能需要 1-2 分钟）</li>
+</ol>
+<h3 id="步骤-3：选择驱动"><a href="#步骤-3：选择驱动" class="headerlink" title="步骤 3：选择驱动"></a>步骤 3：选择驱动</h3><ul>
+<li>选择标记为 <strong>(recommended)</strong> 或 <strong>(proprietary, tested)</strong> 的版本</li>
+<li>新显卡（RTX 30&#x2F;40 系列）: 选择 535 或更高</li>
+<li>旧显卡（GTX 10 系列）: 选择 470 或 525</li>
+</ul>
+<h3 id="步骤-4：应用并重启"><a href="#步骤-4：应用并重启" class="headerlink" title="步骤 4：应用并重启"></a>步骤 4：应用并重启</h3><ol>
+<li>点击 <strong>“应用更改”</strong> (Apply Changes)</li>
+<li>等待安装完成（5-10 分钟）</li>
+<li>重启系统</li>
+</ol>
+<hr>
+<h2 id="方法三：手动安装官方-run-文件"><a href="#方法三：手动安装官方-run-文件" class="headerlink" title="方法三：手动安装官方.run 文件"></a>方法三：手动安装官方.run 文件</h2><blockquote>
+<p>⚠️ <strong>警告</strong>: 此方法风险较高，仅在前两种方法失败时使用。  </p>
+<p><strong>适用场景</strong>: 需要最新驱动版本、特殊显卡、或仓库驱动不兼容</p>
+</blockquote>
+<h3 id="步骤-1：下载官方驱动"><a href="#步骤-1：下载官方驱动" class="headerlink" title="步骤 1：下载官方驱动"></a>步骤 1：下载官方驱动</h3><p>访问 <a target="_blank" rel="noopener" href="https://www.nvidia.com/Download/index.aspx">NVIDIA 驱动下载页面</a></p>
+<p>或使用命令行下载（以 550 版本为例）：</p>
+<pre><code class="language-Bash">cd ~/Downloads
+wget https://us.download.nvidia.com/XFree86/Linux-x86_64/550.54.14/NVIDIA-Linux-x86_64-550.54.14.run
+</code></pre>
+<h3 id="步骤-2：禁用-Nouveau-开源驱动"><a href="#步骤-2：禁用-Nouveau-开源驱动" class="headerlink" title="步骤 2：禁用 Nouveau 开源驱动"></a>步骤 2：禁用 Nouveau 开源驱动</h3><pre><code class="language-Bash"># 创建黑名单文件
+sudo tee /etc/modprobe.d/blacklist-nouveau.conf &lt;&lt; EOF
+blacklist nouveau
+blacklist lbm-nouveau
+options nouveau modeset=0
+EOF
+
+# 更新 initramfs
+sudo update-initramfs -u
+
+# 重启
+sudo reboot
+</code></pre>
+<h3 id="步骤-3：验证-Nouveau-已禁用"><a href="#步骤-3：验证-Nouveau-已禁用" class="headerlink" title="步骤 3：验证 Nouveau 已禁用"></a>步骤 3：验证 Nouveau 已禁用</h3><pre><code class="language-Bash">lsmod | grep nouveau
+</code></pre>
+<blockquote>
+<p><strong>无输出</strong> 表示禁用成功。</p>
+</blockquote>
+<h3 id="步骤-4：停止图形界面"><a href="#步骤-4：停止图形界面" class="headerlink" title="步骤 4：停止图形界面"></a>步骤 4：停止图形界面</h3><p>重启后，在登录界面按 <code>Ctrl+Alt+F3</code> 进入 TTY 终端，登录后执行：</p>
+<pre><code class="language-Bash"># 停止显示管理器
+sudo systemctl stop gdm3    # GNOME (Ubuntu 默认)
+# 或
+sudo systemctl stop lightdm # LightDM
+# 或
+sudo systemctl stop sddm    # KDE
+</code></pre>
+<h3 id="步骤-5：安装驱动"><a href="#步骤-5：安装驱动" class="headerlink" title="步骤 5：安装驱动"></a>步骤 5：安装驱动</h3><pre><code class="language-Bash">cd ~/Downloads
+chmod +x NVIDIA-Linux-x86_64-*.run
+
+# 安装（关键参数）
+sudo ./NVIDIA-Linux-x86_64-*.run --no-opengl-files
+</code></pre>
+<p><strong>安装选项建议</strong>：</p>
+<ul>
+<li>是否注册内核模块源：<code>Yes</code></li>
+<li>是否安装 32 位兼容库：根据需要</li>
+<li>是否运行 <code>nvidia-xconfig</code>: <code>Yes</code></li>
+</ul>
+<h3 id="步骤-6：重启系统"><a href="#步骤-6：重启系统" class="headerlink" title="步骤 6：重启系统"></a>步骤 6：重启系统</h3><pre><code class="language-Bash">sudo reboot
+</code></pre>
+<hr>
+<h2 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h2><h3 id="检查驱动状态"><a href="#检查驱动状态" class="headerlink" title="检查驱动状态"></a>检查驱动状态</h3><pre><code class="language-Bash">nvidia-smi
+</code></pre>
+<p><strong>成功输出示例</strong>：</p>
+<pre><code class="language-Plain">+-----------------------------------------------------------------------------+
+| NVIDIA-SMI 535.104.05   Driver Version: 535.104.05   CUDA Version: 12.2     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  NVIDIA GeForce ...  Off  | 00000000:01:00.0  On |                  N/A |
+|  0%   45C    P8    12W / 320W |    500MiB / 10240MiB |      5%      Default |
++-------------------------------+----------------------+----------------------+
+</code></pre>
+<h3 id="检查-OpenGL"><a href="#检查-OpenGL" class="headerlink" title="检查 OpenGL"></a>检查 OpenGL</h3><pre><code class="language-Bash">glxinfo | grep &quot;OpenGL version&quot;
+</code></pre>
+<p>应显示 <code>OpenGL version string: 4.6.0 NVIDIA ...</code></p>
+<h3 id="检查内核模块"><a href="#检查内核模块" class="headerlink" title="检查内核模块"></a>检查内核模块</h3><pre><code class="language-Bash">lsmod | grep nvidia
+</code></pre>
+<p>应看到 <code>nvidia</code>, <code>nvidia_uvm</code>, <code>nvidia_drm</code> 等模块。</p>
+<h3 id="测试渲染"><a href="#测试渲染" class="headerlink" title="测试渲染"></a>测试渲染</h3><pre><code class="language-Bash">glxgears
+</code></pre>
+<p>应看到旋转的齿轮动画，终端显示 FPS。</p>
+<hr>
+<h2 id="常见问题解决"><a href="#常见问题解决" class="headerlink" title="常见问题解决"></a>常见问题解决</h2><h3 id="❌-问题-1-nvidia-smi-报错-“NVIDIA-SMI-has-failed”"><a href="#❌-问题-1-nvidia-smi-报错-“NVIDIA-SMI-has-failed”" class="headerlink" title="❌ 问题 1: nvidia-smi 报错 “NVIDIA-SMI has failed”"></a>❌ 问题 1: nvidia-smi 报错 “NVIDIA-SMI has failed”</h3><p><strong>可能原因</strong>：</p>
+<ul>
+<li>Secure Boot 未禁用</li>
+<li>内核模块未加载</li>
+<li>驱动版本与内核不兼容</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<pre><code class="language-Bash"># 1. 检查 Secure Boot
+mokutil --sb-state
+
+# 2. 手动加载模块
+sudo modprobe nvidia
+sudo modprobe nvidia-uvm
+
+# 3. 查看错误日志
+dmesg | grep NVRM
+
+# 4. 重新安装驱动
+sudo apt purge -y nvidia-*
+sudo ubuntu-drivers autoinstall
+sudo reboot
+</code></pre>
+<h3 id="❌-问题-2-重启后黑屏或登录循环"><a href="#❌-问题-2-重启后黑屏或登录循环" class="headerlink" title="❌ 问题 2: 重启后黑屏或登录循环"></a>❌ 问题 2: 重启后黑屏或登录循环</h3><p><strong>解决方案</strong>：</p>
+<ol>
+<li><p>进入 TTY (<code>Ctrl+Alt+F3</code>)</p>
+</li>
+<li><p>卸载驱动：</p>
+<pre><code class="language-Bash">sudo apt purge -y nvidia-*
+sudo reboot
+</code></pre>
+</li>
+<li><p>重新安装时选择更低版本驱动</p>
+</li>
+<li><p>或检查是否安装了冲突的 OpenGL 文件</p>
+</li>
+</ol>
+<h3 id="❌-问题-3-Wayland-会话下驱动异常"><a href="#❌-问题-3-Wayland-会话下驱动异常" class="headerlink" title="❌ 问题 3: Wayland 会话下驱动异常"></a>❌ 问题 3: Wayland 会话下驱动异常</h3><p><strong>解决方案</strong>：</p>
+<ol>
+<li><p>在登录界面选择 <strong>Ubuntu on Xorg</strong></p>
+</li>
+<li><p>或编辑 <code>/etc/gdm3/custom.conf</code>：取消注释：<code>WaylandEnable=false</code></p>
+<pre><code class="language-Bash">sudo nano /etc/gdm3/custom.conf
+</code></pre>
+</li>
+</ol>
+<h3 id="❌-问题-4-内核升级后驱动失效"><a href="#❌-问题-4-内核升级后驱动失效" class="headerlink" title="❌ 问题 4: 内核升级后驱动失效"></a>❌ 问题 4: 内核升级后驱动失效</h3><p><strong>解决方案</strong>：</p>
+<pre><code class="language-Bash"># 重新安装驱动
+sudo ubuntu-drivers autoinstall
+
+# 或手动重建内核模块
+sudo dkms autoinstall
+sudo reboot
+</code></pre>
+<h3 id="❌-问题-5-风扇全速或温度过高"><a href="#❌-问题-5-风扇全速或温度过高" class="headerlink" title="❌ 问题 5: 风扇全速或温度过高"></a>❌ 问题 5: 风扇全速或温度过高</h3><p><strong>解决方案</strong>：</p>
+<pre><code class="language-Bash"># 安装 nvidia-settings
+sudo apt install nvidia-settings
+
+# 运行设置工具
+nvidia-settings
+
+# 启用持久模式
+sudo nvidia-persistenced
+</code></pre>
+<hr>
+<h2 id="卸载驱动"><a href="#卸载驱动" class="headerlink" title="卸载驱动"></a>卸载驱动</h2><h3 id="使用-apt-卸载"><a href="#使用-apt-卸载" class="headerlink" title="使用 apt 卸载"></a>使用 apt 卸载</h3><pre><code class="language-Bash"># 卸载所有 NVIDIA 驱动
+sudo apt purge -y nvidia-*
+sudo apt autoremove -y
+sudo reboot
+</code></pre>
+<h3 id="恢复-Nouveau-驱动"><a href="#恢复-Nouveau-驱动" class="headerlink" title="恢复 Nouveau 驱动"></a>恢复 Nouveau 驱动</h3><pre><code class="language-Bash"># 删除黑名单文件
+sudo rm /etc/modprobe.d/blacklist-nouveau.conf
+
+# 更新 initramfs
+sudo update-initramfs -u
+
+# 重启
+sudo reboot
+</code></pre>
+<hr>
+<h2 id="📊-驱动版本选择指南"><a href="#📊-驱动版本选择指南" class="headerlink" title="📊 驱动版本选择指南"></a>📊 驱动版本选择指南</h2><table>
+<thead>
+<tr>
+<th>显卡系列</th>
+<th>推荐驱动版本</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RTX 40 系列</td>
+<td>535-550+</td>
+<td>必须使用 535 或更高</td>
+</tr>
+<tr>
+<td>RTX 30 系列</td>
+<td>525-535</td>
+<td>525 稳定，535 新功能</td>
+</tr>
+<tr>
+<td>RTX 20 系列</td>
+<td>525-535</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>GTX 16 系列</td>
+<td>525-535</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>GTX 10 系列</td>
+<td>470-525</td>
+<td>470 最稳定</td>
+</tr>
+<tr>
+<td>GTX 9 系列及更早</td>
+<td>470</td>
+<td>仅支持到 470</td>
+</tr>
+<tr>
+<td>Tesla&#x2F;数据中心</td>
+<td>根据 CUDA 需求</td>
+<td>参考 NVIDIA 官方文档</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-快速检查清单"><a href="#✅-快速检查清单" class="headerlink" title="✅ 快速检查清单"></a>✅ 快速检查清单</h2><pre><code class="language-Bash"># 1. 硬件识别
+lspci | grep -i nvidia
+
+# 2. Secure Boot 状态
+mokutil --sb-state
+
+# 3. 驱动安装
+ubuntu-drivers devices
+sudo ubuntu-drivers autoinstall
+
+# 4. 重启后验证
+nvidia-smi
+glxinfo | grep &quot;OpenGL&quot;
+lsmod | grep nvidia
+
+# 5. 渲染测试
+glxgears
+</code></pre>
+<hr>
+<h2 id="📚-参考资源"><a href="#📚-参考资源" class="headerlink" title="📚 参考资源"></a>📚 参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://download.nvidia.com/XFree86/Linux-x86_64/latest/README/index.html">NVIDIA 官方 Linux 驱动文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://help.ubuntu.com/community/BinaryDriverHowto/Nvidia">Ubuntu 社区 Wiki - NVIDIA 驱动</a></li>
+<li><a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/c/linux/148">NVIDIA 开发者论坛</a></li>
+<li><a target="_blank" rel="noopener" href="https://ubuntu.com/server/docs/nvidia-drivers-installation">Ubuntu 官方驱动页面</a></li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>💡 提示</strong>: </p>
+<ol>
+<li>生产环境建议在安装前创建系统快照（如使用 Timeshift）</li>
+<li>优先使用方法一（ubuntu-drivers），95% 的情况都能成功</li>
+<li>遇到问题先查看 <code>dmesg | grep NVRM</code> 错误日志</li>
+<li>保持系统和内核更新，避免兼容性问题</li>
+</ol>
+</blockquote>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">小鱼</div><div class="author-info-description">一只热爱代码与二次元的小鱼。白天写后端，晚上追番。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" href="/atom.xml"><i class="fas fa-rss"></i><span>订阅小鱼</span></a><div class="card-info-social-icons"><a class="social-icon" href="/atom.xml" target="_blank" title="fas fa-rss"><i class="RSS" style="color: #ec6a9e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到小鱼的技术小屋～ 这里记录代码、动漫和一点点日常。</div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%86%99%E4%BD%9C/"><span class="card-category-list-name">写作</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/"><span class="card-category-list-name">后端</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="card-category-list-name">工程化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E7%AB%99/"><span class="card-category-list-name">建站</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%88%E7%8E%87/"><span class="card-category-list-name">效率</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/API/" style="font-size: 1.1em; color: #999">API</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/Docker-Compose/" style="font-size: 1.1em; color: #999">Docker Compose</a> <a href="/tags/Hexo/" style="font-size: 1.1em; color: #999">Hexo</a> <a href="/tags/Markdown/" style="font-size: 1.1em; color: #999">Markdown</a> <a href="/tags/RSS/" style="font-size: 1.1em; color: #999">RSS</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">信息管理</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.5em; color: #99a9bf">工具</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.1em; color: #999">性能优化</a> <a href="/tags/%E6%8E%92%E6%9F%A5/" style="font-size: 1.1em; color: #999">排查</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.5em; color: #99a9bf">效率</a> <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">本地开发</a> <a href="/tags/%E7%BB%88%E7%AB%AF/" style="font-size: 1.1em; color: #999">终端</a></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 小鱼</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">用爱发电 · 代码与幻想都要闪闪发光 ♡</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章、标签或关键词…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
