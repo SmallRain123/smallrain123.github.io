@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <author>
-    <name>小鱼</name>
+    <name>小鱼不吃鱼.</name>
   </author>
   <generator uri="https://hexo.io/">Hexo</generator>
   <id>http://192.168.0.234:4000/</id>
   <link href="http://192.168.0.234:4000/" rel="alternate"/>
   <link href="http://192.168.0.234:4000/atom.xml" rel="self"/>
-  <rights>All rights reserved 2026, 小鱼</rights>
+  <rights>All rights reserved 2026, 小鱼不吃鱼.</rights>
   <subtitle>代码与幻想，都想认真记录</subtitle>
   <title>小鱼技术栈</title>
   <updated>2026-10-29T08:20:00.000Z</updated>
   <entry>
     <author>
-      <name>小鱼</name>
+      <name>小鱼不吃鱼.</name>
     </author>
     <category term="建站" scheme="http://192.168.0.234:4000/categories/%E5%BB%BA%E7%AB%99/"/>
     <category term="Hexo" scheme="http://192.168.0.234:4000/tags/Hexo/"/>
@@ -31,7 +31,7 @@
   </entry>
   <entry>
     <author>
-      <name>小鱼</name>
+      <name>小鱼不吃鱼.</name>
     </author>
     <category term="写作" scheme="http://192.168.0.234:4000/categories/%E5%86%99%E4%BD%9C/"/>
     <category term="Markdown" scheme="http://192.168.0.234:4000/tags/Markdown/"/>
@@ -48,7 +48,7 @@
   </entry>
   <entry>
     <author>
-      <name>小鱼</name>
+      <name>小鱼不吃鱼.</name>
     </author>
     <category term="后端" scheme="http://192.168.0.234:4000/categories/%E5%90%8E%E7%AB%AF/"/>
     <category term="性能优化" scheme="http://192.168.0.234:4000/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
@@ -66,7 +66,7 @@
   </entry>
   <entry>
     <author>
-      <name>小鱼</name>
+      <name>小鱼不吃鱼.</name>
     </author>
     <category term="工程化" scheme="http://192.168.0.234:4000/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="Docker" scheme="http://192.168.0.234:4000/tags/Docker/"/>
@@ -84,7 +84,7 @@
   </entry>
   <entry>
     <author>
-      <name>小鱼</name>
+      <name>小鱼不吃鱼.</name>
     </author>
     <category term="效率" scheme="http://192.168.0.234:4000/categories/%E6%95%88%E7%8E%87/"/>
     <category term="RSS" scheme="http://192.168.0.234:4000/tags/RSS/"/>
@@ -102,7 +102,7 @@
   </entry>
   <entry>
     <author>
-      <name>小鱼</name>
+      <name>小鱼不吃鱼.</name>
     </author>
     <category term="技术" scheme="http://192.168.0.234:4000/categories/%E6%8A%80%E6%9C%AF/"/>
     <category term="工具" scheme="http://192.168.0.234:4000/tags/%E5%B7%A5%E5%85%B7/"/>
